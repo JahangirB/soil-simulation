@@ -154,45 +154,49 @@
 
         <!-- Slide 4: The Interactive Simulation -->
         <div id="slide-4" class="slide">
-            <div class="w-full max-w-6xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-3/4">
-                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
+            <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
+                <div class="flex flex-col gap-8">
+                    <!-- Top Row: Model and Slider -->
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <!-- Model -->
+                        <div class="w-full md:w-3/4">
+                            <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
                                 <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <div class="w-full">Uniform Clay Soil</div>
+                                    <div class="w-full">Uniform Clay Soil</div>
+                                </div>
+                                <svg id="simulation-svg" viewBox="0 0 800 500" class="absolute top-0 left-0 w-full h-full bg-white">
+                                    <defs>
+                                        <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" /><stop offset="100%" stop-color="#5a3d20" /></linearGradient>
+                                        <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#52525b" /></linearGradient>
+                                    </defs>
+                                    <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
+                                    <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
+                                    <line id="bar-magnet-1" x1="385" y1="150" x2="385" y2="150" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-2" x1="385" y1="250" x2="385" y2="250" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-3" x1="385" y1="330" x2="385" y2="330" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/>
+                                    <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
+                                    <g id="magnet-1" class="magnet-group"><circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text></g>
+                                    <g id="magnet-2" class="magnet-group"><circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text></g>
+                                    <g id="magnet-3" class="magnet-group"><circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text></g>
+                                    <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
+                                </svg>
                             </div>
-                            <svg id="simulation-svg" viewBox="0 0 800 500" class="absolute top-0 left-0 w-full h-full bg-white">
-                                <defs>
-                                    <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" /><stop offset="100%" stop-color="#5a3d20" /></linearGradient>
-                                    <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#52525b" /></linearGradient>
-                                </defs>
-                                <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
-                                <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
-                                <line id="bar-magnet-1" x1="385" y1="150" x2="385" y2="150" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-2" x1="385" y1="250" x2="385" y2="250" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-3" x1="385" y1="330" x2="385" y2="330" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/>
-                                <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
-                                <g id="magnet-1" class="magnet-group"><circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text></g>
-                                <g id="magnet-2" class="magnet-group"><circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text></g>
-                                <g id="magnet-3" class="magnet-group"><circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text></g>
-                                <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
-                            </svg>
+                        </div>
+                        <!-- Slider -->
+                        <div class="w-full md:w-1/4 flex flex-col items-center justify-center space-y-4">
+                            <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
+                            <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
                         </div>
                     </div>
-                    <div class="w-full md:w-1/4 space-y-6">
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
-                                <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Probe</th><th class="pb-2 font-semibold text-gray-700 text-right">Reading (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="reading-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="reading-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="reading-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="reading-pipe" class="py-2 font-mono font-bold text-right text-green-700">0.0</td></tr></tbody></table></div>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
-                                <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Point</th><th class="pb-2 font-semibold text-gray-700 text-right">Movement (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="actual-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="actual-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="actual-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="actual-datum" class="py-2 font-mono font-bold text-right">0.0</td></tr></tbody></table></div>
-                            </div>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
-                        <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full md:w-1/2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                        <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
+                    <!-- Bottom Row: Tables -->
+                    <div class="flex flex-col md:flex-row gap-8 justify-center">
+                        <div class="flex-1">
+                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
+                            <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Probe</th><th class="pb-2 font-semibold text-gray-700 text-right">Reading (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="reading-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="reading-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="reading-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="reading-pipe" class="py-2 font-mono font-bold text-right text-green-700">0.0</td></tr></tbody></table></div>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
+                            <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Point</th><th class="pb-2 font-semibold text-gray-700 text-right">Movement (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="actual-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="actual-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="actual-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="actual-datum" class="py-2 font-mono font-bold text-right">0.0</td></tr></tbody></table></div>
+                        </div>
                     </div>
                 </div>
             </div>
