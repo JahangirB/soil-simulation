@@ -3,324 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Soil Settlement Simulation</title>
+    <title>Soil Settlement Presentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
         }
-        .magnet-label {
-            font-size: 10px;
-            fill: #fff;
-            font-weight: 500;
-            pointer-events: none;
+        main {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .settlement-text {
-             font-size: 11px;
-             font-weight: bold;
-             fill: #ffffff; 
-             stroke: #333; /* Adds a dark outline */
-             stroke-width: 0.4px;
-             paint-order: stroke; /* Renders stroke behind fill */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            overflow-y: auto; /* Allow scrolling on individual slides if content overflows */
+            padding: 2rem;
         }
-        .bottom-label {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 2px 0;
-            border-top: 1px solid rgba(0,0,0,0.1);
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
         }
-        .movement-bar {
-            transition: opacity 0.2s linear;
+        .nav-button {
+            position: fixed;
+            bottom: 2rem;
+            z-index: 100;
+            padding: 0.75rem 1.5rem;
+            background-color: #4f46e5;
+            color: white;
+            border-radius: 9999px;
+            font-weight: bold;
+            box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-button:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+        #prev { left: 2rem; }
+        #next { right: 2rem; }
+        
+        table {
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        th {
+            background-color: #f8fafc;
+        }
+        #draggable-magnet {
+            cursor: grab;
+        }
+        #draggable-magnet:active {
+            cursor: grabbing;
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+<body class="bg-gray-100">
 
-    <div class="w-full max-w-6xl bg-white rounded-2xl shadow-xl p-6 md:p-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-2">Soil Settlement Simulation</h1>
-        <p class="text-center text-gray-600 mb-6">Adjust the embankment load with the slider to observe soil compression and settlement.</p>
-        
-        <div class="flex flex-col md:flex-row gap-8">
-            <!-- Left Side: Simulation -->
-            <div class="w-full md:w-3/4">
-                <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
-                     <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10 bottom-label">
-                        <div class="w-full">Uniform Clay Soil</div>
-                    </div>
+    <main>
+        <!-- Slide 1: Title -->
+        <div id="slide-1" class="slide active">
+            <div class="p-4">
+                <h1 class="text-6xl font-black text-gray-800">Interactive Soil Settlement Simulation</h1>
+                <p class="mt-4 text-2xl text-gray-600">Visualizing the Effects of Embankment Loading on Clay Soil</p>
+            </div>
+        </div>
 
-                    <!-- SVG for all visual elements -->
-                    <svg id="simulation-svg" viewBox="0 0 800 500" class="absolute top-0 left-0 w-full h-full bg-white">
-                        <defs>
-                            <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                              <stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" />
-                              <stop offset="100%" stop-color="#5a3d20" />
-                            </linearGradient>
-                            <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                              <stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" />
-                              <stop offset="100%" stop-color="#52525b" />
-                            </linearGradient>
-                        </defs>
+        <!-- Slide 2: Introduction -->
+        <div id="slide-2" class="slide">
+             <div class="p-4">
+                <h1 class="text-5xl font-bold text-gray-800">Simulation Setup</h1>
+                <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
+                    <li>Model simulates a uniform clay soil layer under an embankment load.</li>
+                    <li>A magnetic extensometer is installed to monitor soil movement.</li>
+                    <li>Spider Magnets (1, 2, 3) move with the surrounding soil.</li>
+                    <li>The Datum (D) is a fixed anchor point in stable ground.</li>
+                    <li>We will observe both <span class="font-bold text-indigo-600">instrument readings</span> and the <span class="font-bold text-green-700">actual physical settlement</span>.</li>
+                </ul>
+            </div>
+        </div>
 
-                        <!-- Soil Body -->
-                        <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
-
-                        <!-- Embankment -->
-                        <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
-
-                        <!-- MOVEMENT BARS -->
-                        <line id="bar-magnet-1" x1="415" y1="150" x2="415" y2="150" stroke="#f97316" stroke-width="4" class="movement-bar" opacity="0"/>
-                        <line id="bar-magnet-2" x1="415" y1="250" x2="415" y2="250" stroke="#f97316" stroke-width="4" class="movement-bar" opacity="0"/>
-                        <line id="bar-magnet-3" x1="415" y1="330" x2="415" y2="330" stroke="#f97316" stroke-width="4" class="movement-bar" opacity="0"/>
-                        <line id="bar-pipe" x1="385" y1="420" x2="385" y2="420" stroke="#16a34a" stroke-width="4" class="movement-bar" opacity="0"/>
-
-                        <!-- Extensometer Casing -->
-                        <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
-
-                        <!-- Spider Magnets & Labels -->
-                        <g id="magnet-1" class="magnet-group">
-                            <circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" />
-                            <text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text>
+        <!-- Slide 3: How the Probe Works -->
+        <div id="slide-3" class="slide">
+            <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 p-4">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">How the Probe Works</h1>
+                    <ul class="mt-8 text-xl text-left list-disc space-y-4">
+                        <li>The automated probe is a metal bar, approximately 600mm in length.</li>
+                        <li>Inside, a <span class="font-bold text-red-600">400mm sensor</span> actively detects magnetic fields.</li>
+                        <li>When a magnet enters this sensor range (0mm to 400mm), its exact position is identified.</li>
+                        <li>This position is sent as a signal to the data logger. If the magnet is outside this range, no data is recorded.</li>
+                    </ul>
+                    <p class="mt-8 text-lg text-gray-600 font-semibold">Try it: Drag the magnet on the right to see how the reading changes.</p>
+                </div>
+                <div class="w-full md:w-1/2 flex items-center justify-center">
+                    <svg id="probe-svg" viewBox="0 0 400 700" class="w-full h-full max-w-sm">
+                        <!-- Probe Body -->
+                        <rect x="150" y="50" width="30" height="600" fill="#a0aec0" rx="5"/>
+                        <!-- Sensor Area -->
+                        <rect x="155" y="150" width="20" height="400" fill="#f56565" rx="3"/>
+                        
+                        <!-- Markings -->
+                        <g class="text-gray-700 font-semibold">
+                            <text x="190" y="155">0 mm</text><line x1="180" y1="150" x2="185" y2="150" stroke="currentColor"/>
+                            <text x="190" y="255">100 mm</text><line x1="180" y1="250" x2="185" y2="250" stroke="currentColor"/>
+                            <text x="190" y="355">200 mm</text><line x1="180" y1="350" x2="185" y2="350" stroke="currentColor"/>
+                            <text x="190" y="455">300 mm</text><line x1="180" y1="450" x2="185" y2="450" stroke="currentColor"/>
+                            <text x="190" y="555">400 mm</text><line x1="180" y1="550" x2="185" y2="550" stroke="currentColor"/>
                         </g>
-                        <g id="magnet-2" class="magnet-group">
-                            <circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" />
-                            <text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text>
-                        </g>
-                        <g id="magnet-3" class="magnet-group">
-                            <circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" />
-                             <text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text>
+
+                        <!-- Draggable Magnet -->
+                        <g id="draggable-magnet" transform="translate(0, 150)">
+                            <circle cx="120" cy="150" r="15" fill="#4299e1" stroke="white" stroke-width="2"/>
+                            <text x="120" y="155" text-anchor="middle" fill="white" font-weight="bold">M</text>
                         </g>
                         
-                        <!-- Datum Magnet - FIXED POSITION -->
-                        <g id="datum-magnet" class="magnet-group">
-                            <circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" />
-                            <text x="400" y="424" class="magnet-label" text-anchor="middle">D</text>
+                        <!-- Readout Dial -->
+                        <g transform="translate(320, 350)">
+                            <circle cx="0" cy="0" r="70" fill="white" stroke="#e2e8f0" stroke-width="4"/>
+                            <text x="0" y="-20" text-anchor="middle" class="font-semibold">Reading</text>
+                            <text id="probe-readout" x="0" y="15" text-anchor="middle" class="text-3xl font-bold text-indigo-600">0 mm</text>
                         </g>
                     </svg>
                 </div>
             </div>
-            <!-- Right Side: Readings Tables -->
-            <div class="w-full md:w-1/4 space-y-6">
-                 <div>
-                     <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
-                     <div class="bg-gray-50 rounded-lg p-4 border">
-                        <table class="w-full text-left">
-                            <thead class="border-b-2 border-gray-200">
-                                <tr>
-                                    <th class="pb-2 font-semibold text-gray-700">Probe</th>
-                                    <th class="pb-2 font-semibold text-gray-700 text-right">Reading (mm)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 1</td>
-                                    <td id="reading-1" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 2</td>
-                                    <td id="reading-2" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 3</td>
-                                    <td id="reading-3" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 text-gray-600">Datum</td>
-                                    <td id="reading-pipe" class="py-2 font-mono font-bold text-right text-green-700">0.0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                     </div>
-                 </div>
-                 <div>
-                     <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
-                     <div class="bg-gray-50 rounded-lg p-4 border">
-                        <table class="w-full text-left">
-                            <thead class="border-b-2 border-gray-200">
-                                <tr>
-                                    <th class="pb-2 font-semibold text-gray-700">Point</th>
-                                    <th class="pb-2 font-semibold text-gray-700 text-right">Movement (mm)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 1</td>
-                                    <td id="actual-1" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 2</td>
-                                    <td id="actual-2" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr class="border-b border-gray-200">
-                                    <td class="py-2 text-gray-600">Magnet 3</td>
-                                    <td id="actual-3" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 text-gray-600">Datum</td>
-                                    <td id="actual-datum" class="py-2 font-mono font-bold text-right">0.0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                     </div>
-                 </div>
-            </div>
         </div>
 
-        <!-- Controls -->
-        <div class="mt-8">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
-                <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full md:w-1/2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
+        <!-- Slide 4: The Interactive Simulation -->
+        <div id="slide-4" class="slide">
+            <div class="w-full max-w-6xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-3/4">
+                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
+                                <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <div class="w-full">Uniform Clay Soil</div>
+                            </div>
+                            <svg id="simulation-svg" viewBox="0 0 800 500" class="absolute top-0 left-0 w-full h-full bg-white">
+                                <defs>
+                                    <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" /><stop offset="100%" stop-color="#5a3d20" /></linearGradient>
+                                    <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#52525b" /></linearGradient>
+                                </defs>
+                                <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
+                                <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
+                                <line id="bar-magnet-1" x1="385" y1="150" x2="385" y2="150" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-2" x1="385" y1="250" x2="385" y2="250" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-3" x1="385" y1="330" x2="385" y2="330" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/>
+                                <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
+                                <g id="magnet-1" class="magnet-group"><circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text></g>
+                                <g id="magnet-2" class="magnet-group"><circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text></g>
+                                <g id="magnet-3" class="magnet-group"><circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text></g>
+                                <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/4 space-y-6">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
+                                <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Probe</th><th class="pb-2 font-semibold text-gray-700 text-right">Reading (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="reading-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="reading-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="reading-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="reading-pipe" class="py-2 font-mono font-bold text-right text-green-700">0.0</td></tr></tbody></table></div>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
+                                <div class="bg-gray-50 rounded-lg p-4 border"><table class="w-full text-left"><thead class="border-b-2 border-gray-200"><tr><th class="pb-2 font-semibold text-gray-700">Point</th><th class="pb-2 font-semibold text-gray-700 text-right">Movement (mm)</th></tr></thead><tbody><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 1</td><td id="actual-1" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 2</td><td id="actual-2" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr class="border-b border-gray-200"><td class="py-2 text-gray-600">Magnet 3</td><td id="actual-3" class="py-2 font-mono font-bold text-right">0.0</td></tr><tr><td class="py-2 text-gray-600">Datum</td><td id="actual-datum" class="py-2 font-mono font-bold text-right">0.0</td></tr></tbody></table></div>
+                            </div>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
+                        <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full md:w-1/2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        
+        <!-- Slide 5: Conclusion -->
+        <div id="slide-5" class="slide">
+            <div class="p-4">
+                <h1 class="text-5xl font-bold text-gray-800">Summary of Observations</h1>
+                <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
+                    <li>The greatest physical settlement occurs at the surface (Magnet 1) and decreases with depth.</li>
+                    <li>The probe readings for the magnets are negative because the soil settlement is greater than the pipe's downward movement.</li>
+                    <li>The probe reading for the Datum is positive, showing the slight downward penetration of the pipe relative to the fixed anchor.</li>
+                    <li>This simulation highlights the difference between <span class="font-bold text-indigo-600">instrument readings (relative)</span> and <span class="font-bold text-green-700">actual physical settlement (absolute)</span>.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation -->
+    <button id="prev" class="nav-button">Previous</button>
+    <button id="next" class="nav-button">Next</button>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slider = document.getElementById('load-slider');
-            const loadValue = document.getElementById('load-value');
-            const soilBody = document.getElementById('soil-body');
-            const embankment = document.getElementById('embankment');
-            const gradientStopTop = document.getElementById('gradient-stop-top');
-            const pipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
-            const extensometerCasing = document.getElementById('extensometer-casing');
+        // --- PRESENTATION LOGIC ---
+        let currentSlide = 1;
+        const totalSlides = 5;
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
 
-            const magnet1 = document.getElementById('magnet-1');
-            const magnet2 = document.getElementById('magnet-2');
-            const magnet3 = document.getElementById('magnet-3');
+        function showSlide(slideNumber) {
+            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+            document.getElementById(`slide-${slideNumber}`).classList.add('active');
             
-            // Reading text in Table
-            const reading1 = document.getElementById('reading-1');
-            const reading2 = document.getElementById('reading-2');
-            const reading3 = document.getElementById('reading-3');
-            const readingPipe = document.getElementById('reading-pipe');
+            prevButton.style.display = slideNumber === 1 ? 'none' : 'block';
+            nextButton.style.display = slideNumber === totalSlides ? 'none' : 'block';
+        }
 
-            // Actual movement text in Table 2
-            const actual1 = document.getElementById('actual-1');
-            const actual2 = document.getElementById('actual-2');
-            const actual3 = document.getElementById('actual-3');
-            const actualDatum = document.getElementById('actual-datum');
-
-            // Movement bars
-            const barPipe = document.getElementById('bar-pipe');
-            const barMagnet1 = document.getElementById('bar-magnet-1');
-            const barMagnet2 = document.getElementById('bar-magnet-2');
-            const barMagnet3 = document.getElementById('bar-magnet-3');
-            
-
-            const numPoints = 100; // Number of points to define the curve
-            const initialGroundLevelY = 100; // Y-coordinate of the ground surface
-            const svgHeight = 500;
-            const svgWidth = 800;
-
-            const maxSettlement = 37; // Corresponds to ~35mm at magnet 1
-            const maxPenetration = 1; // Pipe settlement should not exceed 1mm
-
-            slider.addEventListener('input', (event) => {
-                const load = parseInt(event.target.value);
-                const loadFactor = load / 100;
-                loadValue.textContent = `${load} %`;
-
-                const surfacePoints = [];
-                const surfaceYCoords = [];
-
-                // Calculate the deformed surface points
-                for (let i = 0; i <= numPoints; i++) {
-                    const position = i / numPoints;
-                    const distanceFromCenter = Math.abs(position - 0.5);
-                    const influenceSpread = 0.18;
-                    const influence = Math.exp(-Math.pow(distanceFromCenter / influenceSpread, 2));
-                    const settlement = maxSettlement * influence * loadFactor;
-                    const x = position * svgWidth;
-                    const y = initialGroundLevelY + settlement;
-                    surfacePoints.push([x,y]);
-                    surfaceYCoords.push(y);
-                }
-
-                // Update soil path and color
-                const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
-                const pathD = `M 0,${svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${svgWidth},${svgHeight} Z`;
-                soilBody.setAttribute('d', pathD);
-                
-                const baseSoilColor = { h: 30, s: 45, l: 55 }; // Brownish
-                const stressSoilColor = { h: 120, s: 60, l: 45 }; // Green for high stress
-                const soilColorFactor = Math.min(1, loadFactor * 1.5);
-                const newSoilHue = baseSoilColor.h * (1 - soilColorFactor) + stressSoilColor.h * soilColorFactor;
-                const newSoilSat = baseSoilColor.s * (1 - soilColorFactor) + stressSoilColor.s * soilColorFactor;
-                const newSoilLight = baseSoilColor.l * (1 - soilColorFactor) + stressSoilColor.l * soilColorFactor;
-                gradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
-
-                // Update Embankment to fill the deformed ground surface
-                const embankmentHeight = 50 * loadFactor;
-                const leftBaseIndex = Math.floor(numPoints * 0.25);
-                const rightBaseIndex = Math.floor(numPoints * 0.75);
-                const embankmentTopLeft = [svgWidth * 0.25 + 50, surfaceYCoords[leftBaseIndex] - embankmentHeight];
-                const embankmentTopRight = [svgWidth * 0.75 - 50, surfaceYCoords[rightBaseIndex] - embankmentHeight];
-                const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
-                const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
-                const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
-                embankment.setAttribute('points', embankmentPointsStr);
-
-                // --- PIPE AND MAGNET LOGIC ---
-
-                const penetration = maxPenetration * loadFactor;
-
-                // 1. Update Pipe visuals (penetration and color)
-                extensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
-                const basePipeColor = { r: 82, g: 82, b: 91 }; // gray
-                const stressPipeColor = { r: 185, g: 28, b: 28 }; // red
-                const pipeColorFactor = loadFactor;
-                const newPipeR = basePipeColor.r * (1 - pipeColorFactor) + stressPipeColor.r * pipeColorFactor;
-                const newPipeG = basePipeColor.g * (1 - pipeColorFactor) + stressPipeColor.g * pipeColorFactor;
-                const newPipeB = basePipeColor.b * (1 - pipeColorFactor) + stressPipeColor.b * pipeColorFactor;
-                pipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
-                
-                // 2. Update Spider Magnet visuals based on absolute settlement
-                const centerIndex = Math.floor(numPoints / 2);
-                const centerSettlement = surfaceYCoords[centerIndex] - initialGroundLevelY;
-                
-                const s1_abs = centerSettlement * 0.95;
-                const s2_abs = centerSettlement * 0.65;
-                const s3_abs = centerSettlement * 0.35;
-
-                magnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
-                magnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
-                magnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
-
-                // 3. Update TABLE 1 with PROBE READINGS (Pipe Movement - Soil Deformation)
-                reading1.textContent = (penetration - s1_abs).toFixed(1);
-                reading2.textContent = (penetration - s2_abs).toFixed(1);
-                reading3.textContent = (penetration - s3_abs).toFixed(1);
-                readingPipe.textContent = `+${penetration.toFixed(1)}`;
-                
-                reading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
-                reading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
-                reading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
-
-                // 4. Update TABLE 2 with ACTUAL PHYSICAL MOVEMENT
-                actual1.textContent = `-${s1_abs.toFixed(1)}`;
-                actual2.textContent = `-${s2_abs.toFixed(1)}`;
-                actual3.textContent = `-${s3_abs.toFixed(1)}`;
-                actualDatum.textContent = `0.0`;
-
-                // 5. Update Movement Bars
-                barMagnet1.setAttribute('y2', 150 + s1_abs);
-                barMagnet2.setAttribute('y2', 250 + s2_abs);
-                barMagnet3.setAttribute('y2', 330 + s3_abs);
-                barPipe.setAttribute('y2', 420 + penetration);
-
-                const barOpacity = load > 2 ? 0.8 : 0;
-                barPipe.style.opacity = barOpacity;
-                barMagnet1.style.opacity = barOpacity;
-                barMagnet2.style.opacity = barOpacity;
-                barMagnet3.style.opacity = barOpacity;
-
-            });
-
-             // Trigger initial state
-             slider.dispatchEvent(new Event('input'));
+        prevButton.addEventListener('click', () => {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
         });
+
+        nextButton.addEventListener('click', () => {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+        
+        showSlide(currentSlide);
+
+        // --- PROBE SLIDE INTERACTIVITY ---
+        const probeSvg = document.getElementById('probe-svg');
+        const draggableMagnet = document.getElementById('draggable-magnet');
+        const probeReadout = document.getElementById('probe-readout');
+        let isDragging = false;
+        
+        const sensorTopY = 150;
+        const sensorBottomY = 550;
+        const sensorRange = 400;
+
+        draggableMagnet.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            draggableMagnet.style.cursor = 'grabbing';
+        });
+
+        probeSvg.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const CTM = probeSvg.getScreenCTM();
+            let newY = (e.clientY - CTM.f) / CTM.d;
+
+            // Clamp position to within the probe body
+            newY = Math.max(50 + 15, Math.min(newY, 650 - 15));
+            draggableMagnet.setAttribute('transform', `translate(0, ${newY - 150})`);
+            
+            // Calculate reading
+            const reading = newY - sensorTopY;
+            if (reading >= 0 && reading <= sensorRange) {
+                probeReadout.textContent = `${reading.toFixed(0)} mm`;
+            } else {
+                probeReadout.textContent = 'Out of Range';
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            draggableMagnet.style.cursor = 'grab';
+        });
+
+
+        // --- SIMULATION LOGIC (from previous code) ---
+        const slider = document.getElementById('load-slider');
+        const loadValue = document.getElementById('load-value');
+        const soilBody = document.getElementById('soil-body');
+        const embankment = document.getElementById('embankment');
+        const gradientStopTop = document.getElementById('gradient-stop-top');
+        const pipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
+        const extensometerCasing = document.getElementById('extensometer-casing');
+        const magnet1 = document.getElementById('magnet-1');
+        const magnet2 = document.getElementById('magnet-2');
+        const magnet3 = document.getElementById('magnet-3');
+        const reading1 = document.getElementById('reading-1');
+        const reading2 = document.getElementById('reading-2');
+        const reading3 = document.getElementById('reading-3');
+        const readingPipe = document.getElementById('reading-pipe');
+        const actual1 = document.getElementById('actual-1');
+        const actual2 = document.getElementById('actual-2');
+        const actual3 = document.getElementById('actual-3');
+        const actualDatum = document.getElementById('actual-datum');
+        const barMagnet1 = document.getElementById('bar-magnet-1');
+        const barMagnet2 = document.getElementById('bar-magnet-2');
+        const barMagnet3 = document.getElementById('bar-magnet-3');
+        
+        const numPoints = 100;
+        const initialGroundLevelY = 100;
+        const svgHeight = 500;
+        const svgWidth = 800;
+        const maxSettlement = 37;
+        const maxPenetration = 1;
+
+        slider.addEventListener('input', (event) => {
+            const load = parseInt(event.target.value);
+            const loadFactor = load / 100;
+            loadValue.textContent = `${load} %`;
+            const surfacePoints = [];
+            const surfaceYCoords = [];
+            for (let i = 0; i <= numPoints; i++) {
+                const position = i / numPoints;
+                const distanceFromCenter = Math.abs(position - 0.5);
+                const influenceSpread = 0.18;
+                const influence = Math.exp(-Math.pow(distanceFromCenter / influenceSpread, 2));
+                const settlement = maxSettlement * influence * loadFactor;
+                const x = position * svgWidth;
+                const y = initialGroundLevelY + settlement;
+                surfacePoints.push([x,y]);
+                surfaceYCoords.push(y);
+            }
+            const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
+            const pathD = `M 0,${svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${svgWidth},${svgHeight} Z`;
+            soilBody.setAttribute('d', pathD);
+            const baseSoilColor = { h: 30, s: 45, l: 55 };
+            const stressSoilColor = { h: 120, s: 60, l: 45 };
+            const soilColorFactor = Math.min(1, loadFactor * 1.5);
+            const newSoilHue = baseSoilColor.h * (1 - soilColorFactor) + stressSoilColor.h * soilColorFactor;
+            const newSoilSat = baseSoilColor.s * (1 - soilColorFactor) + stressSoilColor.s * soilColorFactor;
+            const newSoilLight = baseSoilColor.l * (1 - soilColorFactor) + stressSoilColor.l * soilColorFactor;
+            gradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
+            const embankmentHeight = 50 * loadFactor;
+            const leftBaseIndex = Math.floor(numPoints * 0.25);
+            const rightBaseIndex = Math.floor(numPoints * 0.75);
+            const embankmentTopLeft = [svgWidth * 0.25 + 50, surfaceYCoords[leftBaseIndex] - embankmentHeight];
+            const embankmentTopRight = [svgWidth * 0.75 - 50, surfaceYCoords[rightBaseIndex] - embankmentHeight];
+            const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
+            const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
+            const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
+            embankment.setAttribute('points', embankmentPointsStr);
+            const penetration = maxPenetration * loadFactor;
+            extensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
+            const basePipeColor = { r: 82, g: 82, b: 91 };
+            const stressPipeColor = { r: 185, g: 28, b: 28 };
+            const pipeColorFactor = loadFactor;
+            const newPipeR = basePipeColor.r * (1 - pipeColorFactor) + stressPipeColor.r * pipeColorFactor;
+            const newPipeG = basePipeColor.g * (1 - pipeColorFactor) + stressPipeColor.g * pipeColorFactor;
+            const newPipeB = basePipeColor.b * (1 - pipeColorFactor) + stressPipeColor.b * pipeColorFactor;
+            pipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
+            const centerIndex = Math.floor(numPoints / 2);
+            const centerSettlement = surfaceYCoords[centerIndex] - initialGroundLevelY;
+            const s1_abs = centerSettlement * 0.95;
+            const s2_abs = centerSettlement * 0.65;
+            const s3_abs = centerSettlement * 0.35;
+            magnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
+            magnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
+            magnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
+            reading1.textContent = (penetration - s1_abs).toFixed(1);
+            reading2.textContent = (penetration - s2_abs).toFixed(1);
+            reading3.textContent = (penetration - s3_abs).toFixed(1);
+            readingPipe.textContent = `+${penetration.toFixed(1)}`;
+            reading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
+            reading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
+            reading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
+            actual1.textContent = `-${s1_abs.toFixed(1)}`;
+            actual2.textContent = `-${s2_abs.toFixed(1)}`;
+            actual3.textContent = `-${s3_abs.toFixed(1)}`;
+            actualDatum.textContent = `0.0`;
+            barMagnet1.setAttribute('y2', 150 + s1_abs);
+            barMagnet2.setAttribute('y2', 250 + s2_abs);
+            barMagnet3.setAttribute('y2', 330 + s3_abs);
+            const barOpacity = load > 2 ? 0.8 : 0;
+            barMagnet1.style.opacity = barOpacity;
+            barMagnet2.style.opacity = barOpacity;
+            barMagnet3.style.opacity = barOpacity;
+        });
+        slider.dispatchEvent(new Event('input'));
+
     </script>
 </body>
 </html>
