@@ -100,6 +100,21 @@
         .data-table tbody tr:first-child td {
             border-top: none;
         }
+
+        /* Installation Diagram Styles */
+        .installation-step-description {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            visibility: hidden;
+        }
+        .installation-step-description.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .installation-diagram-element {
+            transition: all 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -138,7 +153,10 @@
                         <li>When a magnet enters this sensor range (0mm to 400mm), its exact position is identified.</li>
                         <li>This position is sent as a signal to the data logger. If the magnet is outside this range, no data is recorded.</li>
                     </ul>
-                    <p class="mt-8 text-lg text-gray-600 font-semibold">Try it: Drag the magnet on the right to see how the reading changes.</p>
+                    <div class="mt-8 p-4 bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 rounded-r-lg">
+                        <p class="font-bold">Interactive Element</p>
+                        <p>Drag the blue magnet on the right to see how the instrument reading changes in real-time.</p>
+                    </div>
                     <img src="probe_image.png" alt="A real-world automated magnetic extensometer probe" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
                 </div>
                 <div class="w-full md:w-1/2 flex items-center justify-center">
@@ -174,8 +192,111 @@
             </div>
         </div>
 
-        <!-- Slide 4: The Interactive Simulation -->
+        <!-- Slide 4: Installation Process -->
         <div id="slide-4" class="slide">
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">Installation Process</h1>
+                    <div class="mt-8 text-xl text-left space-y-4 relative h-64">
+                        <div id="step-desc-1" class="installation-step-description active">
+                             <h2 class="font-bold text-2xl">Step 1: Drill Borehole</h2>
+                             <p>A borehole is drilled into the ground to the required depth, passing through all soil layers to be monitored.</p>
+                        </div>
+                         <div id="step-desc-2" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 2: Install & Grout Casing</h2>
+                             <p>An access casing is lowered into the borehole. The space between the casing and the borehole wall is then filled with grout to stabilize the ground.</p>
+                        </div>
+                         <div id="step-desc-3" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 3: Install Magnets</h2>
+                             <p>Using an installation tool, spider magnets are pushed down inside the casing. At each target depth, the tool deploys the magnet's legs to anchor it to the borehole wall.</p>
+                        </div>
+                         <div id="step-desc-4" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 4: Install Probe & Commission</h2>
+                             <p>Finally, the automated probe string is lowered into the empty casing and connected to a data logger to take initial baseline readings.</p>
+                        </div>
+                    </div>
+                     <div class="mt-8 flex gap-4">
+                        <button id="prev-install-step" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow">Previous Step</button>
+                        <button id="next-install-step" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow">Next Step</button>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex items-center justify-center h-96">
+                   <svg id="installation-svg" viewBox="0 0 400 400" class="h-full">
+                        <!-- Ground -->
+                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
+                        <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
+
+                        <!-- Borehole -->
+                        <rect id="borehole" x="150" y="50" width="100" height="350" fill="#6b4624"/>
+
+                        <!-- Drill -->
+                        <g id="drill" class="installation-diagram-element" transform="translate(200, -100)">
+                            <rect x="-10" y="0" width="20" height="80" fill="#d1d5db"/>
+                            <path d="M -10 80 L 0 100 L 10 80 Z" fill="#7f1d1d"/>
+                        </g>
+
+                        <!-- Grout -->
+                        <rect id="grout-left" class="installation-diagram-element" x="150" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
+                        <rect id="grout-right" class="installation-diagram-element" x="220" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
+                        
+                        <!-- Deployed Magnets -->
+                        <g id="deployed-magnets" class="installation-diagram-element" opacity="0">
+                            <!-- Magnet 1 Deployed -->
+                            <g transform="translate(200, 385)"> 
+                                <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
+                                <path d="M -25 0 L -75 0" stroke="#4a5568" stroke-width="2"/>
+                                <path d="M 25 0 L 75 0" stroke="#4a5568" stroke-width="2"/>
+                            </g>
+                             <!-- Magnet 2 Deployed -->
+                            <g transform="translate(200, 265)">
+                                <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
+                                <path d="M -25 0 L -75 0" stroke="#4a5568" stroke-width="2"/>
+                                <path d="M 25 0 L 75 0" stroke="#4a5568" stroke-width="2"/>
+                            </g>
+                        </g>
+                        
+                        <!-- Casing -->
+                        <rect id="install-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a" style="transform: translateY(-400px)" />
+
+                        <!-- Installation Tool -->
+                        <g id="install-tool" class="installation-diagram-element" transform="translate(200, -350)">
+                            <!-- Tool Rod -->
+                            <rect x="-5" y="0" width="10" height="350" fill="#9ca3af"/>
+                            <!-- Magnet on Tool -->
+                            <g id="install-magnet-1" transform="translate(0, 335)">
+                                <rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/>
+                                <path id="leg-1-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/>
+                                <path id="leg-1-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/>
+                            </g>
+                             <!-- Magnet on Tool -->
+                            <g id="install-magnet-2" transform="translate(0, 215)">
+                                <rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/>
+                                <path id="leg-2-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/>
+                                <path id="leg-2-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/>
+                            </g>
+                        </g>
+
+                         <!-- Probe String -->
+                        <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
+                            <line x1="200" y1="50" x2="200" y2="400" stroke="#facc15" stroke-width="4" />
+                            <rect x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                            <rect x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                        </g>
+
+                        <!-- Data Logger -->
+                        <g id="data-logger" class="installation-diagram-element" opacity="0">
+                            <rect x="257.5" y="15" width="5" height="30" fill="#78716c"/>
+                            <rect x="230" y="5" width="60" height="20" fill="#4b5563" rx="3"/>
+                            <line x1="200" y1="50" x2="230" y2="15" stroke="#374151" stroke-width="2"/>
+                        </g>
+
+                   </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: The Interactive Simulation -->
+        <div id="slide-5" class="slide">
             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
                 <div class="flex flex-col gap-8">
                     <!-- Top Row: Model and Slider -->
@@ -244,8 +365,8 @@
             </div>
         </div>
         
-        <!-- Slide 5: Conclusion -->
-        <div id="slide-5" class="slide">
+        <!-- Slide 6: Conclusion -->
+        <div id="slide-6" class="slide">
             <div class="p-4">
                 <h1 class="text-5xl font-bold text-gray-800">Summary of Observations</h1>
                 <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
@@ -265,7 +386,7 @@
     <script>
         // --- PRESENTATION LOGIC ---
         let currentSlide = 1;
-        const totalSlides = 5;
+        const totalSlides = 6;
         const prevButton = document.getElementById('prev');
         const nextButton = document.getElementById('next');
 
@@ -330,6 +451,71 @@
             isDragging = false;
             draggableMagnet.style.cursor = 'grab';
         });
+        
+        // --- INSTALLATION SLIDE LOGIC ---
+        const installPrev = document.getElementById('prev-install-step');
+        const installNext = document.getElementById('next-install-step');
+        let installStep = 1;
+        const totalInstallSteps = 4;
+
+        const drill = document.getElementById('drill');
+        const installCasing = document.getElementById('install-casing');
+        const groutLeft = document.getElementById('grout-left');
+        const groutRight = document.getElementById('grout-right');
+        const installTool = document.getElementById('install-tool');
+        const installProbe = document.getElementById('install-probe');
+        const leg1Left = document.getElementById('leg-1-left');
+        const leg1Right = document.getElementById('leg-1-right');
+        const leg2Left = document.getElementById('leg-2-left');
+        const leg2Right = document.getElementById('leg-2-right');
+        const deployedMagnets = document.getElementById('deployed-magnets');
+        const dataLogger = document.getElementById('data-logger');
+
+
+        function showInstallStep(step) {
+            document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-desc-${step}`).classList.add('active');
+
+            installPrev.disabled = step === 1;
+            installNext.disabled = step === totalInstallSteps;
+            installPrev.style.opacity = step === 1 ? 0.5 : 1;
+            installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
+
+            // State-based animation logic
+            drill.style.transform = (step === 1) ? 'translate(200, 50px)' : 'translate(200, -100px)';
+            installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
+            groutLeft.style.opacity = (step >= 2) ? '1' : '0';
+            groutRight.style.opacity = (step >= 2) ? '1' : '0';
+            
+            installTool.style.opacity = (step === 3) ? '1' : '0';
+            installTool.style.transform = (step === 3) ? 'translate(200, 50px)' : 'translate(200, -350px)';
+            
+            const deployLegs = step >= 3;
+            leg1Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
+            leg1Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
+            leg2Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
+            leg2Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
+            
+            deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
+            if (step < 3) deployedMagnets.style.opacity = '0'; // Hide for steps 1 and 2
+
+            installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
+            dataLogger.style.opacity = (step === 4) ? '1' : '0';
+        }
+
+        installPrev.addEventListener('click', () => {
+            if(installStep > 1) {
+                installStep--;
+                showInstallStep(installStep);
+            }
+        });
+        installNext.addEventListener('click', () => {
+            if(installStep < totalInstallSteps) {
+                installStep++;
+                showInstallStep(installStep);
+            }
+        });
+        showInstallStep(installStep);
 
 
         // --- SIMULATION LOGIC (from previous code) ---
@@ -439,5 +625,4 @@
     </script>
 </body>
 </html>
-
 
