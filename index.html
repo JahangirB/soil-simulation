@@ -302,31 +302,31 @@
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
-                    <svg id="movement-svg" viewBox="0 0 400 400" class="h-full">
-                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-full gap-4">
+                    <svg id="movement-svg" viewBox="0 0 400 500" class="h-full">
+                        <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
-                        <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
-                        <rect x="150" y="50" width="30" height="350" fill="#e5e7eb"/>
-                        <rect x="220" y="50" width="30" height="350" fill="#e5e7eb"/>
+                        <rect x="150" y="50" width="100" height="450" fill="#6b4624"/>
+                        <rect x="150" y="50" width="30" height="450" fill="#e5e7eb"/>
+                        <rect x="220" y="50" width="30" height="450" fill="#e5e7eb"/>
                         
                         <g id="movement-magnets" class="installation-diagram-element">
-                             <g transform="translate(200, 265)">
+                             <g transform="translate(200, 315)">
                                  <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
                                  <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
                                  <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
                             </g>
                         </g>
                         
-                        <rect id="movement-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a"/>
+                        <rect id="movement-casing" class="installation-diagram-element" x="180" y="50" width="40" height="450" fill="#2563eb" stroke="#1e3a8a"/>
                         
                         <g id="movement-probe" class="installation-diagram-element">
-                            <path id="cobra-rod" d="M 200 50 L 200 400" stroke="#facc15" stroke-width="4" fill="none"/>
-                            <rect id="probe-sensor-1" x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
-                            <rect id="probe-sensor-2" x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                            <path id="cobra-rod" d="M 200 50 L 200 500" stroke="#facc15" stroke-width="4" fill="none"/>
+                            <rect id="probe-sensor-1" x="190" y="450" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                            <rect id="probe-sensor-2" x="190" y="300" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
                         </g>
 
-                        <g id="movement-datum" class="installation-diagram-element" transform="translate(200, 385)">
+                        <g id="movement-datum" class="installation-diagram-element" transform="translate(200, 485)">
                             <rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/>
                         </g>
 
@@ -663,14 +663,15 @@
                 activeComponentId = button.dataset.component;
 
                 // Reset all highlights and transformations
-                [movementCasing, movementProbe, movementMagnets, movementDatum].forEach(el => {
+                [movementCasing, movementProbe, movementMagnets].forEach(el => {
                     if (el) { 
                         el.classList.remove('highlighted-component');
                         el.style.transform = '';
                     }
                 });
+                movementDatum.classList.remove('highlighted-component');
                
-                cobraRod.setAttribute('d', 'M 200 50 L 200 400');
+                cobraRod.setAttribute('d', 'M 200 50 L 200 500');
                 probeSensor1.setAttribute('x', 190);
                 probeSensor2.setAttribute('x', 190);
                 
@@ -681,7 +682,7 @@
                 }
                 componentDescription.innerHTML = descriptions[activeComponentId] || '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
                 
-                // Reset slider to middle
+                // Reset slider
                 movementSlider.value = 0;
             });
         });
@@ -697,46 +698,39 @@
             movementCasing.style.transform = '';
             movementProbe.style.transform = '';
             movementDatum.style.transform = '';
-            cobraRod.setAttribute('d', 'M 200 50 L 200 400');
+            cobraRod.setAttribute('d', 'M 200 50 L 200 500');
             probeSensor1.setAttribute('x', 190);
-            probeSensor1.setAttribute('y', 370);
+            probeSensor1.setAttribute('y', 450);
             probeSensor2.setAttribute('x', 190);
-            probeSensor2.setAttribute('y', 250);
+            probeSensor2.setAttribute('y', 300);
 
             
             // Apply movement only to the active component
             switch (activeComponentId) {
                 case 'movement-casing':
-                    movementCasing.style.transform = `translateY(${moveDistance * 0.1}px)`;
+                    const casingMove = moveDistance * 0.1;
+                    movementCasing.style.transform = `translateY(${casingMove}px)`;
+                    movementProbe.style.transform = `translateY(${casingMove}px)`; // Link probe movement
                     break;
                 case 'movement-probe':
                     const deformationFactor = Math.abs(value) / 100;
                     const amplitude = 15 * deformationFactor;
-                    const frequency = 2;
                     let pathData = 'M ';
                     const segments = 20;
                     const sag = moveDistance * 0.2; // Add downward sag with settlement
 
-                    for (let i = 0; i <= segments; i++) {
-                        const y = 50 + (350 / segments) * i;
-                        const dampening = 1 - Math.pow(i / segments, 2); // Dampen towards bottom more aggressively
-                        const x = 200 + amplitude * Math.sin((i / segments) * Math.PI * frequency) * dampening;
-                        pathData += `${x.toFixed(2)} ${y.toFixed(2)} `;
-                        if (i < segments) pathData += 'L ';
-                    }
+                    // S-curve logic
+                    pathData += '200 50 C ';
+                    const control_y1 = 50 + (500 - 50) * 0.25;
+                    const control_y2 = 50 + (500 - 50) * 0.75;
+                    const x_offset = amplitude * 2;
+
+                    pathData += `${200 - x_offset} ${control_y1}, `;
+                    pathData += `${200 + x_offset} ${control_y2}, `;
+                    pathData += `200 500`;
+
                     cobraRod.setAttribute('d', pathData);
 
-                    // Update sensor positions to follow the curve
-                    const y1 = 370 + 15; // y-center of sensor
-                    const damp1 = 1 - Math.pow(((y1 - 50) / 350), 2);
-                    const x1 = 200 + amplitude * Math.sin(((y1 - 50) / 350) * Math.PI * frequency) * damp1;
-                    probeSensor1.setAttribute('x', x1 - 10);
-                    
-                    const y2 = 250 + 15; // y-center of sensor
-                    const damp2 = 1 - Math.pow(((y2 - 50) / 350), 2);
-                    const x2 = 200 + amplitude * Math.sin(((y2 - 50) / 350) * Math.PI * frequency) * damp2;
-                    probeSensor2.setAttribute('x', x2 - 10);
-                    
                     // Also apply the small casing movement and sag
                     movementProbe.style.transform = `translateY(${sag}px)`;
 
