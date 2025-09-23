@@ -115,6 +115,19 @@
         .installation-diagram-element {
             transition: all 0.5s ease-in-out;
         }
+
+        /* Component Movement Slide Styles */
+        .component-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .component-button.active {
+            background-color: #4f46e5;
+            color: white;
+            transform: scale(1.05);
+        }
+        .highlighted-component {
+            filter: drop-shadow(0px 0px 10px #fde047);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -241,18 +254,8 @@
                         
                         <!-- Deployed Magnets -->
                         <g id="deployed-magnets" class="installation-diagram-element" opacity="0">
-                            <!-- Magnet 1 Deployed -->
-                            <g transform="translate(200, 385)"> 
-                                <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
-                                <path d="M -25 0 L -75 0" stroke="#4a5568" stroke-width="2"/>
-                                <path d="M 25 0 L 75 0" stroke="#4a5568" stroke-width="2"/>
-                            </g>
-                             <!-- Magnet 2 Deployed -->
-                            <g transform="translate(200, 265)">
-                                <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
-                                <path d="M -25 0 L -75 0" stroke="#4a5568" stroke-width="2"/>
-                                <path d="M 25 0 L 75 0" stroke="#4a5568" stroke-width="2"/>
-                            </g>
+                            <g transform="translate(200, 385)"> <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                            <g transform="translate(200, 265)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
                         </g>
                         
                         <!-- Casing -->
@@ -260,20 +263,9 @@
 
                         <!-- Installation Tool -->
                         <g id="install-tool" class="installation-diagram-element" transform="translate(200, -350)">
-                            <!-- Tool Rod -->
                             <rect x="-5" y="0" width="10" height="350" fill="#9ca3af"/>
-                            <!-- Magnet on Tool -->
-                            <g id="install-magnet-1" transform="translate(0, 335)">
-                                <rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/>
-                                <path id="leg-1-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/>
-                                <path id="leg-1-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/>
-                            </g>
-                             <!-- Magnet on Tool -->
-                            <g id="install-magnet-2" transform="translate(0, 215)">
-                                <rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/>
-                                <path id="leg-2-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/>
-                                <path id="leg-2-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/>
-                            </g>
+                            <g id="install-magnet-1" transform="translate(0, 335)"><rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/><path id="leg-1-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/><path id="leg-1-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/></g>
+                            <g id="install-magnet-2" transform="translate(0, 215)"><rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/><path id="leg-2-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/><path id="leg-2-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/></g>
                         </g>
 
                          <!-- Probe String -->
@@ -294,9 +286,64 @@
                 </div>
             </div>
         </div>
-
-        <!-- Slide 5: The Interactive Simulation -->
+        
+        <!-- Slide 5: Component Movement Analysis -->
         <div id="slide-5" class="slide">
+            <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">Component Movement</h1>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Casing</button>
+                        <button data-component="movement-probe" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">IPX Probes Chain</button>
+                        <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Monitoring Magnet</button>
+                        <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Datum Magnet</button>
+                    </div>
+                    <div id="component-description" class="mt-8 text-lg p-4 bg-gray-50 rounded-lg min-h-[100px]">
+                        <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
+                    <svg id="movement-svg" viewBox="0 0 400 400" class="h-full">
+                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
+                        <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
+                        <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
+                        <rect x="150" y="50" width="30" height="350" fill="#e5e7eb"/>
+                        <rect x="220" y="50" width="30" height="350" fill="#e5e7eb"/>
+                        
+                        <g id="movement-magnets" class="installation-diagram-element">
+                             <g transform="translate(200, 265)">
+                                 <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
+                                 <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
+                                 <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
+                            </g>
+                        </g>
+                        
+                        <rect id="movement-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a"/>
+                        
+                        <g id="movement-probe" class="installation-diagram-element">
+                            <path id="cobra-rod" d="M 200 50 L 200 400" stroke="#facc15" stroke-width="4" fill="none"/>
+                            <rect id="probe-sensor-1" x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                            <rect id="probe-sensor-2" x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                        </g>
+
+                        <g id="movement-datum" class="installation-diagram-element" transform="translate(200, 385)">
+                            <rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/>
+                        </g>
+
+                    </svg>
+                    <div class="w-full flex flex-col items-center mt-4">
+                        <input id="movement-slider" type="range" min="0" max="100" value="0" class="w-3/4">
+                        <div class="w-3/4 flex justify-between text-sm font-semibold">
+                            <span>No Load</span>
+                            <span>Max Load</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: The Interactive Simulation -->
+        <div id="slide-6" class="slide">
             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
                 <div class="flex flex-col gap-8">
                     <!-- Top Row: Model and Slider -->
@@ -365,8 +412,72 @@
             </div>
         </div>
         
-        <!-- Slide 6: Conclusion -->
-        <div id="slide-6" class="slide">
+        <!-- Slide 7: Component Movement -->
+        <div id="slide-7" class="slide">
+            <div class="p-4 w-full max-w-6xl">
+                <h1 class="text-5xl font-bold text-gray-800">Component Movement Under Load</h1>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-12 mt-8">
+                    <!-- Diagram -->
+                    <div class="w-full md:w-1/2">
+                        <svg viewBox="0 0 400 450">
+                            <!-- Ground -->
+                            <rect x="50" y="50" width="300" height="400" fill="#a67b51" />
+                            <rect x="50" y="45" width="300" height="5" fill="#4d7c0f"/>
+                            
+                            <!-- Casing -->
+                            <rect x="190" y="50" width="20" height="400" fill="#2563eb" />
+                            
+                            <!-- Magnets -->
+                            <rect x="180" y="100" width="40" height="10" fill="#065f46"/>
+                            <rect x="180" y="200" width="40" height="10" fill="#065f46"/>
+                            <rect x="180" y="300" width="40" height="10" fill="#065f46"/>
+                             <!-- Datum -->
+                            <rect x="175" y="400" width="50" height="15" fill="#ef4444"/>
+                            <text x="200" y="430" text-anchor="middle" font-weight="bold">Datum (Fixed)</text>
+
+
+                            <!-- Arrows -->
+                            <g> <!-- Magnet 1 Arrow -->
+                                <line x1="160" y1="105" y2="155" stroke="#dc2626" stroke-width="3"/>
+                                <path d="M 155 145 L 160 155 L 165 145 Z" fill="#dc2626"/>
+                            </g>
+                             <g> <!-- Magnet 2 Arrow -->
+                                <line x1="160" y1="205" y2="245" stroke="#dc2626" stroke-width="3"/>
+                                <path d="M 155 235 L 160 245 L 165 235 Z" fill="#dc2626"/>
+                            </g>
+                             <g> <!-- Magnet 3 Arrow -->
+                                <line x1="160" y1="305" y2="325" stroke="#dc2626" stroke-width="3"/>
+                                <path d="M 155 315 L 160 325 L 165 315 Z" fill="#dc2626"/>
+                            </g>
+                            <g> <!-- Casing Arrow -->
+                                <line x1="220" y1="50" y2="60" stroke="#16a34a" stroke-width="3"/>
+                                <path d="M 215 55 L 220 65 L 225 55 Z" fill="#16a34a"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- Legend -->
+                    <div class="w-full md:w-1/2 text-left">
+                        <ul class="text-xl space-y-6">
+                            <li class="flex items-center">
+                                <svg width="40" height="20" class="mr-3"><line x1="0" y1="10" x2="40" y2="10" stroke="#dc2626" stroke-width="3"/></svg>
+                                <span class="font-bold text-red-600">Soil & Spider Magnets:</span>&nbsp;Move DOWNWARD due to compression. Movement is greatest near the surface.
+                            </li>
+                            <li class="flex items-center">
+                                <svg width="40" height="20" class="mr-3"><line x1="0" y1="10" x2="40" y2="10" stroke="#16a34a" stroke-width="3"/></svg>
+                                <span class="font-bold text-green-600">Extensometer Casing:</span>&nbsp;Pushed DOWNWARD by the load, penetrating the soil slightly.
+                            </li>
+                             <li class="flex items-center">
+                                <svg width="40" height="20" class="mr-3"><rect x="0" y="0" width="20" height="20" fill="#ef4444"/></svg>
+                                <span class="font-bold text-gray-700">Datum Anchor:</span>&nbsp;Remains STATIONARY, acting as the fixed reference point for all measurements.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Conclusion -->
+        <div id="slide-8" class="slide">
             <div class="p-4">
                 <h1 class="text-5xl font-bold text-gray-800">Summary of Observations</h1>
                 <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
@@ -386,7 +497,7 @@
     <script>
         // --- PRESENTATION LOGIC ---
         let currentSlide = 1;
-        const totalSlides = 6;
+        const totalSlides = 8; // UPDATED SLIDE COUNT
         const prevButton = document.getElementById('prev');
         const nextButton = document.getElementById('next');
 
@@ -516,9 +627,128 @@
             }
         });
         showInstallStep(installStep);
+        
+        // --- COMPONENT MOVEMENT SLIDE LOGIC ---
+        const componentButtons = document.querySelectorAll('.component-button');
+        const movementSlider = document.getElementById('movement-slider');
+        const movementCasing = document.getElementById('movement-casing');
+        const movementMagnets = document.getElementById('movement-magnets');
+        const movementProbe = document.getElementById('movement-probe');
+        const cobraRod = document.getElementById('cobra-rod');
+        const probeSensor1 = document.getElementById('probe-sensor-1');
+        const probeSensor2 = document.getElementById('probe-sensor-2');
+        const movementDatum = document.getElementById('movement-datum');
+        const componentDescription = document.getElementById('component-description');
+        let activeComponentId = null;
+
+        const descriptions = {
+            'movement-casing': `
+                <h3 class="font-bold text-xl mb-2">Casing Movement</h3>
+                <p>During installation, the pipe's stick-up is typically cut below ground level and sealed. The area is then backfilled with material to reduce direct force on the pipe.</p>
+                <p class="mt-2">However, if this is not done correctly, the pipe will receive direct force from any surface load, causing it to be pushed down slightly. The actual downward movement of the pipe can be measured relative to the fixed Datum Magnet. This movement is often considered an error and can be disregarded from the true soil settlement readings.</p>
+            `,
+            'movement-probe': `
+                <h3 class="font-bold text-xl mb-2">IPX Probes Chain (Cobra Rod)</h3>
+                <p>The IPX sensors are attached to a semi-rigid rod (cobra) which sits on the base of the casing and moves with it. Ideally, the top of this rod is cut lower than the casing top to avoid contact with backfill material.</p>
+                <p class="mt-2">If backfill loads the cobra rod, it can deform into a <span class="font-bold">wavy shape</span>. This moves the probes inside the casing and produces erroneous readings, which often appear as sudden, simultaneous jumps in the data.</p>
+            `,
+            'movement-magnets': '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>',
+            'movement-datum': '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>'
+        };
+
+        componentButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                componentButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeComponentId = button.dataset.component;
+
+                // Reset all highlights and transformations
+                [movementCasing, movementProbe, movementMagnets, movementDatum].forEach(el => {
+                    if (el) { 
+                        el.classList.remove('highlighted-component');
+                        el.style.transform = '';
+                    }
+                });
+               
+                cobraRod.setAttribute('d', 'M 200 50 L 200 400');
+                probeSensor1.setAttribute('x', 190);
+                probeSensor2.setAttribute('x', 190);
+                
+                // Highlight the selected component
+                const componentToShow = document.getElementById(activeComponentId);
+                if(componentToShow) {
+                    componentToShow.classList.add('highlighted-component');
+                }
+                componentDescription.innerHTML = descriptions[activeComponentId] || '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
+                
+                // Reset slider to middle
+                movementSlider.value = 0;
+            });
+        });
+
+        movementSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value); // 0 to 100
+            const settlementFactor = value / 100; // 0 (No Load) to 1 (Max Load)
+            const maxMove = 40; // max pixels to move down
+            const moveDistance = maxMove * settlementFactor;
+            
+            // Reset all movements first
+            movementMagnets.style.transform = '';
+            movementCasing.style.transform = '';
+            movementProbe.style.transform = '';
+            movementDatum.style.transform = '';
+            cobraRod.setAttribute('d', 'M 200 50 L 200 400');
+            probeSensor1.setAttribute('x', 190);
+            probeSensor1.setAttribute('y', 370);
+            probeSensor2.setAttribute('x', 190);
+            probeSensor2.setAttribute('y', 250);
+
+            
+            // Apply movement only to the active component
+            switch (activeComponentId) {
+                case 'movement-casing':
+                    movementCasing.style.transform = `translateY(${moveDistance * 0.1}px)`;
+                    break;
+                case 'movement-probe':
+                    const deformationFactor = Math.abs(value) / 100;
+                    const amplitude = 15 * deformationFactor;
+                    const frequency = 2;
+                    let pathData = 'M ';
+                    const segments = 20;
+                    const sag = moveDistance * 0.2; // Add downward sag with settlement
+
+                    for (let i = 0; i <= segments; i++) {
+                        const y = 50 + (350 / segments) * i;
+                        const dampening = 1 - Math.pow(i / segments, 2); // Dampen towards bottom more aggressively
+                        const x = 200 + amplitude * Math.sin((i / segments) * Math.PI * frequency) * dampening;
+                        pathData += `${x.toFixed(2)} ${y.toFixed(2)} `;
+                        if (i < segments) pathData += 'L ';
+                    }
+                    cobraRod.setAttribute('d', pathData);
+
+                    // Update sensor positions to follow the curve
+                    const y1 = 370 + 15; // y-center of sensor
+                    const damp1 = 1 - Math.pow(((y1 - 50) / 350), 2);
+                    const x1 = 200 + amplitude * Math.sin(((y1 - 50) / 350) * Math.PI * frequency) * damp1;
+                    probeSensor1.setAttribute('x', x1 - 10);
+                    
+                    const y2 = 250 + 15; // y-center of sensor
+                    const damp2 = 1 - Math.pow(((y2 - 50) / 350), 2);
+                    const x2 = 200 + amplitude * Math.sin(((y2 - 50) / 350) * Math.PI * frequency) * damp2;
+                    probeSensor2.setAttribute('x', x2 - 10);
+                    
+                    // Also apply the small casing movement and sag
+                    movementProbe.style.transform = `translateY(${sag}px)`;
+
+                    break;
+                case 'movement-magnets':
+                    movementMagnets.style.transform = `translateY(${moveDistance}px)`;
+                    break;
+            }
+        });
 
 
-        // --- SIMULATION LOGIC (from previous code) ---
+        // --- SIMULATION LOGIC ---
         const slider = document.getElementById('load-slider');
         const loadValue = document.getElementById('load-value');
         const soilBody = document.getElementById('soil-body');
