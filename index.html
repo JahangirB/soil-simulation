@@ -298,7 +298,7 @@
                         <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Monitoring Magnet</button>
                         <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Datum Magnet</button>
                     </div>
-                    <div id="component-description" class="mt-8 text-lg p-4 bg-gray-50 rounded-lg min-h-[100px]">
+                    <div id="component-description" class="mt-8 text-lg p-4 bg-gray-50 rounded-lg min-h-[250px]">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
@@ -328,12 +328,14 @@
 
                         <g id="movement-datum" class="installation-diagram-element" transform="translate(200, 485)">
                             <rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/>
+                            <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
+                            <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
                         </g>
 
                     </svg>
                     <div class="w-full flex flex-col items-center mt-4">
                         <input id="movement-slider" type="range" min="0" max="100" value="0" class="w-3/4">
-                        <div class="w-3/4 flex justify-between text-sm font-semibold">
+                        <div id="movement-slider-labels" class="w-3/4 flex justify-between text-sm font-semibold">
                             <span>No Load</span>
                             <span>Max Load</span>
                         </div>
@@ -639,21 +641,22 @@
         const probeSensor2 = document.getElementById('probe-sensor-2');
         const movementDatum = document.getElementById('movement-datum');
         const componentDescription = document.getElementById('component-description');
+        const movementSliderLabels = document.getElementById('movement-slider-labels');
         let activeComponentId = null;
 
         const descriptions = {
             'movement-casing': `
-                <h3 class="font-bold text-xl mb-2">Casing Movement</h3>
-                <p>During installation, the pipe's stick-up is typically cut below ground level and sealed. The area is then backfilled with material to reduce direct force on the pipe.</p>
-                <p class="mt-2">However, if this is not done correctly, the pipe will receive direct force from any surface load, causing it to be pushed down slightly. The actual downward movement of the pipe can be measured relative to the fixed Datum Magnet. This movement is often considered an error and can be disregarded from the true soil settlement readings.</p>
+                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Casing Movement</h3><img src="casing_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>During installation, the pipe's stick-up is typically cut below ground level and sealed. The area is then backfilled with material to reduce direct force on the pipe.</p><p class="mt-2">However, if this is not done correctly, the pipe will receive direct force from any surface load, causing it to be pushed down slightly. The actual downward movement of the pipe can be measured relative to the fixed Datum Magnet. This movement is often considered an error and can be disregarded from the true soil settlement readings.</p></div>
             `,
             'movement-probe': `
-                <h3 class="font-bold text-xl mb-2">IPX Probes Chain (Cobra Rod)</h3>
-                <p>The IPX sensors are attached to a semi-rigid rod (cobra) which sits on the base of the casing and moves with it. Ideally, the top of this rod is cut lower than the casing top to avoid contact with backfill material.</p>
-                <p class="mt-2">If backfill loads the cobra rod, it can deform into a <span class="font-bold">wavy shape</span>. This moves the probes inside the casing and produces erroneous readings, which often appear as sudden, simultaneous jumps in the data.</p>
+                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">IPX Probes Chain (Cobra Rod)</h3><img src="probe_chain_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The IPX sensors are attached to a semi-rigid rod (cobra) which sits on the base of the casing and moves with it. Ideally, the top of this rod is cut lower than the casing top to avoid contact with backfill material.</p><p class="mt-2">If backfill loads the cobra rod, it can deform into a <span class="font-bold">wavy shape</span>. This moves the probes inside the casing and produces erroneous readings, which often appear as sudden, simultaneous jumps in the data.</p></div>
             `,
-            'movement-magnets': '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>',
-            'movement-datum': '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>'
+            'movement-magnets': `
+                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Monitoring Magnet Movement</h3><img src="monitoring_magnet_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The monitoring magnet is directly coupled to the surrounding soil via its spider legs. It is the primary sensor for measuring ground movement.</p><p class="mt-2">It will move <span class="font-bold">downward (settlement)</span> when a load is applied (e.g., from an embankment) or <span class="font-bold">upward (heave)</span> when a load is removed (e.g., during excavation).</p></div>
+            `,
+            'movement-datum': `
+                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Datum Magnet</h3><img src="monitoring_magnet_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The Datum Magnet is anchored in stable ground, deep below the zone of influence from surface loads. It acts as a <span class="font-bold">fixed, stationary reference point</span> (a benchmark).</p><p class="mt-2">All other measurements are calculated relative to this point. In an ideal installation, the Datum Magnet should show no movement.</p></div>
+            `
         };
 
         componentButtons.forEach(button => {
@@ -672,8 +675,8 @@
                 movementDatum.classList.remove('highlighted-component');
                
                 cobraRod.setAttribute('d', 'M 200 50 L 200 500');
-                probeSensor1.setAttribute('x', 190);
-                probeSensor2.setAttribute('x', 190);
+                probeSensor1.setAttribute('transform', '');
+                probeSensor2.setAttribute('transform', '');
                 
                 // Highlight the selected component
                 const componentToShow = document.getElementById(activeComponentId);
@@ -682,15 +685,22 @@
                 }
                 componentDescription.innerHTML = descriptions[activeComponentId] || '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
                 
-                // Reset slider
+                // Update slider based on component
+                const isMagnet = activeComponentId === 'movement-magnets';
+                movementSlider.min = isMagnet ? -100 : 0;
                 movementSlider.value = 0;
+                movementSliderLabels.innerHTML = isMagnet ? `<span>Heave</span><span>Settlement</span>` : `<span>No Load</span><span>Max Load</span>`;
+
+                // Trigger slider input to reset visuals
+                movementSlider.dispatchEvent(new Event('input'));
             });
         });
 
         movementSlider.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value); // 0 to 100
-            const settlementFactor = value / 100; // 0 (No Load) to 1 (Max Load)
-            const maxMove = 40; // max pixels to move down
+            const value = parseInt(e.target.value);
+            const isMagnet = activeComponentId === 'movement-magnets';
+            const settlementFactor = value / 100;
+            const maxMove = 40;
             const moveDistance = maxMove * settlementFactor;
             
             // Reset all movements first
@@ -699,10 +709,8 @@
             movementProbe.style.transform = '';
             movementDatum.style.transform = '';
             cobraRod.setAttribute('d', 'M 200 50 L 200 500');
-            probeSensor1.setAttribute('x', 190);
-            probeSensor1.setAttribute('y', 450);
-            probeSensor2.setAttribute('x', 190);
-            probeSensor2.setAttribute('y', 300);
+            probeSensor1.setAttribute('transform', '');
+            probeSensor2.setAttribute('transform', '');
 
             
             // Apply movement only to the active component
@@ -721,8 +729,8 @@
 
                     // S-curve logic
                     pathData += '200 50 C ';
-                    const control_y1 = 50 + (500 - 50) * 0.25;
-                    const control_y2 = 50 + (500 - 50) * 0.75;
+                    const control_y1 = 50 + (450 / 4);
+                    const control_y2 = 50 + (450 / 4) * 3;
                     const x_offset = amplitude * 2;
 
                     pathData += `${200 - x_offset} ${control_y1}, `;
@@ -743,27 +751,27 @@
 
 
         // --- SIMULATION LOGIC ---
-        const slider = document.getElementById('load-slider');
-        const loadValue = document.getElementById('load-value');
-        const soilBody = document.getElementById('soil-body');
-        const embankment = document.getElementById('embankment');
-        const gradientStopTop = document.getElementById('gradient-stop-top');
-        const pipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
-        const extensometerCasing = document.getElementById('extensometer-casing');
-        const magnet1 = document.getElementById('magnet-1');
-        const magnet2 = document.getElementById('magnet-2');
-        const magnet3 = document.getElementById('magnet-3');
-        const reading1 = document.getElementById('reading-1');
-        const reading2 = document.getElementById('reading-2');
-        const reading3 = document.getElementById('reading-3');
-        const readingPipe = document.getElementById('reading-pipe');
-        const actual1 = document.getElementById('actual-1');
-        const actual2 = document.getElementById('actual-2');
-        const actual3 = document.getElementById('actual-3');
-        const actualDatum = document.getElementById('actual-datum');
-        const barMagnet1 = document.getElementById('bar-magnet-1');
-        const barMagnet2 = document.getElementById('bar-magnet-2');
-        const barMagnet3 = document.getElementById('bar-magnet-3');
+        const simSlider = document.getElementById('load-slider');
+        const simLoadValue = document.getElementById('load-value');
+        const simSoilBody = document.getElementById('soil-body');
+        const simEmbankment = document.getElementById('embankment');
+        const simGradientStopTop = document.getElementById('gradient-stop-top');
+        const simPipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
+        const simExtensometerCasing = document.getElementById('extensometer-casing');
+        const simMagnet1 = document.getElementById('magnet-1');
+        const simMagnet2 = document.getElementById('magnet-2');
+        const simMagnet3 = document.getElementById('magnet-3');
+        const simReading1 = document.getElementById('reading-1');
+        const simReading2 = document.getElementById('reading-2');
+        const simReading3 = document.getElementById('reading-3');
+        const simReadingPipe = document.getElementById('reading-pipe');
+        const simActual1 = document.getElementById('actual-1');
+        const simActual2 = document.getElementById('actual-2');
+        const simActual3 = document.getElementById('actual-3');
+        const simActualDatum = document.getElementById('actual-datum');
+        const simBarMagnet1 = document.getElementById('bar-magnet-1');
+        const simBarMagnet2 = document.getElementById('bar-magnet-2');
+        const simBarMagnet3 = document.getElementById('bar-magnet-3');
         
         const numPoints = 100;
         const initialGroundLevelY = 100;
@@ -772,10 +780,10 @@
         const maxSettlement = 37;
         const maxPenetration = 1;
 
-        slider.addEventListener('input', (event) => {
+        simSlider.addEventListener('input', (event) => {
             const load = parseInt(event.target.value);
             const loadFactor = load / 100;
-            loadValue.textContent = `${load} %`;
+            simLoadValue.textContent = `${load} %`;
             const surfacePoints = [];
             const surfaceYCoords = [];
             for (let i = 0; i <= numPoints; i++) {
@@ -791,14 +799,14 @@
             }
             const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
             const pathD = `M 0,${svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${svgWidth},${svgHeight} Z`;
-            soilBody.setAttribute('d', pathD);
+            simSoilBody.setAttribute('d', pathD);
             const baseSoilColor = { h: 30, s: 45, l: 55 };
             const stressSoilColor = { h: 120, s: 60, l: 45 };
             const soilColorFactor = Math.min(1, loadFactor * 1.5);
             const newSoilHue = baseSoilColor.h * (1 - soilColorFactor) + stressSoilColor.h * soilColorFactor;
             const newSoilSat = baseSoilColor.s * (1 - soilColorFactor) + stressSoilColor.s * soilColorFactor;
             const newSoilLight = baseSoilColor.l * (1 - soilColorFactor) + stressSoilColor.l * soilColorFactor;
-            gradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
+            simGradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
             const embankmentHeight = 50 * loadFactor;
             const leftBaseIndex = Math.floor(numPoints * 0.25);
             const rightBaseIndex = Math.floor(numPoints * 0.75);
@@ -807,44 +815,44 @@
             const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
             const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
             const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
-            embankment.setAttribute('points', embankmentPointsStr);
+            simEmbankment.setAttribute('points', embankmentPointsStr);
             const penetration = maxPenetration * loadFactor;
-            extensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
+            simExtensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
             const basePipeColor = { r: 82, g: 82, b: 91 };
             const stressPipeColor = { r: 185, g: 28, b: 28 };
             const pipeColorFactor = loadFactor;
             const newPipeR = basePipeColor.r * (1 - pipeColorFactor) + stressPipeColor.r * pipeColorFactor;
             const newPipeG = basePipeColor.g * (1 - pipeColorFactor) + stressPipeColor.g * pipeColorFactor;
             const newPipeB = basePipeColor.b * (1 - pipeColorFactor) + stressPipeColor.b * pipeColorFactor;
-            pipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
+            simPipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
             const centerIndex = Math.floor(numPoints / 2);
             const centerSettlement = surfaceYCoords[centerIndex] - initialGroundLevelY;
             const s1_abs = centerSettlement * 0.95;
             const s2_abs = centerSettlement * 0.65;
             const s3_abs = centerSettlement * 0.35;
-            magnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
-            magnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
-            magnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
-            reading1.textContent = (penetration - s1_abs).toFixed(1);
-            reading2.textContent = (penetration - s2_abs).toFixed(1);
-            reading3.textContent = (penetration - s3_abs).toFixed(1);
-            readingPipe.textContent = `+${penetration.toFixed(1)}`;
-            reading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
-            reading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
-            reading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
-            actual1.textContent = `-${s1_abs.toFixed(1)}`;
-            actual2.textContent = `-${s2_abs.toFixed(1)}`;
-            actual3.textContent = `-${s3_abs.toFixed(1)}`;
-            actualDatum.textContent = `0.0`;
-            barMagnet1.setAttribute('y2', 150 + s1_abs);
-            barMagnet2.setAttribute('y2', 250 + s2_abs);
-            barMagnet3.setAttribute('y2', 330 + s3_abs);
+            simMagnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
+            simMagnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
+            simMagnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
+            simReading1.textContent = (penetration - s1_abs).toFixed(1);
+            simReading2.textContent = (penetration - s2_abs).toFixed(1);
+            simReading3.textContent = (penetration - s3_abs).toFixed(1);
+            simReadingPipe.textContent = `+${penetration.toFixed(1)}`;
+            simReading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
+            simReading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
+            simReading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
+            simActual1.textContent = `-${s1_abs.toFixed(1)}`;
+            simActual2.textContent = `-${s2_abs.toFixed(1)}`;
+            simActual3.textContent = `-${s3_abs.toFixed(1)}`;
+            simActualDatum.textContent = `0.0`;
+            simBarMagnet1.setAttribute('y2', 150 + s1_abs);
+            simBarMagnet2.setAttribute('y2', 250 + s2_abs);
+            simBarMagnet3.setAttribute('y2', 330 + s3_abs);
             const barOpacity = load > 2 ? 0.8 : 0;
-            barMagnet1.style.opacity = barOpacity;
-            barMagnet2.style.opacity = barOpacity;
-            barMagnet3.style.opacity = barOpacity;
+            simBarMagnet1.style.opacity = barOpacity;
+            simBarMagnet2.style.opacity = barOpacity;
+            simBarMagnet3.style.opacity = barOpacity;
         });
-        slider.dispatchEvent(new Event('input'));
+        simSlider.dispatchEvent(new Event('input'));
 
     </script>
 </body>
