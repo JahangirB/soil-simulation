@@ -289,23 +289,26 @@
         
         <!-- Slide 5: Component Movement Analysis -->
         <div id="slide-5" class="slide">
-            <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
-                <div class="w-full md:w-1/2 text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">Component Movement</h1>
-                    <div class="mt-8 flex flex-wrap gap-4">
-                        <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Casing</button>
-                        <button data-component="movement-probe" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">IPX Probes Chain</button>
-                        <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Monitoring Magnet</button>
-                        <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow">Datum Magnet</button>
+            <div class="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-8 p-4">
+                <!-- Left Column: Controls & Description -->
+                <div class="w-full md:w-1/3 text-left">
+                    <h1 class="text-4xl font-bold text-gray-800">Component Movement</h1>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Casing</button>
+                        <button data-component="movement-probe" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">IPX Probes Chain</button>
+                        <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Monitoring Magnet</button>
+                        <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Datum Magnet</button>
                     </div>
-                    <div id="component-image-container" class="mt-8 min-h-[150px] flex items-center justify-center">
+                    <div id="component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
                          <!-- Image will be loaded here by JS -->
                     </div>
-                    <div id="component-description" class="mt-4 text-lg p-4 bg-gray-50 rounded-lg min-h-[100px]">
+                    <div id="component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg min-h-[100px]">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-full gap-4">
+
+                <!-- Right Column: Model & Slider -->
+                <div class="w-full md:w-2/3 flex flex-col items-center justify-center h-full gap-4">
                     <svg id="movement-svg" viewBox="0 0 400 500" class="h-full">
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
@@ -336,7 +339,7 @@
                         </g>
 
                     </svg>
-                    <div class="w-full flex flex-col items-center mt-4">
+                    <div class="w-full flex flex-col items-center mt-2">
                         <input id="movement-slider" type="range" min="0" max="100" value="0" class="w-3/4">
                         <div id="movement-slider-labels" class="w-3/4 flex justify-between text-sm font-semibold">
                             <span>No Load</span>
@@ -499,362 +502,349 @@
     <button id="prev" class="nav-button">Previous</button>
     <button id="next" class="nav-button">Next</button>
 
-    <script>
-        // --- PRESENTATION LOGIC ---
-        let currentSlide = 1;
-        const totalSlides = 8; // UPDATED SLIDE COUNT
-        const prevButton = document.getElementById('prev');
-        const nextButton = document.getElementById('next');
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- PRESENTATION LOGIC ---
+            let currentSlide = 1;
+            const totalSlides = 8;
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
 
-        function showSlide(slideNumber) {
-            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
-            document.getElementById(`slide-${slideNumber}`).classList.add('active');
-            
-            prevButton.style.display = slideNumber === 1 ? 'none' : 'block';
-            nextButton.style.display = slideNumber === totalSlides ? 'none' : 'block';
-        }
-
-        prevButton.addEventListener('click', () => {
-            if (currentSlide > 1) {
-                currentSlide--;
-                showSlide(currentSlide);
+            function showSlide(slideNumber) {
+                document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+                document.getElementById(`slide-${slideNumber}`).classList.add('active');
+                
+                prevButton.style.display = slideNumber === 1 ? 'none' : 'block';
+                nextButton.style.display = slideNumber === totalSlides ? 'none' : 'block';
             }
-        });
 
-        nextButton.addEventListener('click', () => {
-            if (currentSlide < totalSlides) {
-                currentSlide++;
-                showSlide(currentSlide);
-            }
-        });
-        
-        showSlide(currentSlide);
+            prevButton.addEventListener('click', () => {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
 
-        // --- PROBE SLIDE INTERACTIVITY ---
-        const probeSvg = document.getElementById('probe-svg');
-        const draggableMagnet = document.getElementById('draggable-magnet');
-        const probeReadout = document.getElementById('probe-readout');
-        let isDragging = false;
-        
-        const sensorTopY = 150;
-        const sensorBottomY = 550;
-        const sensorRange = 400;
-
-        draggableMagnet.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            draggableMagnet.style.cursor = 'grabbing';
-        });
-
-        probeSvg.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const CTM = probeSvg.getScreenCTM();
-            let newY = (e.clientY - CTM.f) / CTM.d;
-
-            // Clamp position to within the probe body
-            newY = Math.max(50 + 15, Math.min(newY, 650 - 15));
-            draggableMagnet.setAttribute('transform', `translate(0, ${newY - 150})`);
+            nextButton.addEventListener('click', () => {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
             
-            // Calculate reading
-            const reading = newY - sensorTopY;
-            if (reading >= 0 && reading <= sensorRange) {
-                probeReadout.textContent = `${reading.toFixed(0)} mm`;
-            } else {
-                probeReadout.textContent = 'Out of Range';
-            }
-        });
+            showSlide(currentSlide);
 
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            draggableMagnet.style.cursor = 'grab';
-        });
-        
-        // --- INSTALLATION SLIDE LOGIC ---
-        const installPrev = document.getElementById('prev-install-step');
-        const installNext = document.getElementById('next-install-step');
-        let installStep = 1;
-        const totalInstallSteps = 4;
-
-        const drill = document.getElementById('drill');
-        const installCasing = document.getElementById('install-casing');
-        const groutLeft = document.getElementById('grout-left');
-        const groutRight = document.getElementById('grout-right');
-        const installTool = document.getElementById('install-tool');
-        const installProbe = document.getElementById('install-probe');
-        const leg1Left = document.getElementById('leg-1-left');
-        const leg1Right = document.getElementById('leg-1-right');
-        const leg2Left = document.getElementById('leg-2-left');
-        const leg2Right = document.getElementById('leg-2-right');
-        const deployedMagnets = document.getElementById('deployed-magnets');
-        const dataLogger = document.getElementById('data-logger');
-
-
-        function showInstallStep(step) {
-            document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step-desc-${step}`).classList.add('active');
-
-            installPrev.disabled = step === 1;
-            installNext.disabled = step === totalInstallSteps;
-            installPrev.style.opacity = step === 1 ? 0.5 : 1;
-            installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
-
-            // State-based animation logic
-            drill.style.transform = (step === 1) ? 'translate(200, 50px)' : 'translate(200, -100px)';
-            installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
-            groutLeft.style.opacity = (step >= 2) ? '1' : '0';
-            groutRight.style.opacity = (step >= 2) ? '1' : '0';
+            // --- PROBE SLIDE INTERACTIVITY ---
+            const probeSvg = document.getElementById('probe-svg');
+            const draggableMagnet = document.getElementById('draggable-magnet');
+            const probeReadout = document.getElementById('probe-readout');
+            let isDragging = false;
             
-            installTool.style.opacity = (step === 3) ? '1' : '0';
-            installTool.style.transform = (step === 3) ? 'translate(200, 50px)' : 'translate(200, -350px)';
+            const sensorTopY = 150;
+            const sensorRange = 400;
+
+            draggableMagnet.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                draggableMagnet.style.cursor = 'grabbing';
+            });
+
+            probeSvg.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const CTM = probeSvg.getScreenCTM();
+                let newY = (e.clientY - CTM.f) / CTM.d;
+
+                newY = Math.max(50 + 15, Math.min(newY, 650 - 15));
+                draggableMagnet.setAttribute('transform', `translate(0, ${newY - 150})`);
+                
+                const reading = newY - sensorTopY;
+                if (reading >= 0 && reading <= sensorRange) {
+                    probeReadout.textContent = `${reading.toFixed(0)} mm`;
+                } else {
+                    probeReadout.textContent = 'Out of Range';
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                draggableMagnet.style.cursor = 'grab';
+            });
             
-            const deployLegs = step >= 3;
-            leg1Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
-            leg1Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
-            leg2Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
-            leg2Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
+            // --- INSTALLATION SLIDE LOGIC ---
+            const installPrev = document.getElementById('prev-install-step');
+            const installNext = document.getElementById('next-install-step');
+            let installStep = 1;
+            const totalInstallSteps = 4;
+
+            const drill = document.getElementById('drill');
+            const installCasing = document.getElementById('install-casing');
+            const groutLeft = document.getElementById('grout-left');
+            const groutRight = document.getElementById('grout-right');
+            const installTool = document.getElementById('install-tool');
+            const installProbe = document.getElementById('install-probe');
+            const leg1Left = document.getElementById('leg-1-left');
+            const leg1Right = document.getElementById('leg-1-right');
+            const leg2Left = document.getElementById('leg-2-left');
+            const leg2Right = document.getElementById('leg-2-right');
+            const deployedMagnets = document.getElementById('deployed-magnets');
+            const dataLogger = document.getElementById('data-logger');
+
+
+            function showInstallStep(step) {
+                document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
+                document.getElementById(`step-desc-${step}`).classList.add('active');
+
+                installPrev.disabled = step === 1;
+                installNext.disabled = step === totalInstallSteps;
+                installPrev.style.opacity = step === 1 ? 0.5 : 1;
+                installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
+
+                drill.style.transform = (step === 1) ? 'translate(200, 50px)' : 'translate(200, -100px)';
+                installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
+                groutLeft.style.opacity = (step >= 2) ? '1' : '0';
+                groutRight.style.opacity = (step >= 2) ? '1' : '0';
+                installTool.style.opacity = (step === 3) ? '1' : '0';
+                installTool.style.transform = (step === 3) ? 'translate(200, 50px)' : 'translate(200, -350px)';
+                const deployLegs = step >= 3;
+                leg1Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
+                leg1Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
+                leg2Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
+                leg2Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
+                deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
+                if (step < 3) deployedMagnets.style.opacity = '0';
+                installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
+                dataLogger.style.opacity = (step === 4) ? '1' : '0';
+            }
+
+            installPrev.addEventListener('click', () => {
+                if(installStep > 1) {
+                    installStep--;
+                    showInstallStep(installStep);
+                }
+            });
+            installNext.addEventListener('click', () => {
+                if(installStep < totalInstallSteps) {
+                    installStep++;
+                    showInstallStep(installStep);
+                }
+            });
+            showInstallStep(installStep);
             
-            deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
-            if (step < 3) deployedMagnets.style.opacity = '0'; // Hide for steps 1 and 2
+            // --- COMPONENT MOVEMENT SLIDE LOGIC ---
+            const componentButtons = document.querySelectorAll('.component-button');
+            const movementSlider = document.getElementById('movement-slider');
+            const movementCasing = document.getElementById('movement-casing');
+            const movementMagnets = document.getElementById('movement-magnets');
+            const movementProbe = document.getElementById('movement-probe');
+            const cobraRod = document.getElementById('cobra-rod');
+            const probeSensor1 = document.getElementById('probe-sensor-1');
+            const probeSensor2 = document.getElementById('probe-sensor-2');
+            const movementDatum = document.getElementById('movement-datum');
+            const componentDescription = document.getElementById('component-description');
+            const componentImageContainer = document.getElementById('component-image-container');
+            const movementSliderLabels = document.getElementById('movement-slider-labels');
+            let activeComponentId = null;
 
-            installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
-            dataLogger.style.opacity = (step === 4) ? '1' : '0';
-        }
+            const descriptions = {
+                'movement-casing': {
+                    img: 'casing_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Casing Movement</h3><p>During installation, the pipe's stick-up is typically cut below ground level and sealed. The area is then backfilled with material to reduce direct force on the pipe.</p><p class="mt-2">However, if this is not done correctly, the pipe will receive direct force from any surface load, causing it to be pushed down slightly. The actual downward movement of the pipe can be measured relative to the fixed Datum Magnet. This movement is often considered an error and can be disregarded from the true soil settlement readings.</p>`
+                },
+                'movement-probe': {
+                    img: 'probe_chain_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">IPX Probes Chain (Cobra Rod)</h3><p>The IPX sensors are attached to a semi-rigid rod (cobra) which sits on the base of the casing and moves with it. Ideally, the top of this rod is cut lower than the casing top to avoid contact with backfill material.</p><p class="mt-2">If backfill loads the cobra rod, it can deform into a <span class="font-bold">wavy shape</span>. This moves the probes inside the casing and produces erroneous readings, which often appear as sudden, simultaneous jumps in the data.</p>`
+                },
+                'movement-magnets': {
+                    img: 'monitoring_magnet_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Monitoring Magnet Movement</h3><p>The monitoring magnet is directly coupled to the surrounding soil via its spider legs. It is the primary sensor for measuring ground movement.</p><p class="mt-2">It will move <span class="font-bold">downward (settlement)</span> when a load is applied (e.g., from an embankment) or <span class="font-bold">upward (heave)</span> when a load is removed (e.g., during excavation).</p>`
+                },
+                'movement-datum': {
+                    img: 'monitoring_magnet_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Datum Magnet</h3><p>The Datum Magnet is anchored in stable ground, deep below the zone of influence from surface loads. It acts as a <span class="font-bold">fixed, stationary reference point</span> (a benchmark).</p><p class="mt-2">All other measurements are calculated relative to this point. In an ideal installation, the Datum Magnet should show no movement.</p>`
+                }
+            };
 
-        installPrev.addEventListener('click', () => {
-            if(installStep > 1) {
-                installStep--;
-                showInstallStep(installStep);
-            }
-        });
-        installNext.addEventListener('click', () => {
-            if(installStep < totalInstallSteps) {
-                installStep++;
-                showInstallStep(installStep);
-            }
-        });
-        showInstallStep(installStep);
-        
-        // --- COMPONENT MOVEMENT SLIDE LOGIC ---
-        const componentButtons = document.querySelectorAll('.component-button');
-        const movementSlider = document.getElementById('movement-slider');
-        const movementCasing = document.getElementById('movement-casing');
-        const movementMagnets = document.getElementById('movement-magnets');
-        const movementProbe = document.getElementById('movement-probe');
-        const cobraRod = document.getElementById('cobra-rod');
-        const probeSensor1 = document.getElementById('probe-sensor-1');
-        const probeSensor2 = document.getElementById('probe-sensor-2');
-        const movementDatum = document.getElementById('movement-datum');
-        const componentDescription = document.getElementById('component-description');
-        const movementSliderLabels = document.getElementById('movement-slider-labels');
-        let activeComponentId = null;
+            componentButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    componentButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    activeComponentId = button.dataset.component;
 
-        const descriptions = {
-            'movement-casing': `
-                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Casing Movement</h3><img src="casing_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>During installation, the pipe's stick-up is typically cut below ground level and sealed. The area is then backfilled with material to reduce direct force on the pipe.</p><p class="mt-2">However, if this is not done correctly, the pipe will receive direct force from any surface load, causing it to be pushed down slightly. The actual downward movement of the pipe can be measured relative to the fixed Datum Magnet. This movement is often considered an error and can be disregarded from the true soil settlement readings.</p></div>
-            `,
-            'movement-probe': `
-                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">IPX Probes Chain (Cobra Rod)</h3><img src="probe_chain_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The IPX sensors are attached to a semi-rigid rod (cobra) which sits on the base of the casing and moves with it. Ideally, the top of this rod is cut lower than the casing top to avoid contact with backfill material.</p><p class="mt-2">If backfill loads the cobra rod, it can deform into a <span class="font-bold">wavy shape</span>. This moves the probes inside the casing and produces erroneous readings, which often appear as sudden, simultaneous jumps in the data.</p></div>
-            `,
-            'movement-magnets': `
-                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Monitoring Magnet Movement</h3><img src="monitoring_magnet_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The monitoring magnet is directly coupled to the surrounding soil via its spider legs. It is the primary sensor for measuring ground movement.</p><p class="mt-2">It will move <span class="font-bold">downward (settlement)</span> when a load is applied (e.g., from an embankment) or <span class="font-bold">upward (heave)</span> when a load is removed (e.g., during excavation).</p></div>
-            `,
-            'movement-datum': `
-                <div class="space-y-2"><h3 class="font-bold text-xl mb-2">Datum Magnet</h3><img src="monitoring_magnet_image.png" class="mx-auto my-2 rounded-lg shadow-md max-h-32"><p>The Datum Magnet is anchored in stable ground, deep below the zone of influence from surface loads. It acts as a <span class="font-bold">fixed, stationary reference point</span> (a benchmark).</p><p class="mt-2">All other measurements are calculated relative to this point. In an ideal installation, the Datum Magnet should show no movement.</p></div>
-            `
-        };
-
-        componentButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                componentButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                activeComponentId = button.dataset.component;
-
-                // Reset all highlights and transformations
-                [movementCasing, movementProbe, movementMagnets, movementDatum].forEach(el => {
-                    if (el) { 
-                        el.classList.remove('highlighted-component');
-                        el.style.transform = '';
+                    [movementCasing, movementProbe, movementMagnets, movementDatum].forEach(el => {
+                        if (el) { 
+                            el.classList.remove('highlighted-component');
+                            el.style.transform = '';
+                        }
+                    });
+                   
+                    cobraRod.setAttribute('d', 'M 200 50 L 200 500');
+                    probeSensor1.setAttribute('transform', '');
+                    probeSensor2.setAttribute('transform', '');
+                    
+                    const componentToShow = document.getElementById(activeComponentId);
+                    if(componentToShow) componentToShow.classList.add('highlighted-component');
+                    
+                    const content = descriptions[activeComponentId];
+                    if (content) {
+                        componentImageContainer.innerHTML = `<img src="${content.img}" class="mx-auto my-2 rounded-lg shadow-md max-h-32">`;
+                        componentDescription.innerHTML = content.text;
+                    } else {
+                        componentImageContainer.innerHTML = '';
+                        componentDescription.innerHTML = '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
                     }
+                    
+                    const isMagnet = activeComponentId === 'movement-magnets';
+                    movementSlider.min = isMagnet ? -100 : 0;
+                    movementSlider.value = 0;
+                    movementSliderLabels.innerHTML = isMagnet ? `<span>Heave</span><span>Settlement</span>` : `<span>No Load</span><span>Max Load</span>`;
+
+                    movementSlider.dispatchEvent(new Event('input'));
                 });
-               
+            });
+
+            movementSlider.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                const settlementFactor = value / 100;
+                const maxMove = 40;
+                const moveDistance = maxMove * settlementFactor;
+                
+                movementMagnets.style.transform = '';
+                movementCasing.style.transform = '';
+                movementProbe.style.transform = '';
                 cobraRod.setAttribute('d', 'M 200 50 L 200 500');
                 probeSensor1.setAttribute('transform', '');
                 probeSensor2.setAttribute('transform', '');
+
                 
-                // Highlight the selected component
-                const componentToShow = document.getElementById(activeComponentId);
-                if(componentToShow) {
-                    componentToShow.classList.add('highlighted-component');
+                switch (activeComponentId) {
+                    case 'movement-casing':
+                        const casingMove = moveDistance * 0.1;
+                        movementCasing.style.transform = `translateY(${casingMove}px)`;
+                        movementProbe.style.transform = `translateY(${casingMove}px)`;
+                        break;
+                    case 'movement-probe':
+                        const deformationFactor = Math.abs(value) / 100;
+                        const amplitude = 15 * deformationFactor;
+                        let pathData = 'M 200 50 C ';
+                        const control_y1 = 50 + (450 / 4);
+                        const control_y2 = 50 + (450 / 4) * 3;
+                        const x_offset = amplitude * 2;
+                        pathData += `${200 - x_offset} ${control_y1}, ${200 + x_offset} ${control_y2}, 200 500`;
+                        cobraRod.setAttribute('d', pathData);
+                        const sag = moveDistance > 0 ? moveDistance * 0.2 : 0;
+                        movementProbe.style.transform = `translateY(${sag}px)`;
+                        break;
+                    case 'movement-magnets':
+                        movementMagnets.style.transform = `translateY(${moveDistance}px)`;
+                        break;
                 }
-                componentDescription.innerHTML = descriptions[activeComponentId] || '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
-                
-                // Update slider based on component
-                const isMagnet = activeComponentId === 'movement-magnets';
-                movementSlider.min = isMagnet ? -100 : 0;
-                movementSlider.value = 0;
-                movementSliderLabels.innerHTML = isMagnet ? `<span>Heave</span><span>Settlement</span>` : `<span>No Load</span><span>Max Load</span>`;
-
-                // Trigger slider input to reset visuals
-                movementSlider.dispatchEvent(new Event('input'));
             });
-        });
 
-        movementSlider.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value);
-            const isMagnet = activeComponentId === 'movement-magnets';
-            const settlementFactor = value / 100;
-            const maxMove = 40;
-            const moveDistance = maxMove * settlementFactor;
+
+            // --- SIMULATION LOGIC ---
+            const simSlider = document.getElementById('load-slider');
+            const simLoadValue = document.getElementById('load-value');
+            const simSoilBody = document.getElementById('soil-body');
+            const simEmbankment = document.getElementById('embankment');
+            const simGradientStopTop = document.getElementById('gradient-stop-top');
+            const simPipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
+            const simExtensometerCasing = document.getElementById('extensometer-casing');
+            const simMagnet1 = document.getElementById('magnet-1');
+            const simMagnet2 = document.getElementById('magnet-2');
+            const simMagnet3 = document.getElementById('magnet-3');
+            const simReading1 = document.getElementById('reading-1');
+            const simReading2 = document.getElementById('reading-2');
+            const simReading3 = document.getElementById('reading-3');
+            const simReadingPipe = document.getElementById('reading-pipe');
+            const simActual1 = document.getElementById('actual-1');
+            const simActual2 = document.getElementById('actual-2');
+            const simActual3 = document.getElementById('actual-3');
+            const simActualDatum = document.getElementById('actual-datum');
+            const simBarMagnet1 = document.getElementById('bar-magnet-1');
+            const simBarMagnet2 = document.getElementById('bar-magnet-2');
+            const simBarMagnet3 = document.getElementById('bar-magnet-3');
             
-            // Reset all movements first
-            movementMagnets.style.transform = '';
-            movementCasing.style.transform = '';
-            movementProbe.style.transform = '';
-            cobraRod.setAttribute('d', 'M 200 50 L 200 500');
-            probeSensor1.setAttribute('transform', '');
-            probeSensor2.setAttribute('transform', '');
+            const numPoints = 100;
+            const initialGroundLevelY = 100;
+            const svgHeight = 500;
+            const svgWidth = 800;
+            const maxSettlement = 37;
+            const maxPenetration = 1;
 
-            
-            // Apply movement only to the active component
-            switch (activeComponentId) {
-                case 'movement-casing':
-                    const casingMove = moveDistance * 0.1;
-                    movementCasing.style.transform = `translateY(${casingMove}px)`;
-                    movementProbe.style.transform = `translateY(${casingMove}px)`; // Link probe movement
-                    break;
-                case 'movement-probe':
-                    const deformationFactor = Math.abs(value) / 100;
-                    const amplitude = 15 * deformationFactor;
-                    let pathData = 'M ';
-                    const segments = 20;
-                    const sag = moveDistance * 0.2; // Add downward sag with settlement
+            simSlider.addEventListener('input', (event) => {
+                const load = parseInt(event.target.value);
+                const loadFactor = load / 100;
+                simLoadValue.textContent = `${load} %`;
+                const surfacePoints = [];
+                const surfaceYCoords = [];
+                for (let i = 0; i <= numPoints; i++) {
+                    const position = i / numPoints;
+                    const distanceFromCenter = Math.abs(position - 0.5);
+                    const influenceSpread = 0.18;
+                    const influence = Math.exp(-Math.pow(distanceFromCenter / influenceSpread, 2));
+                    const settlement = maxSettlement * influence * loadFactor;
+                    const x = position * svgWidth;
+                    const y = initialGroundLevelY + settlement;
+                    surfacePoints.push([x,y]);
+                    surfaceYCoords.push(y);
+                }
+                const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
+                const pathD = `M 0,${svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${svgWidth},${svgHeight} Z`;
+                simSoilBody.setAttribute('d', pathD);
+                const baseSoilColor = { h: 30, s: 45, l: 55 };
+                const stressSoilColor = { h: 120, s: 60, l: 45 };
+                const soilColorFactor = Math.min(1, loadFactor * 1.5);
+                const newSoilHue = baseSoilColor.h * (1 - soilColorFactor) + stressSoilColor.h * soilColorFactor;
+                const newSoilSat = baseSoilColor.s * (1 - soilColorFactor) + stressSoilColor.s * soilColorFactor;
+                const newSoilLight = baseSoilColor.l * (1 - soilColorFactor) + stressSoilColor.l * soilColorFactor;
+                simGradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
+                const embankmentHeight = 50 * loadFactor;
+                const leftBaseIndex = Math.floor(numPoints * 0.25);
+                const rightBaseIndex = Math.floor(numPoints * 0.75);
+                const embankmentTopLeft = [svgWidth * 0.25 + 50, surfaceYCoords[leftBaseIndex] - embankmentHeight];
+                const embankmentTopRight = [svgWidth * 0.75 - 50, surfaceYCoords[rightBaseIndex] - embankmentHeight];
+                const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
+                const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
+                const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
+                simEmbankment.setAttribute('points', embankmentPointsStr);
+                const penetration = maxPenetration * loadFactor;
+                simExtensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
+                const basePipeColor = { r: 82, g: 82, b: 91 };
+                const stressPipeColor = { r: 185, g: 28, b: 28 };
+                const pipeColorFactor = loadFactor;
+                const newPipeR = basePipeColor.r * (1 - pipeColorFactor) + stressPipeColor.r * pipeColorFactor;
+                const newPipeG = basePipeColor.g * (1 - pipeColorFactor) + stressPipeColor.g * pipeColorFactor;
+                const newPipeB = basePipeColor.b * (1 - pipeColorFactor) + stressPipeColor.b * pipeColorFactor;
+                simPipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
+                const centerIndex = Math.floor(numPoints / 2);
+                const centerSettlement = surfaceYCoords[centerIndex] - initialGroundLevelY;
+                const s1_abs = centerSettlement * 0.95;
+                const s2_abs = centerSettlement * 0.65;
+                const s3_abs = centerSettlement * 0.35;
+                simMagnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
+                simMagnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
+                simMagnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
+                simReading1.textContent = (penetration - s1_abs).toFixed(1);
+                simReading2.textContent = (penetration - s2_abs).toFixed(1);
+                simReading3.textContent = (penetration - s3_abs).toFixed(1);
+                simReadingPipe.textContent = `+${penetration.toFixed(1)}`;
+                simReading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
+                simReading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
+                simReading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
+                simActual1.textContent = `-${s1_abs.toFixed(1)}`;
+                simActual2.textContent = `-${s2_abs.toFixed(1)}`;
+                simActual3.textContent = `-${s3_abs.toFixed(1)}`;
+                simActualDatum.textContent = `0.0`;
+                simBarMagnet1.setAttribute('y2', 150 + s1_abs);
+                simBarMagnet2.setAttribute('y2', 250 + s2_abs);
+                simBarMagnet3.setAttribute('y2', 330 + s3_abs);
+                const barOpacity = load > 2 ? 0.8 : 0;
+                simBarMagnet1.style.opacity = barOpacity;
+                simBarMagnet2.style.opacity = barOpacity;
+                simBarMagnet3.style.opacity = barOpacity;
+            });
+            simSlider.dispatchEvent(new Event('input'));
 
-                    // S-curve logic
-                    pathData += '200 50 C ';
-                    const control_y1 = 50 + (450 / 4);
-                    const control_y2 = 50 + (450 / 4) * 3;
-                    const x_offset = amplitude * 2;
-
-                    pathData += `${200 - x_offset} ${control_y1}, `;
-                    pathData += `${200 + x_offset} ${control_y2}, `;
-                    pathData += `200 500`;
-
-                    cobraRod.setAttribute('d', pathData);
-
-                    // Also apply the small casing movement and sag
-                    movementProbe.style.transform = `translateY(${sag}px)`;
-
-                    break;
-                case 'movement-magnets':
-                    movementMagnets.style.transform = `translateY(${moveDistance}px)`;
-                    break;
-            }
         });
-
-
-        // --- SIMULATION LOGIC ---
-        const simSlider = document.getElementById('load-slider');
-        const simLoadValue = document.getElementById('load-value');
-        const simSoilBody = document.getElementById('soil-body');
-        const simEmbankment = document.getElementById('embankment');
-        const simGradientStopTop = document.getElementById('gradient-stop-top');
-        const simPipeGradientStopTop = document.getElementById('pipe-gradient-stop-top');
-        const simExtensometerCasing = document.getElementById('extensometer-casing');
-        const simMagnet1 = document.getElementById('magnet-1');
-        const simMagnet2 = document.getElementById('magnet-2');
-        const simMagnet3 = document.getElementById('magnet-3');
-        const simReading1 = document.getElementById('reading-1');
-        const simReading2 = document.getElementById('reading-2');
-        const simReading3 = document.getElementById('reading-3');
-        const simReadingPipe = document.getElementById('reading-pipe');
-        const simActual1 = document.getElementById('actual-1');
-        const simActual2 = document.getElementById('actual-2');
-        const simActual3 = document.getElementById('actual-3');
-        const simActualDatum = document.getElementById('actual-datum');
-        const simBarMagnet1 = document.getElementById('bar-magnet-1');
-        const simBarMagnet2 = document.getElementById('bar-magnet-2');
-        const simBarMagnet3 = document.getElementById('bar-magnet-3');
-        
-        const numPoints = 100;
-        const initialGroundLevelY = 100;
-        const svgHeight = 500;
-        const svgWidth = 800;
-        const maxSettlement = 37;
-        const maxPenetration = 1;
-
-        simSlider.addEventListener('input', (event) => {
-            const load = parseInt(event.target.value);
-            const loadFactor = load / 100;
-            simLoadValue.textContent = `${load} %`;
-            const surfacePoints = [];
-            const surfaceYCoords = [];
-            for (let i = 0; i <= numPoints; i++) {
-                const position = i / numPoints;
-                const distanceFromCenter = Math.abs(position - 0.5);
-                const influenceSpread = 0.18;
-                const influence = Math.exp(-Math.pow(distanceFromCenter / influenceSpread, 2));
-                const settlement = maxSettlement * influence * loadFactor;
-                const x = position * svgWidth;
-                const y = initialGroundLevelY + settlement;
-                surfacePoints.push([x,y]);
-                surfaceYCoords.push(y);
-            }
-            const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
-            const pathD = `M 0,${svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${svgWidth},${svgHeight} Z`;
-            simSoilBody.setAttribute('d', pathD);
-            const baseSoilColor = { h: 30, s: 45, l: 55 };
-            const stressSoilColor = { h: 120, s: 60, l: 45 };
-            const soilColorFactor = Math.min(1, loadFactor * 1.5);
-            const newSoilHue = baseSoilColor.h * (1 - soilColorFactor) + stressSoilColor.h * soilColorFactor;
-            const newSoilSat = baseSoilColor.s * (1 - soilColorFactor) + stressSoilColor.s * soilColorFactor;
-            const newSoilLight = baseSoilColor.l * (1 - soilColorFactor) + stressSoilColor.l * soilColorFactor;
-            simGradientStopTop.setAttribute('stop-color', `hsl(${newSoilHue}, ${newSoilSat}%, ${newSoilLight}%)`);
-            const embankmentHeight = 50 * loadFactor;
-            const leftBaseIndex = Math.floor(numPoints * 0.25);
-            const rightBaseIndex = Math.floor(numPoints * 0.75);
-            const embankmentTopLeft = [svgWidth * 0.25 + 50, surfaceYCoords[leftBaseIndex] - embankmentHeight];
-            const embankmentTopRight = [svgWidth * 0.75 - 50, surfaceYCoords[rightBaseIndex] - embankmentHeight];
-            const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
-            const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
-            const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
-            simEmbankment.setAttribute('points', embankmentPointsStr);
-            const penetration = maxPenetration * loadFactor;
-            simExtensometerCasing.setAttribute('transform', `translate(0, ${penetration})`);
-            const basePipeColor = { r: 82, g: 82, b: 91 };
-            const stressPipeColor = { r: 185, g: 28, b: 28 };
-            const pipeColorFactor = loadFactor;
-            const newPipeR = basePipeColor.r * (1 - pipeColorFactor) + stressPipeColor.r * pipeColorFactor;
-            const newPipeG = basePipeColor.g * (1 - pipeColorFactor) + stressPipeColor.g * pipeColorFactor;
-            const newPipeB = basePipeColor.b * (1 - pipeColorFactor) + stressPipeColor.b * pipeColorFactor;
-            simPipeGradientStopTop.setAttribute('stop-color', `rgb(${newPipeR}, ${newPipeG}, ${newPipeB})`);
-            const centerIndex = Math.floor(numPoints / 2);
-            const centerSettlement = surfaceYCoords[centerIndex] - initialGroundLevelY;
-            const s1_abs = centerSettlement * 0.95;
-            const s2_abs = centerSettlement * 0.65;
-            const s3_abs = centerSettlement * 0.35;
-            simMagnet1.setAttribute('transform', `translate(0, ${s1_abs})`);
-            simMagnet2.setAttribute('transform', `translate(0, ${s2_abs})`);
-            simMagnet3.setAttribute('transform', `translate(0, ${s3_abs})`);
-            simReading1.textContent = (penetration - s1_abs).toFixed(1);
-            simReading2.textContent = (penetration - s2_abs).toFixed(1);
-            simReading3.textContent = (penetration - s3_abs).toFixed(1);
-            simReadingPipe.textContent = `+${penetration.toFixed(1)}`;
-            simReading1.style.color = (penetration - s1_abs) < 0 ? '#dc2626' : '#166534';
-            simReading2.style.color = (penetration - s2_abs) < 0 ? '#dc2626' : '#166534';
-            simReading3.style.color = (penetration - s3_abs) < 0 ? '#dc2626' : '#166534';
-            simActual1.textContent = `-${s1_abs.toFixed(1)}`;
-            simActual2.textContent = `-${s2_abs.toFixed(1)}`;
-            simActual3.textContent = `-${s3_abs.toFixed(1)}`;
-            simActualDatum.textContent = `0.0`;
-            simBarMagnet1.setAttribute('y2', 150 + s1_abs);
-            simBarMagnet2.setAttribute('y2', 250 + s2_abs);
-            simBarMagnet3.setAttribute('y2', 330 + s3_abs);
-            const barOpacity = load > 2 ? 0.8 : 0;
-            simBarMagnet1.style.opacity = barOpacity;
-            simBarMagnet2.style.opacity = barOpacity;
-            simBarMagnet3.style.opacity = barOpacity;
-        });
-        simSlider.dispatchEvent(new Event('input'));
-
     </script>
 </body>
 </html>
