@@ -289,9 +289,9 @@
         
         <!-- Slide 5: Component Movement Analysis -->
         <div id="slide-5" class="slide">
-            <div class="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-8 p-4">
+            <div class="w-full max-w-7xl flex flex-col md:grid md:grid-cols-3 items-center justify-center gap-8 p-4">
                 <!-- Left Column: Controls & Description -->
-                <div class="w-full md:w-1/3 text-left">
+                <div class="w-full text-left">
                     <h1 class="text-4xl font-bold text-gray-800">Component Movement</h1>
                     <div class="mt-6 flex flex-wrap gap-2">
                         <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Casing</button>
@@ -299,16 +299,18 @@
                         <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Monitoring Magnet</button>
                         <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Datum Magnet</button>
                     </div>
-                    <div id="component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
-                         <!-- Image will be loaded here by JS -->
-                    </div>
-                    <div id="component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg min-h-[100px]">
+                    <div id="component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg min-h-[250px]">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
 
+                <!-- Center Column: Image -->
+                <div id="component-image-container" class="w-full flex items-center justify-center min-h-[200px]">
+                     <!-- Image will be loaded here by JS -->
+                </div>
+
                 <!-- Right Column: Model & Slider -->
-                <div class="w-full md:w-2/3 flex flex-col items-center justify-center h-full gap-4">
+                <div class="w-full flex flex-col items-center justify-center h-full gap-4">
                     <svg id="movement-svg" viewBox="0 0 400 500" class="h-full">
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
