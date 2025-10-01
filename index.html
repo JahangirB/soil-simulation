@@ -204,94 +204,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- Slide 4: Installation Process -->
-        <div id="slide-4" class="slide">
-             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
-                <div class="w-full md:w-1/2 text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">Installation Process</h1>
-                    <div class="mt-8 text-xl text-left space-y-4 relative h-64">
-                        <div id="step-desc-1" class="installation-step-description active">
-                             <h2 class="font-bold text-2xl">Step 1: Drill Borehole</h2>
-                             <p>A borehole is drilled into the ground to the required depth, passing through all soil layers to be monitored.</p>
-                        </div>
-                         <div id="step-desc-2" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 2: Install & Grout Casing</h2>
-                             <p>An access casing is lowered into the borehole. The space between the casing and the borehole wall is then filled with grout to stabilize the ground.</p>
-                        </div>
-                         <div id="step-desc-3" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 3: Install Magnets</h2>
-                             <p>Using an installation tool, spider magnets are pushed down inside the casing. At each target depth, the tool deploys the magnet's legs to anchor it to the borehole wall.</p>
-                        </div>
-                         <div id="step-desc-4" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 4: Install Probe & Commission</h2>
-                             <p>Finally, the automated probe string is lowered into the empty casing and connected to a data logger to take initial baseline readings.</p>
-                        </div>
-                    </div>
-                     <div class="mt-8 flex gap-4">
-                        <button id="prev-install-step" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow">Previous Step</button>
-                        <button id="next-install-step" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow">Next Step</button>
-                    </div>
-                </div>
-                <div class="w-full md:w-1/2 flex items-center justify-center h-96">
-                   <svg id="installation-svg" viewBox="0 0 400 400" class="h-full">
-                        <!-- Ground -->
-                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
-                        <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
-
-                        <!-- Borehole -->
-                        <rect id="borehole" x="150" y="50" width="100" height="350" fill="#6b4624"/>
-
-                        <!-- Drill -->
-                        <g id="drill" class="installation-diagram-element" transform="translate(200, -100)">
-                            <rect x="-10" y="0" width="20" height="80" fill="#d1d5db"/>
-                            <path d="M -10 80 L 0 100 L 10 80 Z" fill="#7f1d1d"/>
-                        </g>
-
-                        <!-- Grout -->
-                        <rect id="grout-left" class="installation-diagram-element" x="150" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
-                        <rect id="grout-right" class="installation-diagram-element" x="220" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
-                        
-                        <!-- Deployed Magnets -->
-                        <g id="deployed-magnets" class="installation-diagram-element" opacity="0">
-                            <g transform="translate(200, 385)"> <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
-                            <g transform="translate(200, 265)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
-                        </g>
-                        
-                        <!-- Casing -->
-                        <rect id="install-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a" style="transform: translateY(-400px)" />
-
-                        <!-- Installation Tool -->
-                        <g id="install-tool" class="installation-diagram-element" transform="translate(200, -350)">
-                            <rect x="-5" y="0" width="10" height="350" fill="#9ca3af"/>
-                            <g id="install-magnet-1" transform="translate(0, 335)"><rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/><path id="leg-1-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/><path id="leg-1-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/></g>
-                            <g id="install-magnet-2" transform="translate(0, 215)"><rect x="-15" y="-5" width="30" height="10" fill="#065f46" stroke="#4a5568"/><path id="leg-2-left" class="installation-diagram-element" d="M -15 0 L -25 0" stroke="#4a5568" stroke-width="2"/><path id="leg-2-right" class="installation-diagram-element" d="M 15 0 L 25 0" stroke="#4a5568" stroke-width="2"/></g>
-                        </g>
-
-                         <!-- Probe String -->
-                        <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
-                            <line x1="200" y1="50" x2="200" y2="400" stroke="#facc15" stroke-width="4" />
-                            <rect x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
-                            <rect x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
-                        </g>
-
-                        <!-- Data Logger -->
-                        <g id="data-logger" class="installation-diagram-element" opacity="0">
-                            <rect x="257.5" y="15" width="5" height="30" fill="#78716c"/>
-                            <rect x="230" y="5" width="60" height="20" fill="#4b5563" rx="3"/>
-                            <line x1="200" y1="50" x2="230" y2="15" stroke="#374151" stroke-width="2"/>
-                        </g>
-
-                   </svg>
-                </div>
-            </div>
-        </div>
         
-        <!-- Slide 5: Component Movement Analysis -->
-        <div id="slide-5" class="slide">
+        <!-- Slide 4: Component Movement Analysis -->
+        <div id="slide-4" class="slide">
             <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
                 <!-- Left Column: Controls & Description -->
-                <div class="md:col-span-4 w-full text-left flex flex-col h-full">
+                <div class="md:col-span-3 w-full text-left flex flex-col h-full">
                     <h1 class="text-4xl font-bold text-gray-800">Component Movement</h1>
                     <div class="mt-6 flex flex-wrap gap-2">
                         <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Casing</button>
@@ -299,19 +217,17 @@
                         <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Monitoring Magnet</button>
                         <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Datum Magnet</button>
                     </div>
+                    <div id="component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
+                         <!-- Image will be loaded here by JS -->
+                    </div>
                     <div id="component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg flex-grow">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
 
-                <!-- Center Column: Image -->
-                <div id="component-image-container" class="md:col-span-4 w-full flex items-center justify-center h-full">
-                     <!-- Image will be loaded here by JS -->
-                </div>
-
                 <!-- Right Column: Model & Slider -->
-                <div class="md:col-span-4 w-full flex flex-col items-center justify-center h-full gap-4">
-                    <svg id="movement-svg" viewBox="0 0 400 500" class="flex-grow w-full">
+                <div class="md:col-span-9 w-full flex flex-col items-center justify-center h-full gap-4">
+                    <svg id="movement-svg" viewBox="0 0 400 500" class="flex-grow w-full" style="max-width: 400px;">
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
                         <rect x="150" y="50" width="100" height="450" fill="#6b4624"/>
@@ -339,6 +255,9 @@
                             <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
                             <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
                         </g>
+                        
+                        <!-- Masking Rectangle -->
+                        <rect x="0" y="0" width="400" height="50" fill="#f3f4f6"/>
 
                     </svg>
                     <div class="w-full flex flex-col items-center mt-2">
@@ -351,15 +270,86 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Slide 5: Installation Process -->
+        <div id="slide-5" class="slide">
+             <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
+                <div class="md:col-span-4 w-full text-left flex flex-col h-full">
+                    <h1 class="text-4xl font-bold text-gray-800">Installation Process</h1>
+                    <div class="mt-8 text-xl text-left space-y-4 relative h-64">
+                        <div id="step-desc-1" class="installation-step-description active">
+                             <h2 class="font-bold text-2xl">Step 1: Drill Borehole</h2>
+                             <p>A borehole is drilled into the ground to the required depth, passing through all soil layers to be monitored.</p>
+                        </div>
+                         <div id="step-desc-2" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 2: Install & Grout Casing</h2>
+                             <p>An access casing is lowered into the borehole. The space between the casing and the borehole wall is then filled with grout to stabilize the ground.</p>
+                        </div>
+                         <div id="step-desc-3" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 3: Install Magnets</h2>
+                             <p>Using an installation tool, spider magnets are pushed down inside the casing. At each target depth, the tool deploys the magnet's legs to anchor it to the borehole wall.</p>
+                        </div>
+                         <div id="step-desc-4" class="installation-step-description">
+                             <h2 class="font-bold text-2xl">Step 4: Install Probe & Commission</h2>
+                             <p>Finally, the automated probe string is lowered into the empty casing and connected to a data logger to take initial baseline readings.</p>
+                        </div>
+                    </div>
+                     <div class="mt-auto flex gap-4">
+                        <button id="prev-install-step" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow">Previous Step</button>
+                        <button id="next-install-step" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow">Next Step</button>
+                    </div>
+                </div>
+                <div id="installation-image-container" class="md:col-span-4 w-full flex items-center justify-center h-full">
+                    <!-- Image for installation step appears here -->
+                </div>
+                <div class="md:col-span-4 w-full flex items-center justify-center h-full">
+                   <svg id="installation-svg" viewBox="0 0 400 400" class="h-full">
+                        <!-- Ground -->
+                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
+                        <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
 
+                        <!-- Borehole -->
+                        <rect id="borehole" x="150" y="50" width="100" height="350" fill="#6b4624"/>
+
+                                             <!-- Grout -->
+                        <rect id="grout-left" class="installation-diagram-element" x="150" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
+                        <rect id="grout-right" class="installation-diagram-element" x="220" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
+                        
+                        <!-- Casing -->
+                        <rect id="install-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a" style="transform: translateY(-400px)" />
+
+                      
+                         <!-- Probe String -->
+                        <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
+                            <line x1="200" y1="50" x2="200" y2="400" stroke="#facc15" stroke-width="4" />
+                            <rect x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                            <rect x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                        </g>
+                        
+                        <!-- Deployed Magnets -->
+                        <g id="deployed-magnets" class="installation-diagram-element" opacity="0">
+                            <g transform="translate(200, 385)"> <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                            <g transform="translate(200, 265)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                        </g>
+                        
+                        <!-- Data Logger -->
+                        <g id="data-logger" class="installation-diagram-element" opacity="0">
+                            <rect x="257.5" y="15" width="5" height="30" fill="#78716c"/>
+                            <rect x="230" y="5" width="60" height="20" fill="#4b5563" rx="3"/>
+                            <line x1="200" y1="50" x2="230" y2="15" stroke="#374151" stroke-width="2"/>
+                        </g>
+
+                   </svg>
+                </div>
+            </div>
+        </div>
+        
         <!-- Slide 6: The Interactive Simulation -->
         <div id="slide-6" class="slide">
             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
-                <div class="flex flex-col gap-8">
-                    <!-- Top Row: Model and Slider -->
-                    <div class="flex flex-col md:flex-row gap-8 items-center">
-                        <!-- Model -->
-                        <div class="w-full md:w-3/4">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-2/3 flex flex-col gap-4">
+                        <div class="w-full">
                             <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
                                 <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
                                     <div class="w-full">Uniform Clay Soil</div>
@@ -380,15 +370,14 @@
                                 </svg>
                             </div>
                         </div>
-                        <!-- Slider -->
-                        <div class="w-full md:w-1/4 flex flex-col items-center justify-center space-y-4">
+                        <div class="w-full flex flex-col items-center justify-center space-y-2">
                             <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
                             <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                             <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
                         </div>
                     </div>
-                    <!-- Bottom Row: Tables -->
-                    <div class="flex flex-col md:flex-row gap-8 justify-center">
+
+                    <div class="w-full md:w-1/3 flex flex-col gap-8">
                         <div class="flex-1">
                             <div class="table-container">
                                 <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
@@ -422,80 +411,133 @@
             </div>
         </div>
         
-        <!-- Slide 7: Component Movement -->
+        <!-- Slide 7: Casing Movement Issue -->
         <div id="slide-7" class="slide">
-            <div class="p-4 w-full max-w-6xl">
-                <h1 class="text-5xl font-bold text-gray-800">Component Movement Under Load</h1>
-                <div class="flex flex-col md:flex-row items-center justify-center gap-12 mt-8">
-                    <!-- Diagram -->
-                    <div class="w-full md:w-1/2">
-                        <svg viewBox="0 0 400 450">
-                            <!-- Ground -->
-                            <rect x="50" y="50" width="300" height="400" fill="#a67b51" />
-                            <rect x="50" y="45" width="300" height="5" fill="#4d7c0f"/>
-                            
-                            <!-- Casing -->
-                            <rect x="190" y="50" width="20" height="400" fill="#2563eb" />
-                            
-                            <!-- Magnets -->
-                            <rect x="180" y="100" width="40" height="10" fill="#065f46"/>
-                            <rect x="180" y="200" width="40" height="10" fill="#065f46"/>
-                            <rect x="180" y="300" width="40" height="10" fill="#065f46"/>
-                             <!-- Datum -->
-                            <rect x="175" y="400" width="50" height="15" fill="#ef4444"/>
-                            <text x="200" y="430" text-anchor="middle" font-weight="bold">Datum (Fixed)</text>
-
-
-                            <!-- Arrows -->
-                            <g> <!-- Magnet 1 Arrow -->
-                                <line x1="160" y1="105" y2="155" stroke="#dc2626" stroke-width="3"/>
-                                <path d="M 155 145 L 160 155 L 165 145 Z" fill="#dc2626"/>
-                            </g>
-                             <g> <!-- Magnet 2 Arrow -->
-                                <line x1="160" y1="205" y2="245" stroke="#dc2626" stroke-width="3"/>
-                                <path d="M 155 235 L 160 245 L 165 235 Z" fill="#dc2626"/>
-                            </g>
-                             <g> <!-- Magnet 3 Arrow -->
-                                <line x1="160" y1="305" y2="325" stroke="#dc2626" stroke-width="3"/>
-                                <path d="M 155 315 L 160 325 L 165 315 Z" fill="#dc2626"/>
-                            </g>
-                            <g> <!-- Casing Arrow -->
-                                <line x1="220" y1="50" y2="60" stroke="#16a34a" stroke-width="3"/>
-                                <path d="M 215 55 L 220 65 L 225 55 Z" fill="#16a34a"/>
-                            </g>
-                        </svg>
-                    </div>
-                    <!-- Legend -->
-                    <div class="w-full md:w-1/2 text-left">
-                        <ul class="text-xl space-y-6">
-                            <li class="flex items-center">
-                                <svg width="40" height="20" class="mr-3"><line x1="0" y1="10" x2="40" y2="10" stroke="#dc2626" stroke-width="3"/></svg>
-                                <span class="font-bold text-red-600">Soil & Spider Magnets:</span>&nbsp;Move DOWNWARD due to compression. Movement is greatest near the surface.
-                            </li>
-                            <li class="flex items-center">
-                                <svg width="40" height="20" class="mr-3"><line x1="0" y1="10" x2="40" y2="10" stroke="#16a34a" stroke-width="3"/></svg>
-                                <span class="font-bold text-green-600">Extensometer Casing:</span>&nbsp;Pushed DOWNWARD by the load, penetrating the soil slightly.
-                            </li>
-                             <li class="flex items-center">
-                                <svg width="40" height="20" class="mr-3"><rect x="0" y="0" width="20" height="20" fill="#ef4444"/></svg>
-                                <span class="font-bold text-gray-700">Datum Anchor:</span>&nbsp;Remains STATIONARY, acting as the fixed reference point for all measurements.
-                            </li>
-                        </ul>
-                    </div>
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">Data Issue: Casing Movement</h1>
+                     <p class="mt-4 text-xl">This animation shows what happens if the casing is pushed down by surface load.</p>
+                     <img src="datagraph_casing.png" alt="Data graph showing casing movement" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
+                   <svg id="casing-issue-svg" viewBox="0 0 400 400" class="h-full">
+                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/> <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
+                        <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
+                        <rect x="150" y="50" width="30" height="350" fill="#e5e7eb"/> <rect x="220" y="50" width="30" height="350" fill="#e5e7eb"/>
+                        <g id="casing-issue-magnets">
+                            <g transform="translate(200, 315)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                        </g>
+                        <rect id="casing-issue-casing" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a"/>
+                        <g id="casing-issue-probe">
+                            <path d="M 200 50 L 200 400" stroke="#facc15" stroke-width="4" fill="none"/>
+                            <rect y="300" x="190" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                        </g>
+                        <g transform="translate(200, 385)"><rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                   </svg>
+                   <input id="casing-issue-slider" type="range" min="0" max="100" value="0" class="w-3/4">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Probe Chain Issue -->
+        <div id="slide-8" class="slide">
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">Data Issue: Probe Deformation</h1>
+                     <p class="mt-4 text-xl">This animation shows how backfill can deform the probe chain, causing erroneous readings.</p>
+                     <img src="datagraph_probe.png" alt="Data graph showing probe deformation" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
+                   <svg id="probe-issue-svg" viewBox="0 0 400 400" class="h-full">
+                        <rect x="0" y="50" width="400" height="350" fill="#a67b51"/> <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
+                        <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
+                        <rect x="150" y="50" width="30" height="350" fill="#e5e7eb"/> <rect x="220" y="50" width="30" height="350" fill="#e5e7eb"/>
+                        <g><g transform="translate(200, 315)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g></g>
+                        <rect x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a"/>
+                        <g id="probe-issue-probe">
+                            <path id="probe-issue-cobra" d="M 200 50 L 200 400" stroke="#facc15" stroke-width="4" fill="none"/>
+                            <rect id="probe-issue-sensor" y="300" x="190" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
+                        </g>
+                        <g transform="translate(200, 385)"><rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                   </svg>
+                   <input id="probe-issue-slider" type="range" min="0" max="100" value="0" class="w-3/4">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: What is a Rod Extensometer -->
+        <div id="slide-9" class="slide">
+            <div class="w-full max-w-6xl grid md:grid-cols-2 items-center justify-center gap-12 p-4">
+                <!-- Left Column: Text Description -->
+                <div class="text-left">
+                    <h1 class="text-5xl font-bold text-gray-800">The Rod Extensometer</h1>
+                    <p class="mt-6 text-xl text-gray-700">A rod extensometer is a geotechnical instrument used to precisely measure displacement or settlement between one or more anchor points in a borehole and a stable reference head at the surface.</p>
+                    <h2 class="mt-8 text-3xl font-bold text-gray-800">How It Works:</h2>
+                    <ul class="mt-4 text-xl list-disc space-y-4 pl-5">
+                        <li><strong>Anchors</strong> are fixed at different depths in the ground.</li>
+                        <li>Each anchor is connected to a rigid <strong>rod</strong> that extends up to the surface.</li>
+                        <li>As the ground moves, the anchors and their attached rods move with it.</li>
+                        <li>We measure the change in the rod's position relative to a stable <strong>reference head</strong> to calculate the exact amount of settlement or heave.</li>
+                    </ul>
+                </div>
+                <!-- Right Column: Image Placeholder -->
+                <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-inner p-8">
+                     <img src="rod_extensometer_image.png" alt="A real-world photo of a rod extensometer head with measuring rods visible." class="rounded-lg shadow-xl border border-gray-300 object-cover w-full h-full max-h-[60vh]">
+                     <p class="mt-4 font-semibold text-gray-600">Real-world Rod Extensometer Head</p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 8: Conclusion -->
-        <div id="slide-8" class="slide">
-            <div class="p-4">
-                <h1 class="text-5xl font-bold text-gray-800">Summary of Observations</h1>
-                <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
-                    <li>The greatest physical settlement occurs at the surface (Magnet 1) and decreases with depth.</li>
-                    <li>The probe readings for the magnets are negative because the soil settlement is greater than the pipe's downward movement.</li>
-                    <li>The probe reading for the Datum is positive, showing the slight downward penetration of the pipe relative to the fixed anchor.</li>
-                    <li>This simulation highlights the difference between <span class="font-bold text-indigo-600">instrument readings (relative)</span> and <span class="font-bold text-green-700">actual physical settlement (absolute)</span>.</li>
-                </ul>
+        <!-- Slide 10: Rod Extensometer Components (Redesigned) -->
+        <div id="slide-10" class="slide">
+            <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
+                <!-- Left Column: Controls & Description -->
+                <div class="md:col-span-3 w-full text-left flex flex-col h-full">
+                    <h1 class="text-4xl font-bold text-gray-800">Rod Extensometer Components</h1>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <button data-component="rod-ext-head" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Reference Head</button>
+                        <button data-component="rod-ext-anchor" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Anchors</button>
+                        <button data-component="rod-ext-rod-sleeve" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Rods & Sleeves</button>
+                    </div>
+                    <div id="rod-component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
+                         <!-- Image will be loaded here by JS -->
+                    </div>
+                    <div id="rod-component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg flex-grow">
+                        <p class="text-gray-500">Select a component to learn about its function.</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Model -->
+                <div class="md:col-span-9 w-full flex flex-col items-center justify-center h-full gap-4">
+                    <svg id="rod-ext-svg" viewBox="0 0 400 500" class="flex-grow w-full" style="max-width: 400px;">
+                        <!-- Ground -->
+                        <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
+                        <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
+                        <!-- Borehole / Grout -->
+                        <rect x="150" y="50" width="100" height="450" fill="#808080"/>
+                        
+                        <!-- Components -->
+                        <g id="rod-ext-rod-sleeve" class="rod-ext-component">
+                            <!-- Sleeves -->
+                            <rect x="172" y="50" width="6" height="200" fill="#e5e7eb" opacity="0.5"/>
+                            <rect x="197" y="50" width="6" height="300" fill="#e5e7eb" opacity="0.5"/>
+                            <rect x="222" y="50" width="6" height="400" fill="#e5e7eb" opacity="0.5"/>
+                            <!-- Rods -->
+                            <line x1="175" y1="50" x2="175" y2="250" stroke="#3b82f6" stroke-width="2.5"/>
+                            <line x1="200" y1="50" x2="200" y2="350" stroke="#3b82f6" stroke-width="2.5"/>
+                            <line x1="225" y1="50" x2="225" y2="450" stroke="#22c55e" stroke-width="2.5"/>
+                        </g>
+                        <g id="rod-ext-anchor" class="rod-ext-component">
+                             <path transform="translate(175, 250) scale(1.2)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                             <path transform="translate(200, 350) scale(1.2)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                             <path transform="translate(225, 450) scale(1.2)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                        </g>
+                        <g id="rod-ext-head" class="rod-ext-component">
+                            <rect x="140" y="40" width="120" height="10" fill="#d1d5db" stroke="#4a5568"/>
+                            <rect x="175" y="20" width="50" height="20" fill="#7dd3fc" stroke="#4a5568" rx="2"/>
+                        </g>
+                    </svg>
+                </div>
             </div>
         </div>
     </main>
@@ -508,7 +550,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- PRESENTATION LOGIC ---
             let currentSlide = 1;
-            const totalSlides = 8;
+            const totalSlides = 10;
             const prevButton = document.getElementById('prev');
             const nextButton = document.getElementById('next');
 
@@ -534,6 +576,23 @@
                 }
             });
             
+            window.addEventListener('keydown', (e) => {
+                 if (e.key === 'ArrowRight') {
+                    nextButton.click();
+                }
+                if (e.key === 'ArrowLeft') {
+                    prevButton.click();
+                }
+                if (currentSlide === 5) {
+                    if (e.key === 'ArrowDown') {
+                        installNext.click();
+                    }
+                    if (e.key === 'ArrowUp') {
+                        installPrev.click();
+                    }
+                }
+            });
+
             showSlide(currentSlide);
 
             // --- PROBE SLIDE INTERACTIVITY ---
@@ -577,11 +636,9 @@
             let installStep = 1;
             const totalInstallSteps = 4;
 
-            const drill = document.getElementById('drill');
             const installCasing = document.getElementById('install-casing');
             const groutLeft = document.getElementById('grout-left');
             const groutRight = document.getElementById('grout-right');
-            const installTool = document.getElementById('install-tool');
             const installProbe = document.getElementById('install-probe');
             const leg1Left = document.getElementById('leg-1-left');
             const leg1Right = document.getElementById('leg-1-right');
@@ -589,33 +646,43 @@
             const leg2Right = document.getElementById('leg-2-right');
             const deployedMagnets = document.getElementById('deployed-magnets');
             const dataLogger = document.getElementById('data-logger');
+            const installationImageContainer = document.getElementById('installation-image-container');
+
+            const installImages = {
+                1: 'install_step_1.png',
+                2: 'install_step_2.png',
+                3: 'install_step_3.png',
+                4: 'install_step_4.png'
+            };
 
 
-            function showInstallStep(step) {
-                document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
-                document.getElementById(`step-desc-${step}`).classList.add('active');
+           function showInstallStep(step) {
+            document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-desc-${step}`).classList.add('active');
+            
+            installationImageContainer.innerHTML = `<img src="${installImages[step]}" alt="Installation Step ${step}" class="mx-auto my-2 rounded-lg shadow-md max-h-48">`;
 
-                installPrev.disabled = step === 1;
-                installNext.disabled = step === totalInstallSteps;
-                installPrev.style.opacity = step === 1 ? 0.5 : 1;
-                installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
+            installPrev.disabled = step === 1;
+            installNext.disabled = step === totalInstallSteps;
+            installPrev.style.opacity = step === 1 ? 0.5 : 1;
+            installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
 
-                drill.style.transform = (step === 1) ? 'translate(200, 50px)' : 'translate(200, -100px)';
-                installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
-                groutLeft.style.opacity = (step >= 2) ? '1' : '0';
-                groutRight.style.opacity = (step >= 2) ? '1' : '0';
-                installTool.style.opacity = (step === 3) ? '1' : '0';
-                installTool.style.transform = (step === 3) ? 'translate(200, 50px)' : 'translate(200, -350px)';
-                const deployLegs = step >= 3;
-                leg1Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
-                leg1Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
-                leg2Left.setAttribute('d', deployLegs ? 'M -15 0 L -75 0' : 'M -15 0 L -25 0');
-                leg2Right.setAttribute('d', deployLegs ? 'M 15 0 L 75 0' : 'M 15 0 L 25 0');
-                deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
-                if (step < 3) deployedMagnets.style.opacity = '0';
-                installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
-                dataLogger.style.opacity = (step === 4) ? '1' : '0';
-            }
+            // Step 1: Nothing happens visually, as the drill is removed.
+
+            // Step 2: Control Casing position AND opacity
+            installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
+            installCasing.style.opacity = (step >= 2) ? '1' : '0';
+            groutLeft.style.opacity = (step >= 2) ? '1' : '0';
+            groutRight.style.opacity = (step >= 2) ? '1' : '0';
+
+            // Step 3: Show the deployed magnets (they will just fade in)
+            deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
+
+            // Step 4: Control Probe position AND opacity
+            installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
+            installProbe.style.opacity = (step === 4) ? '1' : '0';
+            dataLogger.style.opacity = (step === 4) ? '1' : '0';
+        }
 
             installPrev.addEventListener('click', () => {
                 if(installStep > 1) {
@@ -632,7 +699,7 @@
             showInstallStep(installStep);
             
             // --- COMPONENT MOVEMENT SLIDE LOGIC ---
-            const componentButtons = document.querySelectorAll('.component-button');
+            const componentButtons = document.querySelectorAll('#slide-4 .component-button');
             const movementSlider = document.getElementById('movement-slider');
             const movementCasing = document.getElementById('movement-casing');
             const movementMagnets = document.getElementById('movement-magnets');
@@ -667,39 +734,75 @@
 
             componentButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    componentButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    activeComponentId = button.dataset.component;
+                    const clickedComponentId = button.dataset.component;
 
-                    [movementCasing, movementProbe, movementMagnets, movementDatum].forEach(el => {
-                        if (el) { 
-                            el.classList.remove('highlighted-component');
-                            el.style.transform = '';
-                        }
-                    });
-                   
-                    cobraRod.setAttribute('d', 'M 200 50 L 200 500');
-                    probeSensor1.setAttribute('transform', '');
-                    probeSensor2.setAttribute('transform', '');
-                    
-                    const componentToShow = document.getElementById(activeComponentId);
-                    if(componentToShow) componentToShow.classList.add('highlighted-component');
-                    
-                    const content = descriptions[activeComponentId];
-                    if (content) {
-                        componentImageContainer.innerHTML = `<img src="${content.img}" class="mx-auto my-2 rounded-lg shadow-md max-h-full object-contain">`;
-                        componentDescription.innerHTML = content.text;
-                    } else {
+                    if (button.classList.contains('active')) {
+                        // --- DESELECT ---
+                        button.classList.remove('active');
+                        activeComponentId = null;
+                        
+                        // Show all components
+                        const allComponents = [movementCasing, movementProbe, movementMagnets, movementDatum];
+                        allComponents.forEach(el => {
+                            if (el) {
+                                el.classList.remove('highlighted-component');
+                                el.style.opacity = '1';
+                                el.style.transform = '';
+                            }
+                        });
+                        cobraRod.setAttribute('d', 'M 200 50 L 200 500');
+                        probeSensor1.setAttribute('transform', '');
+                        probeSensor2.setAttribute('transform', '');
+                        
+                        // Reset description and image
                         componentImageContainer.innerHTML = '';
                         componentDescription.innerHTML = '<p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>';
-                    }
-                    
-                    const isMagnet = activeComponentId === 'movement-magnets';
-                    movementSlider.min = isMagnet ? -100 : 0;
-                    movementSlider.value = 0;
-                    movementSliderLabels.innerHTML = isMagnet ? `<span>Heave</span><span>Settlement</span>` : `<span>No Load</span><span>Max Load</span>`;
+                        movementSlider.value = 0;
+                        movementSlider.dispatchEvent(new Event('input'));
+                    } else {
+                        // --- SELECT ---
+                        componentButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        activeComponentId = clickedComponentId;
+                        
+                        // Reset all transforms and styles first
+                        const allComponents = [movementCasing, movementProbe, movementMagnets, movementDatum];
+                        allComponents.forEach(el => {
+                            if (el) { 
+                                el.classList.remove('highlighted-component');
+                                el.style.transform = '';
+                                el.style.opacity = '0.1'; // Fade out non-active
+                            }
+                        });
+                        cobraRod.setAttribute('d', 'M 200 50 L 200 500');
+                        probeSensor1.setAttribute('transform', '');
+                        probeSensor2.setAttribute('transform', '');
 
-                    movementSlider.dispatchEvent(new Event('input'));
+                        const componentToShow = document.getElementById(activeComponentId);
+                        if(componentToShow) {
+                            componentToShow.classList.add('highlighted-component');
+                            componentToShow.style.opacity = '1';
+                        }
+                        
+                        // Special visibility rule: Casing is often context for other parts
+                        if (activeComponentId === 'movement-probe' || activeComponentId === 'movement-magnets' || activeComponentId === 'movement-datum') {
+                            movementCasing.style.opacity = '1';
+                        }
+
+                        // Update description and image
+                        const content = descriptions[activeComponentId];
+                        if (content) {
+                            componentImageContainer.innerHTML = `<img src="${content.img}" class="mx-auto my-2 rounded-lg shadow-md max-h-full object-contain">`;
+                            componentDescription.innerHTML = content.text;
+                        }
+                        
+                        // Update slider
+                        const isMagnet = activeComponentId === 'movement-magnets';
+                        movementSlider.min = isMagnet ? -100 : 0;
+                        movementSlider.value = 0;
+                        movementSliderLabels.innerHTML = isMagnet ? `<span>Heave</span><span>Settlement</span>` : `<span>No Load</span><span>Max Load</span>`;
+                        movementSlider.dispatchEvent(new Event('input'));
+                    }
                 });
             });
 
@@ -846,8 +949,106 @@
             });
             simSlider.dispatchEvent(new Event('input'));
 
+            // --- Casing Issue Slide Logic ---
+            const casingIssueSlider = document.getElementById('casing-issue-slider');
+            const casingIssueCasing = document.getElementById('casing-issue-casing');
+            const casingIssueProbe = document.getElementById('casing-issue-probe');
+            casingIssueSlider.addEventListener('input', e => {
+                const move = (parseInt(e.target.value) / 100) * 15;
+                casingIssueCasing.style.transform = `translateY(${move}px)`;
+                casingIssueProbe.style.transform = `translateY(${move}px)`;
+            });
+
+            // --- Probe Issue Slide Logic ---
+            const probeIssueSlider = document.getElementById('probe-issue-slider');
+            const probeIssueCobra = document.getElementById('probe-issue-cobra');
+            const probeIssueSensor = document.getElementById('probe-issue-sensor');
+            probeIssueSlider.addEventListener('input', e => {
+                const value = parseInt(e.target.value);
+                const deformationFactor = value / 100;
+                const amplitude = 15 * deformationFactor;
+                let pathData = 'M 200 50 C ';
+                const control_y1 = 50 + (350 / 4);
+                const control_y2 = 50 + (350 / 4) * 3;
+                const x_offset = amplitude * 2;
+                pathData += `${200 - x_offset} ${control_y1}, ${200 + x_offset} ${control_y2}, 200 400`;
+                probeIssueCobra.setAttribute('d', pathData);
+                
+                const sag = value > 0 ? (value / 100) * 5 : 0;
+                 document.getElementById('probe-issue-probe').style.transform = `translateY(${sag}px)`;
+            });
+            
+            // --- ROD EXTENSOMETER COMPONENTS SLIDE LOGIC ---
+            const rodComponentButtons = document.querySelectorAll('#slide-10 .rod-component-button');
+            const rodComponentDescription = document.getElementById('rod-component-description');
+            const rodComponentImageContainer = document.getElementById('rod-component-image-container');
+            const rodExtSvg = document.getElementById('rod-ext-svg');
+
+            const rodDescriptions = {
+                'rod-ext-head': {
+                    img: 'ref_head_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Reference Head</h3><p>The surface-level assembly where rods terminate and measurements are taken. It's the stable point against which all anchor movements are compared.</p><p class="mt-2">Measurements can be taken manually with a depth gauge or automatically with electronic sensors like vibrating wire transducers.</p>`
+                },
+                'rod-ext-anchor': {
+                    img: 'anchor_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Anchors</h3><p>Anchors are fixed into the soil or rock at specific depths within the borehole. Each anchor's movement is independently transferred up to the reference head.</p><p class="mt-2">Common types include groutable, hydraulic (Borros), and packer anchors, chosen based on the ground conditions.</p>`
+                },
+                'rod-ext-rod-sleeve': {
+                    img: 'rod_image.png',
+                    text: `<h3 class="font-bold text-xl mb-2">Rods & Sleeves</h3><p><strong>Rods</strong> connect each anchor to the reference head, acting as a direct physical link. They can be rigid (steel) for precision or flexible (fibreglass).</p><p class="mt-2">Each rod runs inside a protective <strong>sleeve</strong>. The sleeve's critical job is to de-bond the rod from the grout, ensuring it can move freely and accurately transfer the anchor's movement.</p>`
+                }
+            };
+
+            rodComponentButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const clickedComponentId = button.dataset.component;
+
+                    if (button.classList.contains('active')) {
+                        // --- DESELECT ---
+                        button.classList.remove('active');
+
+                        // Show all components
+                        const allRodComponents = rodExtSvg.querySelectorAll('.rod-ext-component');
+                        allRodComponents.forEach(el => {
+                            el.classList.remove('highlighted-component');
+                            el.style.opacity = '1';
+                        });
+
+                        // Reset description and image
+                        rodComponentImageContainer.innerHTML = '';
+                        rodComponentDescription.innerHTML = '<p class="text-gray-500">Select a component to learn about its function.</p>';
+                    } else {
+                        // --- SELECT ---
+                        rodComponentButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        // Hide all, then show active
+                        const allRodComponents = rodExtSvg.querySelectorAll('.rod-ext-component');
+                        allRodComponents.forEach(el => {
+                            el.classList.remove('highlighted-component');
+                            el.style.opacity = '0.1';
+                        });
+                        
+                        const componentToShow = document.getElementById(clickedComponentId);
+                        if (componentToShow) {
+                            componentToShow.classList.add('highlighted-component');
+                            componentToShow.style.opacity = '1';
+                        }
+
+                        // Update description and image
+                        const content = rodDescriptions[clickedComponentId];
+                        if (content) {
+                            rodComponentImageContainer.innerHTML = `<img src="${content.img}" class="mx-auto my-2 rounded-lg shadow-md max-h-full object-contain">`;
+                            rodComponentDescription.innerHTML = content.text;
+                        }
+                    }
+                });
+            });
+            // Set initial state by default (no component selected)
+
         });
     </script>
 </body>
 </html>
+
 
