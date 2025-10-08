@@ -540,6 +540,88 @@
                 </div>
             </div>
         </div>
+
+        <!-- Slide 11: Rod Extensometer Simulation (Rebuilt) -->
+        <div id="slide-11" class="slide">
+            <div class="w-full max-w-7xl grid md:grid-cols-2 items-center justify-center gap-8 p-4">
+                <!-- Left Column: Physical Settlement View -->
+                <div class="w-full flex flex-col items-center justify-center gap-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Physical Settlement View</h2>
+                    <svg id="rod-sim-svg" viewBox="0 0 400 250" class="w-full max-w-lg border-2 border-gray-200 rounded-lg bg-white">
+                        <defs>
+                             <linearGradient id="rodSoilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop id="rod-gradient-stop-top" offset="20%" stop-color="#a67b51" />
+                                <stop offset="100%" stop-color="#5a3d20" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Deformable Soil Body -->
+                        <path id="rod-soil-body" d="M 0 250 L 0 50 L 400 50 L 400 250 Z" fill="url(#rodSoilGradient)" />
+                        <!-- Growing Embankment -->
+                        <polygon id="rod-embankment" points="150,50 250,50 275,50 125,50" fill="#a16207" stroke="#444" stroke-width="1.5" />
+
+                        <!-- Rod Extensometer Components -->
+                        <g id="rod-sim-instrument-group">
+                            <g id="rod-sim-group-1">
+                                <line x1="175" y1="45" x2="175" y2="125" stroke="#3b82f6" stroke-width="1.5"/>
+                                <path transform="translate(175, 125) scale(1)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                            </g>
+                            <g id="rod-sim-group-2">
+                                <line x1="200" y1="45" x2="200" y2="175" stroke="#3b82f6" stroke-width="1.5"/>
+                                <path transform="translate(200, 175) scale(1)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                            </g>
+                            <g id="rod-sim-group-3">
+                                <line id="rod-sim-ref-rod" x1="225" y1="45" x2="225" y2="225" stroke="#22c55e" stroke-width="1.5"/>
+                                <path transform="translate(225, 225) scale(1)" d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z" fill="#ef4444" stroke="#4a5568"/>
+                            </g>
+                            <g id="rod-sim-head">
+                                <rect x="160" y="45" width="80" height="5" fill="#d1d5db" stroke="#4a5568" stroke-width="0.5"/>
+                                <rect x="175" y="25" width="50" height="20" fill="#7dd3fc" stroke="#4a5568" stroke-width="0.5" rx="1"/>
+                            </g>
+                        </g>
+                    </svg>
+                    <div class="w-full flex flex-col items-center mt-2">
+                        <label for="rod-settlement-slider" class="font-semibold text-gray-700">Ground Settlement</label>
+                        <input id="rod-settlement-slider" type="range" min="0" max="100" value="0" class="w-3/4">
+                    </div>
+                </div>
+
+                <!-- Right Column: Instrument Measurement View -->
+                <div class="w-full flex flex-col items-center justify-center gap-8">
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Instrument Measurement View (at Head)</h2>
+                        <svg id="rod-head-svg" viewBox="0 0 300 150" class="w-full max-w-xs border-2 border-gray-200 rounded-lg bg-white p-2">
+                             <!-- Static Head Frame -->
+                            <rect x="5" y="5" width="290" height="20" fill="#d1d5db" stroke="#4a5568" rx="3"/>
+                            <!-- Displacement Sensors -->
+                            <g transform="translate(75, 25)">
+                                <rect x="-10" y="0" width="20" height="50" fill="#718096" rx="2"/>
+                                <rect id="rod-sensor-plunger-1" x="-5" y="0" width="10" height="40" fill="#3b82f6"/>
+                            </g>
+                            <g transform="translate(150, 25)">
+                                <rect x="-10" y="0" width="20" height="50" fill="#718096" rx="2"/>
+                                <rect id="rod-sensor-plunger-2" x="-5" y="0" width="10" height="40" fill="#3b82f6"/>
+                            </g>
+                             <g transform="translate(225, 25)">
+                                <rect x="-10" y="0" width="20" height="50" fill="#718096" rx="2"/>
+                                <rect id="rod-sensor-plunger-3" x="-5" y="0" width="10" height="40" fill="#22c55e"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="table-container w-full max-w-md">
+                        <table class="data-table">
+                            <thead><tr><th>Measurement</th><th class="text-right">Value (mm)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Reading (Rod 1)</td><td id="rod-reading-1" class="font-mono font-bold text-right text-blue-600">0.0</td></tr>
+                                <tr><td>Reading (Rod 2)</td><td id="rod-reading-2" class="font-mono font-bold text-right text-blue-600">0.0</td></tr>
+                                <tr><td>Physical Settlement (Anchor 1)</td><td id="rod-actual-1" class="font-mono font-bold text-right">0.0</td></tr>
+                                <tr><td>Physical Settlement (Anchor 2)</td><td id="rod-actual-2" class="font-mono font-bold text-right">0.0</td></tr>
+                                <tr><td class="font-bold text-green-700">Reference Rod Reading</td><td id="rod-reading-3" class="font-mono font-bold text-right text-green-700">0.0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Navigation -->
@@ -550,7 +632,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- PRESENTATION LOGIC ---
             let currentSlide = 1;
-            const totalSlides = 10;
+            const totalSlides = 11;
             const prevButton = document.getElementById('prev');
             const nextButton = document.getElementById('next');
 
@@ -1046,9 +1128,122 @@
             });
             // Set initial state by default (no component selected)
 
+            // --- ROD EXTENSOMETER SIMULATION LOGIC (REBUILT WITH SOIL MODEL) ---
+            const rodSettlementSlider = document.getElementById('rod-settlement-slider');
+            const rodSoilBody = document.getElementById('rod-soil-body');
+            const rodEmbankment = document.getElementById('rod-embankment');
+            const rodInstrumentGroup = document.getElementById('rod-sim-instrument-group');
+            const rodGradientStopTop = document.getElementById('rod-gradient-stop-top');
+            
+            // Get instrument parts
+            const rodSimGroup1 = document.getElementById('rod-sim-group-1');
+            const rodSimGroup2 = document.getElementById('rod-sim-group-2');
+            const rodSimGroup3 = document.getElementById('rod-sim-group-3');
+            const rodSimHead = document.getElementById('rod-sim-head');
+            const rodSimRefRod = document.getElementById('rod-sim-ref-rod'); // Get the reference rod line
+            
+            // Get sensor plungers
+            const rodSensorPlunger1 = document.getElementById('rod-sensor-plunger-1');
+            const rodSensorPlunger2 = document.getElementById('rod-sensor-plunger-2');
+            const rodSensorPlunger3 = document.getElementById('rod-sensor-plunger-3');
+
+            // Get table readouts
+            const rodReading1 = document.getElementById('rod-reading-1');
+            const rodReading2 = document.getElementById('rod-reading-2');
+            const rodReading3 = document.getElementById('rod-reading-3');
+            const rodActual1 = document.getElementById('rod-actual-1');
+            const rodActual2 = document.getElementById('rod-actual-2');
+            
+            // Constants for the new soil model
+            const rodSimConstants = {
+                numPoints: 100,
+                initialGroundLevelY: 50,
+                svgHeight: 250,
+                svgWidth: 400,
+                maxSettlement: 30, // Max physical settlement at center
+                maxPlungerTravel: 30 // Max visual travel of sensor plunger
+            };
+
+            rodSettlementSlider.addEventListener('input', e => {
+                const loadFactor = parseInt(e.target.value) / 100;
+                
+                // 1. Calculate and draw the deformed soil surface
+                const surfacePoints = [];
+                const surfaceYCoords = [];
+                for (let i = 0; i <= rodSimConstants.numPoints; i++) {
+                    const position = i / rodSimConstants.numPoints;
+                    const distanceFromCenter = Math.abs(position - 0.5);
+                    const influenceSpread = 0.25; // Adjusted for smaller SVG
+                    const influence = Math.exp(-Math.pow(distanceFromCenter / influenceSpread, 2));
+                    const settlement = rodSimConstants.maxSettlement * influence * loadFactor;
+                    const x = position * rodSimConstants.svgWidth;
+                    const y = rodSimConstants.initialGroundLevelY + settlement;
+                    surfacePoints.push([x, y]);
+                    surfaceYCoords.push(y);
+                }
+                const pathPoints = surfacePoints.map(p => `${p[0]},${p[1]}`);
+                const pathD = `M 0,${rodSimConstants.svgHeight} L 0,${surfaceYCoords[0]} L ${pathPoints.join(' L ')} L ${rodSimConstants.svgWidth},${rodSimConstants.svgHeight} Z`;
+                rodSoilBody.setAttribute('d', pathD);
+
+                // 2. Calculate and draw the embankment
+                const embankmentHeight = 25 * loadFactor;
+                const leftBaseIndex = Math.floor(rodSimConstants.numPoints * 0.3);
+                const rightBaseIndex = Math.floor(rodSimConstants.numPoints * 0.7);
+                const embankmentTopLeft = [rodSimConstants.svgWidth * 0.3 + 25, surfaceYCoords[leftBaseIndex] - embankmentHeight];
+                const embankmentTopRight = [rodSimConstants.svgWidth * 0.7 - 25, surfaceYCoords[rightBaseIndex] - embankmentHeight];
+                const embankmentBasePoints = surfacePoints.slice(leftBaseIndex, rightBaseIndex + 1);
+                const allEmbankmentPoints = [embankmentTopLeft, embankmentTopRight, ...embankmentBasePoints.reverse()];
+                const embankmentPointsStr = allEmbankmentPoints.map(p => p.join(',')).join(' ');
+                rodEmbankment.setAttribute('points', embankmentPointsStr);
+                
+                // 3. Calculate physical settlement of each component
+                const centerIndex = Math.floor(rodSimConstants.numPoints / 2);
+                const surfaceSettlement = surfaceYCoords[centerIndex] - rodSimConstants.initialGroundLevelY;
+                
+                const headSettlement = surfaceSettlement; // Head is on the surface, moves with it
+                const settlement1 = surfaceSettlement * 0.9; // Shallow anchor, moves slightly less than surface
+                const settlement2 = surfaceSettlement * 0.5; // Deeper anchor
+                const settlement3 = 0; // Reference anchor is stable
+
+                // 4. Animate the Physical Settlement View
+                rodSimHead.style.transform = `translateY(${headSettlement}px)`;
+                rodSimGroup1.style.transform = `translateY(${settlement1}px)`;
+                rodSimGroup2.style.transform = `translateY(${settlement2}px)`;
+                // Group 3's anchor does not move, but its rod stretches
+                rodSimRefRod.setAttribute('y1', 45 + headSettlement);
+                
+                // 5. Calculate and display instrument readings
+                const reading1 = settlement1 - headSettlement;
+                const reading2 = settlement2 - headSettlement;
+                const reading3 = settlement3 - headSettlement;
+                
+                // 6. Animate the Instrument Measurement View by extending the plungers upwards
+                const plungerBaseY = 0;
+                const plungerBaseHeight = 40;
+                const scalingFactor = rodSimConstants.maxPlungerTravel / rodSimConstants.maxSettlement;
+
+                const upwardDisplacement1 = reading1 * -1 * scalingFactor;
+                rodSensorPlunger1.setAttribute('y', plungerBaseY - upwardDisplacement1);
+                rodSensorPlunger1.setAttribute('height', plungerBaseHeight + upwardDisplacement1);
+
+                const upwardDisplacement2 = reading2 * -1 * scalingFactor;
+                rodSensorPlunger2.setAttribute('y', plungerBaseY - upwardDisplacement2);
+                rodSensorPlunger2.setAttribute('height', plungerBaseHeight + upwardDisplacement2);
+                
+                const upwardDisplacement3 = reading3 * -1 * scalingFactor;
+                rodSensorPlunger3.setAttribute('y', plungerBaseY - upwardDisplacement3);
+                rodSensorPlunger3.setAttribute('height', plungerBaseHeight + upwardDisplacement3);
+                
+                // 7. Update data tables with positive readings for displacement
+                rodReading1.textContent = `+${(-reading1).toFixed(1)}`;
+                rodReading2.textContent = `+${(-reading2).toFixed(1)}`;
+                rodReading3.textContent = `+${(-reading3).toFixed(1)}`;
+                rodActual1.textContent = `-${settlement1.toFixed(1)}`;
+                rodActual2.textContent = `-${settlement2.toFixed(1)}`;
+            });
+            rodSettlementSlider.dispatchEvent(new Event('input'));
         });
     </script>
 </body>
 </html>
-
 
