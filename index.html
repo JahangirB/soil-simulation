@@ -11,6 +11,7 @@
             height: 100%;
             margin: 0;
             font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll, slides will handle their own */
         }
         main {
             width: 100%;
@@ -35,7 +36,12 @@
             visibility: hidden;
             transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
             overflow-y: auto; /* Allow scrolling on individual slides if content overflows */
-            padding: 2rem;
+            padding: 1rem; /* Base padding for mobile */
+        }
+        @media (min-width: 640px) {
+            .slide {
+                padding: 2rem; /* Larger padding for sm screens and up */
+            }
         }
         .slide.active {
             opacity: 1;
@@ -44,9 +50,10 @@
         }
         .nav-button {
             position: fixed;
-            bottom: 2rem;
+            bottom: 1rem; /* Closer to edge on mobile */
             z-index: 100;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem; /* Smaller buttons on mobile */
+            font-size: 0.875rem;
             background-color: #4f46e5;
             color: white;
             border-radius: 9999px;
@@ -54,12 +61,23 @@
             box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
             transition: all 0.2s ease-in-out;
         }
+        @media (min-width: 768px) {
+            .nav-button {
+                 bottom: 2rem; /* Back to original on md screens */
+                 padding: 0.75rem 1.5rem;
+                 font-size: 1rem;
+            }
+        }
         .nav-button:hover {
             background-color: #4338ca;
             transform: translateY(-2px);
         }
-        #prev { left: 2rem; }
-        #next { right: 2rem; }
+        #prev { left: 1rem; }
+        #next { right: 1rem; }
+         @media (min-width: 768px) {
+            #prev { left: 2rem; }
+            #next { right: 2rem; }
+        }
         
         #draggable-magnet {
             cursor: grab;
@@ -73,8 +91,13 @@
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 0.75rem;
-            padding: 1.5rem;
+            padding: 1rem; /* Smaller padding for mobile */
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        @media (min-width: 768px) {
+            .table-container {
+                padding: 1.5rem;
+            }
         }
         .data-table {
             width: 100%;
@@ -85,7 +108,7 @@
             border-bottom: 2px solid #d1d5db;
         }
         .data-table th {
-            padding: 0.75rem 1rem;
+            padding: 0.5rem;
             font-weight: 600;
             color: #374151;
             text-transform: uppercase;
@@ -93,9 +116,14 @@
             font-size: 0.75rem;
         }
         .data-table td {
-            padding: 0.75rem 1rem;
+            padding: 0.5rem;
             color: #4b5563;
             border-top: 1px solid #e5e7eb;
+        }
+        @media (min-width: 768px) {
+             .data-table th, .data-table td {
+                padding: 0.75rem 1rem;
+            }
         }
         .data-table tbody tr:first-child td {
             border-top: none;
@@ -136,16 +164,16 @@
         <!-- Slide 1: Title -->
         <div id="slide-1" class="slide active">
             <div class="p-4">
-                <h1 class="text-6xl font-black text-gray-800">Interactive Soil Settlement Simulation</h1>
-                <p class="mt-4 text-2xl text-gray-600">Visualizing the Effects of Embankment Loading on Clay Soil</p>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-800">Interactive Soil Settlement Simulation</h1>
+                <p class="mt-4 text-lg sm:text-xl md:text-2xl text-gray-600">Visualizing the Effects of Embankment Loading</p>
             </div>
         </div>
 
         <!-- Slide 2: Introduction -->
         <div id="slide-2" class="slide">
              <div class="p-4">
-                <h1 class="text-5xl font-bold text-gray-800">Simulation Setup</h1>
-                <ul class="mt-8 text-xl text-left list-disc space-y-4 max-w-3xl">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Simulation Setup</h1>
+                <ul class="mt-8 text-base sm:text-lg md:text-xl text-left list-disc space-y-4 max-w-3xl">
                     <li>Model simulates a uniform clay soil layer under an embankment load.</li>
                     <li>A magnetic extensometer is installed to monitor soil movement.</li>
                     <li>Spider Magnets (1, 2, 3) move with the surrounding soil.</li>
@@ -159,21 +187,21 @@
         <div id="slide-3" class="slide">
             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 p-4">
                 <div class="w-full md:w-1/2 text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">How the Probe Works</h1>
-                    <ul class="mt-8 text-xl text-left list-disc space-y-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">How the Probe Works</h1>
+                    <ul class="mt-6 text-base sm:text-lg md:text-xl text-left list-disc space-y-4">
                         <li>The automated probe is a metal bar, approximately 600mm in length.</li>
                         <li>Inside, a <span class="font-bold text-red-600">400mm sensor</span> actively detects magnetic fields.</li>
                         <li>When a magnet enters this sensor range (0mm to 400mm), its exact position is identified.</li>
                         <li>This position is sent as a signal to the data logger. If the magnet is outside this range, no data is recorded.</li>
                     </ul>
-                    <div class="mt-8 p-4 bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 rounded-r-lg">
+                    <div class="mt-6 p-4 bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 rounded-r-lg">
                         <p class="font-bold">Interactive Element</p>
                         <p>Drag the blue magnet on the right to see how the instrument reading changes in real-time.</p>
                     </div>
-                    <img src="probe_image.png" alt="A real-world automated magnetic extensometer probe" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                    <img src="probe_image.png" alt="A real-world automated magnetic extensometer probe" class="mt-6 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
                 </div>
                 <div class="w-full md:w-1/2 flex items-center justify-center">
-                    <svg id="probe-svg" viewBox="0 0 400 700" class="w-full h-full max-w-sm">
+                    <svg id="probe-svg" viewBox="0 0 400 700" class="w-full h-full max-w-xs sm:max-w-sm">
                         <!-- Probe Body -->
                         <rect x="150" y="50" width="30" height="600" fill="#a0aec0" rx="5"/>
                         <!-- Sensor Area -->
@@ -207,27 +235,27 @@
         
         <!-- Slide 4: Component Movement Analysis -->
         <div id="slide-4" class="slide">
-            <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
+            <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
                 <!-- Left Column: Controls & Description -->
-                <div class="md:col-span-3 w-full text-left flex flex-col h-full">
-                    <h1 class="text-4xl font-bold text-gray-800">Component Movement</h1>
-                    <div class="mt-6 flex flex-wrap gap-2">
-                        <button data-component="movement-casing" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Casing</button>
-                        <button data-component="movement-probe" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">IPX Probes Chain</button>
-                        <button data-component="movement-magnets" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Monitoring Magnet</button>
-                        <button data-component="movement-datum" class="component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Datum Magnet</button>
+                <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Component Movement</h1>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button data-component="movement-casing" class="component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Casing</button>
+                        <button data-component="movement-probe" class="component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">IPX Probes Chain</button>
+                        <button data-component="movement-magnets" class="component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Monitoring Magnet</button>
+                        <button data-component="movement-datum" class="component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Datum Magnet</button>
                     </div>
-                    <div id="component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
+                    <div id="component-image-container" class="mt-4 min-h-[100px] sm:min-h-[150px] flex items-center justify-center">
                          <!-- Image will be loaded here by JS -->
                     </div>
-                    <div id="component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg flex-grow">
+                    <div id="component-description" class="mt-4 text-sm sm:text-base p-4 bg-gray-50 rounded-lg flex-grow">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
 
                 <!-- Right Column: Model & Slider -->
-                <div class="md:col-span-9 w-full flex flex-col items-center justify-center h-full gap-4">
-                    <svg id="movement-svg" viewBox="0 0 400 500" class="flex-grow w-full" style="max-width: 400px;">
+                <div class="w-full lg:w-2/3 flex flex-col items-center justify-center h-full gap-4">
+                    <svg id="movement-svg" viewBox="0 0 400 500" class="flex-grow w-full max-w-md">
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
                         <rect x="150" y="50" width="100" height="450" fill="#6b4624"/>
@@ -273,37 +301,37 @@
         
         <!-- Slide 5: Installation Process -->
         <div id="slide-5" class="slide">
-             <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
-                <div class="md:col-span-4 w-full text-left flex flex-col h-full">
-                    <h1 class="text-4xl font-bold text-gray-800">Installation Process</h1>
-                    <div class="mt-8 text-xl text-left space-y-4 relative h-64">
+             <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
+                <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Installation Process</h1>
+                    <div class="mt-6 text-base sm:text-lg text-left space-y-4 relative h-48 sm:h-64">
                         <div id="step-desc-1" class="installation-step-description active">
-                             <h2 class="font-bold text-2xl">Step 1: Drill Borehole</h2>
-                             <p>A borehole is drilled into the ground to the required depth, passing through all soil layers to be monitored.</p>
+                             <h2 class="font-bold text-xl sm:text-2xl">Step 1: Drill Borehole</h2>
+                             <p>A borehole is drilled into the ground to the required depth.</p>
                         </div>
                          <div id="step-desc-2" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 2: Install & Grout Casing</h2>
-                             <p>An access casing is lowered into the borehole. The space between the casing and the borehole wall is then filled with grout to stabilize the ground.</p>
+                             <h2 class="font-bold text-xl sm:text-2xl">Step 2: Install & Grout Casing</h2>
+                             <p>An access casing is lowered and grouted into the borehole.</p>
                         </div>
                          <div id="step-desc-3" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 3: Install Magnets</h2>
-                             <p>Using an installation tool, spider magnets are pushed down inside the casing. At each target depth, the tool deploys the magnet's legs to anchor it to the borehole wall.</p>
+                             <h2 class="font-bold text-xl sm:text-2xl">Step 3: Install Magnets</h2>
+                             <p>Spider magnets are deployed at target depths inside the casing.</p>
                         </div>
                          <div id="step-desc-4" class="installation-step-description">
-                             <h2 class="font-bold text-2xl">Step 4: Install Probe & Commission</h2>
-                             <p>Finally, the automated probe string is lowered into the empty casing and connected to a data logger to take initial baseline readings.</p>
+                             <h2 class="font-bold text-xl sm:text-2xl">Step 4: Install Probe & Commission</h2>
+                             <p>The automated probe is installed and connected to a data logger.</p>
                         </div>
                     </div>
                      <div class="mt-auto flex gap-4">
-                        <button id="prev-install-step" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow">Previous Step</button>
-                        <button id="next-install-step" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow">Next Step</button>
+                        <button id="prev-install-step" class="px-4 py-2 sm:px-6 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow">Prev</button>
+                        <button id="next-install-step" class="px-4 py-2 sm:px-6 bg-indigo-600 text-white font-semibold rounded-lg shadow">Next</button>
                     </div>
                 </div>
-                <div id="installation-image-container" class="md:col-span-4 w-full flex items-center justify-center h-full">
+                <div id="installation-image-container" class="w-full lg:w-1/3 flex items-center justify-center h-full my-4 lg:my-0">
                     <!-- Image for installation step appears here -->
                 </div>
-                <div class="md:col-span-4 w-full flex items-center justify-center h-full">
-                   <svg id="installation-svg" viewBox="0 0 400 400" class="h-full">
+                <div class="w-full lg:w-1/3 flex items-center justify-center h-full">
+                   <svg id="installation-svg" viewBox="0 0 400 400" class="h-full max-h-[400px] w-auto">
                         <!-- Ground -->
                         <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
@@ -311,13 +339,12 @@
                         <!-- Borehole -->
                         <rect id="borehole" x="150" y="50" width="100" height="350" fill="#6b4624"/>
 
-                                             <!-- Grout -->
+                        <!-- Grout -->
                         <rect id="grout-left" class="installation-diagram-element" x="150" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
                         <rect id="grout-right" class="installation-diagram-element" x="220" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
                         
                         <!-- Casing -->
                         <rect id="install-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a" style="transform: translateY(-400px)" />
-
                       
                          <!-- Probe String -->
                         <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
@@ -338,7 +365,6 @@
                             <rect x="230" y="5" width="60" height="20" fill="#4b5563" rx="3"/>
                             <line x1="200" y1="50" x2="230" y2="15" stroke="#374151" stroke-width="2"/>
                         </g>
-
                    </svg>
                 </div>
             </div>
@@ -346,13 +372,13 @@
         
         <!-- Slide 6: The Interactive Simulation -->
         <div id="slide-6" class="slide">
-             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
-                <div class="grid md:grid-cols-3 gap-6">
+             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 my-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Left and Center Columns for Visuals -->
-                    <div class="md:col-span-2 flex flex-col gap-4">
+                    <div class="lg:col-span-2 flex flex-col gap-4">
                         <!-- Top: Main Simulation -->
-                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 450px;">
-                            <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
+                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden h-[300px] sm:h-[450px]">
+                            <div class="w-full flex flex-row text-center text-xs sm:text-sm font-medium text-gray-700 absolute bottom-0 z-10 bg-white/70 py-1 border-t border-black/10">
                                 <div class="w-full">Uniform Clay Soil</div>
                             </div>
                             <svg id="simulation-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMin slice" class="absolute top-0 left-0 w-full h-full bg-white">
@@ -371,21 +397,21 @@
                             </svg>
                         </div>
                         <!-- Bottom: Chart -->
-                        <div class="w-full border-2 border-gray-200 rounded-lg p-4 bg-white">
-                            <h3 class="text-lg font-bold text-gray-800 text-center mb-2">Settlement vs. Load</h3>
+                        <div class="w-full border-2 border-gray-200 rounded-lg p-2 sm:p-4 bg-white">
+                            <h3 class="text-base sm:text-lg font-bold text-gray-800 text-center mb-2">Settlement vs. Load</h3>
                             <svg id="chart-svg" viewBox="0 0 500 250" class="w-full"></svg>
                         </div>
                     </div>
 
                     <!-- Right Column for Controls and Data -->
-                    <div class="md:col-span-1 flex flex-col gap-6">
+                    <div class="lg:col-span-1 flex flex-col gap-4 sm:gap-6">
                         <div class="w-full flex flex-col items-center justify-center space-y-2">
-                            <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
+                            <label for="load-slider" class="font-bold text-base sm:text-lg text-gray-700">Embankment Load</label>
                             <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                            <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
+                            <span id="load-value" class="font-mono text-lg sm:text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
                         </div>
                         <div class="table-container">
-                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
+                            <h2 class="text-lg sm:text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
                             <table class="data-table">
                                 <thead><tr><th>Probe</th><th class="text-right">Reading (mm)</th></tr></thead>
                                 <tbody>
@@ -397,7 +423,7 @@
                             </table>
                         </div>
                         <div class="table-container">
-                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
+                            <h2 class="text-lg sm:text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
                             <table class="data-table">
                                 <thead><tr><th>Point</th><th class="text-right">Movement (mm)</th></tr></thead>
                                 <tbody>
@@ -415,13 +441,13 @@
         
         <!-- Slide 7: Casing Movement Issue -->
         <div id="slide-7" class="slide">
-             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">Data Issue: Casing Movement</h1>
-                     <p class="mt-4 text-xl">This animation shows what happens if the casing is pushed down by surface load.</p>
-                     <img src="datagraph_casing.png" alt="Data graph showing casing movement" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Data Issue: Casing Movement</h1>
+                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows what happens if the casing is pushed down by surface load.</p>
+                     <img src="datagraph_casing.png" alt="Data graph showing casing movement" class="mt-6 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
                 </div>
-                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-72 sm:h-96 gap-4">
                    <svg id="casing-issue-svg" viewBox="0 0 400 400" class="h-full">
                         <rect x="0" y="50" width="400" height="350" fill="#a67b51"/> <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
                         <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
@@ -443,13 +469,13 @@
         
         <!-- Slide 8: Probe Chain Issue -->
         <div id="slide-8" class="slide">
-             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-12 p-4">
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">Data Issue: Probe Deformation</h1>
-                     <p class="mt-4 text-xl">This animation shows how backfill can deform the probe chain, causing erroneous readings.</p>
-                     <img src="datagraph_probe.png" alt="Data graph showing probe deformation" class="mt-8 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Data Issue: Probe Deformation</h1>
+                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows how backfill can deform the probe chain, causing erroneous readings.</p>
+                     <img src="datagraph_probe.png" alt="Data graph showing probe deformation" class="mt-6 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
                 </div>
-                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-96 gap-4">
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-72 sm:h-96 gap-4">
                    <svg id="probe-issue-svg" viewBox="0 0 400 400" class="h-full">
                         <rect x="0" y="50" width="400" height="350" fill="#a67b51"/> <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
                         <rect x="150" y="50" width="100" height="350" fill="#6b4624"/>
@@ -469,13 +495,13 @@
         
         <!-- Slide 9: What is a Rod Extensometer -->
         <div id="slide-9" class="slide">
-            <div class="w-full max-w-6xl grid md:grid-cols-2 items-center justify-center gap-12 p-4">
+            <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-8 md:gap-12 p-4">
                 <!-- Left Column: Text Description -->
                 <div class="text-left">
-                    <h1 class="text-5xl font-bold text-gray-800">The Rod Extensometer</h1>
-                    <p class="mt-6 text-xl text-gray-700">A rod extensometer is a geotechnical instrument used to precisely measure displacement or settlement between one or more anchor points in a borehole and a stable reference head at the surface.</p>
-                    <h2 class="mt-8 text-3xl font-bold text-gray-800">How It Works:</h2>
-                    <ul class="mt-4 text-xl list-disc space-y-4 pl-5">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">The Rod Extensometer</h1>
+                    <p class="mt-6 text-base sm:text-lg md:text-xl text-gray-700">A rod extensometer is a geotechnical instrument used to precisely measure displacement or settlement between one or more anchor points in a borehole and a stable reference head at the surface.</p>
+                    <h2 class="mt-8 text-2xl sm:text-3xl font-bold text-gray-800">How It Works:</h2>
+                    <ul class="mt-4 text-base sm:text-lg md:text-xl list-disc space-y-4 pl-5">
                         <li><strong>Anchors</strong> are fixed at different depths in the ground.</li>
                         <li>Each anchor is connected to a rigid <strong>rod</strong> that extends up to the surface.</li>
                         <li>As the ground moves, the anchors and their attached rods move with it.</li>
@@ -483,8 +509,8 @@
                     </ul>
                 </div>
                 <!-- Right Column: Image Placeholder -->
-                <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-inner p-8">
-                     <img src="rod_extensometer_image.png" alt="A real-world photo of a rod extensometer head with measuring rods visible." class="rounded-lg shadow-xl border border-gray-300 object-cover w-full h-full max-h-[60vh]">
+                <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-inner p-4 sm:p-8">
+                     <img src="rod_extensometer_image.png" alt="A real-world photo of a rod extensometer head with measuring rods visible." class="rounded-lg shadow-xl border border-gray-300 object-cover w-full h-full max-h-[50vh]">
                      <p class="mt-4 font-semibold text-gray-600">Real-world Rod Extensometer Head</p>
                 </div>
             </div>
@@ -492,26 +518,26 @@
 
         <!-- Slide 10: Rod Extensometer Components (Redesigned) -->
         <div id="slide-10" class="slide">
-            <div class="w-full max-w-full flex flex-col md:grid md:grid-cols-12 items-center justify-center gap-4 p-4 h-full">
+            <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
                 <!-- Left Column: Controls & Description -->
-                <div class="md:col-span-3 w-full text-left flex flex-col h-full">
-                    <h1 class="text-4xl font-bold text-gray-800">Rod Extensometer Components</h1>
-                    <div class="mt-6 flex flex-wrap gap-2">
-                        <button data-component="rod-ext-head" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Reference Head</button>
-                        <button data-component="rod-ext-anchor" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Anchors</button>
-                        <button data-component="rod-ext-rod-sleeve" class="rod-component-button component-button px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-sm">Rods & Sleeves</button>
+                <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Rod Extensometer Components</h1>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button data-component="rod-ext-head" class="rod-component-button component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Reference Head</button>
+                        <button data-component="rod-ext-anchor" class="rod-component-button component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Anchors</button>
+                        <button data-component="rod-ext-rod-sleeve" class="rod-component-button component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Rods & Sleeves</button>
                     </div>
-                    <div id="rod-component-image-container" class="mt-4 min-h-[150px] flex items-center justify-center">
+                    <div id="rod-component-image-container" class="mt-4 min-h-[100px] sm:min-h-[150px] flex items-center justify-center">
                          <!-- Image will be loaded here by JS -->
                     </div>
-                    <div id="rod-component-description" class="mt-4 text-base p-4 bg-gray-50 rounded-lg flex-grow">
+                    <div id="rod-component-description" class="mt-4 text-sm sm:text-base p-4 bg-gray-50 rounded-lg flex-grow">
                         <p class="text-gray-500">Select a component to learn about its function.</p>
                     </div>
                 </div>
 
                 <!-- Right Column: Model -->
-                <div class="md:col-span-9 w-full flex flex-col items-center justify-center h-full gap-4">
-                    <svg id="rod-ext-svg" viewBox="0 0 400 500" class="flex-grow w-full" style="max-width: 400px;">
+                <div class="w-full lg:w-2/3 flex flex-col items-center justify-center h-full gap-4">
+                    <svg id="rod-ext-svg" viewBox="0 0 400 500" class="flex-grow w-full max-w-md">
                         <!-- Ground -->
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
@@ -545,10 +571,10 @@
 
         <!-- Slide 11: Rod Extensometer Simulation (Rebuilt) -->
         <div id="slide-11" class="slide">
-            <div class="w-full max-w-7xl grid md:grid-cols-2 items-center justify-center gap-8 p-4">
+            <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-4 lg:gap-8 p-4">
                 <!-- Left Column: Physical Settlement View -->
                 <div class="w-full flex flex-col items-center justify-center gap-4">
-                    <h2 class="text-2xl font-bold text-gray-800">Physical Settlement View</h2>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Physical Settlement View</h2>
                     <svg id="rod-sim-svg" viewBox="0 0 400 250" class="w-full max-w-lg border-2 border-gray-200 rounded-lg bg-white">
                         <defs>
                              <linearGradient id="rodSoilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -588,9 +614,9 @@
                 </div>
 
                 <!-- Right Column: Instrument Measurement View -->
-                <div class="w-full flex flex-col items-center justify-center gap-8">
+                <div class="w-full flex flex-col items-center justify-center gap-4 lg:gap-8">
                     <div class="flex flex-col items-center justify-center gap-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Instrument Measurement View (at Head)</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Instrument Measurement View (at Head)</h2>
                         <svg id="rod-head-svg" viewBox="0 0 300 150" class="w-full max-w-xs border-2 border-gray-200 rounded-lg bg-white p-2">
                              <!-- Static Head Frame -->
                             <rect x="5" y="5" width="290" height="20" fill="#d1d5db" stroke="#4a5568" rx="3"/>
@@ -1359,3 +1385,4 @@
     </script>
 </body>
 </html>
+", can you make the font size smaller in the tables of slide 6 and 11, and make it bold? Also, make the header color of the table darker gray
