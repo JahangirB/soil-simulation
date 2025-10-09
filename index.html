@@ -346,65 +346,67 @@
         
         <!-- Slide 6: The Interactive Simulation -->
         <div id="slide-6" class="slide">
-            <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-2/3 flex flex-col gap-4">
-                        <div class="w-full">
-                            <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 500px;">
-                                <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
-                                    <div class="w-full">Uniform Clay Soil</div>
-                                </div>
-                                <svg id="simulation-svg" viewBox="0 0 800 500" class="absolute top-0 left-0 w-full h-full bg-white">
-                                    <defs>
-                                        <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" /><stop offset="100%" stop-color="#5a3d20" /></linearGradient>
-                                        <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#52525b" /></linearGradient>
-                                    </defs>
-                                    <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
-                                    <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
-                                    <line id="bar-magnet-1" x1="385" y1="150" x2="385" y2="150" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-2" x1="385" y1="250" x2="385" y2="250" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-3" x1="385" y1="330" x2="385" y2="330" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/>
-                                    <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
-                                    <g id="magnet-1" class="magnet-group"><circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text></g>
-                                    <g id="magnet-2" class="magnet-group"><circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text></g>
-                                    <g id="magnet-3" class="magnet-group"><circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text></g>
-                                    <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
-                                </svg>
+             <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-6 md:p-8 my-auto">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Left and Center Columns for Visuals -->
+                    <div class="md:col-span-2 flex flex-col gap-4">
+                        <!-- Top: Main Simulation -->
+                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 350px;">
+                            <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <div class="w-full">Uniform Clay Soil</div>
                             </div>
+                            <svg id="simulation-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMin slice" class="absolute top-0 left-0 w-full h-full bg-white">
+                                <defs>
+                                    <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="gradient-stop-top" offset="20%" stop-color="#a67b51" /><stop offset="100%" stop-color="#5a3d20" /></linearGradient>
+                                    <linearGradient id="pipeGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pipe-gradient-stop-top" offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#52525b" /></linearGradient>
+                                </defs>
+                                <path id="soil-body" d="M 0 500 L 0 100 L 800 100 L 800 500 Z" fill="url(#soilGradient)" />
+                                <polygon id="embankment" points="300,100 500,100 550,100 250,100" fill="#a16207" stroke="#444" stroke-width="1.5" />
+                                <line id="bar-magnet-1" x1="385" y1="150" x2="385" y2="150" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-2" x1="385" y1="250" x2="385" y2="250" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/><line id="bar-magnet-3" x1="385" y1="330" x2="385" y2="330" stroke="#f97316" stroke-width="4" style="transition: opacity 0.2s linear;" opacity="0"/>
+                                <rect id="extensometer-casing" x="397" y="100" width="6" height="400" fill="url(#pipeGradient)" rx="2" />
+                                <g id="magnet-1" class="magnet-group"><circle cx="400" cy="150" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="154" class="magnet-label text-center" text-anchor="middle">1</text></g>
+                                <g id="magnet-2" class="magnet-group"><circle cx="400" cy="250" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="254" class="magnet-label text-center" text-anchor="middle">2</text></g>
+                                <g id="magnet-3" class="magnet-group"><circle cx="400" cy="330" r="10" fill="#3b82f6" stroke="white" stroke-width="1.5" /><text x="400" y="334" class="magnet-label text-center" text-anchor="middle">3</text></g>
+                                <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
+                            </svg>
                         </div>
+                        <!-- Bottom: Chart -->
+                        <div class="w-full border-2 border-gray-200 rounded-lg p-4 bg-white">
+                            <h3 class="text-lg font-bold text-gray-800 text-center mb-2">Settlement vs. Load</h3>
+                            <svg id="chart-svg" viewBox="0 0 500 250" class="w-full"></svg>
+                        </div>
+                    </div>
+
+                    <!-- Right Column for Controls and Data -->
+                    <div class="md:col-span-1 flex flex-col gap-6">
                         <div class="w-full flex flex-col items-center justify-center space-y-2">
                             <label for="load-slider" class="font-bold text-lg text-gray-700">Embankment Load</label>
                             <input id="load-slider" type="range" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                             <span id="load-value" class="font-mono text-xl font-bold text-indigo-600 bg-indigo-100 rounded-md px-3 py-1 w-28 text-center">0 %</span>
                         </div>
-                    </div>
-
-                    <div class="w-full md:w-1/3 flex flex-col gap-8">
-                        <div class="flex-1">
-                            <div class="table-container">
-                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
-                                <table class="data-table">
-                                    <thead><tr><th>Probe</th><th class="text-right">Reading (mm)</th></tr></thead>
-                                    <tbody>
-                                        <tr><td>Magnet 1</td><td id="reading-1" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Magnet 2</td><td id="reading-2" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Magnet 3</td><td id="reading-3" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Datum</td><td id="reading-pipe" class="font-mono font-bold text-right text-green-700">0.0</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="table-container">
+                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Probe Readings</h2>
+                            <table class="data-table">
+                                <thead><tr><th>Probe</th><th class="text-right">Reading (mm)</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Magnet 1</td><td id="reading-1" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Magnet 2</td><td id="reading-2" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Magnet 3</td><td id="reading-3" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Datum</td><td id="reading-pipe" class="font-mono font-bold text-right text-green-700">0.0</td></tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="flex-1">
-                             <div class="table-container">
-                                <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
-                                <table class="data-table">
-                                    <thead><tr><th>Point</th><th class="text-right">Movement (mm)</th></tr></thead>
-                                    <tbody>
-                                        <tr><td>Magnet 1</td><td id="actual-1" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Magnet 2</td><td id="actual-2" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Magnet 3</td><td id="actual-3" class="font-mono font-bold text-right">0.0</td></tr>
-                                        <tr><td>Datum</td><td id="actual-datum" class="font-mono font-bold text-right">0.0</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="table-container">
+                            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Actual Physical Movement</h2>
+                            <table class="data-table">
+                                <thead><tr><th>Point</th><th class="text-right">Movement (mm)</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Magnet 1</td><td id="actual-1" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Magnet 2</td><td id="actual-2" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Magnet 3</td><td id="actual-3" class="font-mono font-bold text-right">0.0</td></tr>
+                                    <tr><td>Datum</td><td id="actual-datum" class="font-mono font-bold text-right">0.0</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -949,6 +951,10 @@
             const simBarMagnet1 = document.getElementById('bar-magnet-1');
             const simBarMagnet2 = document.getElementById('bar-magnet-2');
             const simBarMagnet3 = document.getElementById('bar-magnet-3');
+
+            // --- CHART LOGIC ---
+            const chartSvg = document.getElementById('chart-svg');
+            let fullGraphData = {};
             
             const numPoints = 100;
             const initialGroundLevelY = 100;
@@ -956,6 +962,108 @@
             const svgWidth = 800;
             const maxSettlement = 37;
             const maxPenetration = 1;
+
+            function calculateFullGraphData() {
+                const chartWidth = 500;
+                const chartHeight = 250;
+                const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+                const plotWidth = chartWidth - margin.left - margin.right;
+                const plotHeight = chartHeight - margin.top - margin.bottom;
+
+                // Y-axis from +5mm to -40mm
+                const yMin = 5;
+                const yMax = -40;
+
+                // **THE CORRECTED Y-Scale function**
+                const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yMax) / (yMin - yMax));
+
+                let data = { m1: [], m2: [], m3: [], pipe: [] };
+                const steepness = 5; // Controls how quickly the settlement curve flattens
+
+                for (let i = 0; i <= 100; i++) {
+                    const loadFactor = i / 100;
+                    
+                    // Use an exponential curve for more realistic settlement
+                    const settlementCurveFactor = 1 - Math.exp(-steepness * loadFactor);
+                    const settlement = maxSettlement * settlementCurveFactor;
+                    
+                    const penetration = maxPenetration * loadFactor; // Casing penetration remains linear
+                    
+                    const s1_abs = settlement * 0.95;
+                    const s2_abs = settlement * 0.65;
+                    const s3_abs = settlement * 0.35;
+                    
+                    const reading1 = penetration - s1_abs;
+                    const reading2 = penetration - s2_abs;
+                    const reading3 = penetration - s3_abs;
+
+                    const x = margin.left + (i / 100) * plotWidth;
+
+                    data.m1.push([x, yScale(reading1)]);
+                    data.m2.push([x, yScale(reading2)]);
+                    data.m3.push([x, yScale(reading3)]);
+                    data.pipe.push([x, yScale(penetration)]);
+                }
+                return data;
+            }
+
+            function drawChart() {
+                chartSvg.innerHTML = ''; // Clear previous chart
+                const chartWidth = 500;
+                const chartHeight = 250;
+                const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+                const plotWidth = chartWidth - margin.left - margin.right;
+                const plotHeight = chartHeight - margin.top - margin.bottom;
+                const yMin = 5;
+                const yMax = -40;
+
+                // Define the correct Y-Scale function right here
+                const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yMax) / (yMin - yMax));
+
+                // Draw Axes
+                const axes = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                // Y-axis line
+                axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
+                // X-axis line (at the BOTTOM of the chart)
+                axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${margin.left + plotWidth}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
+                
+                // Axis Labels
+                axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">Load (%)</text>`;
+                axes.innerHTML += `<text x="10" y="${margin.top + plotHeight / 2}" transform="rotate(-90, 15, ${margin.top + plotHeight/2})" text-anchor="middle" class="text-xs fill-gray-600">Settlement (mm)</text>`;
+
+                // Y-axis Ticks and Gridlines
+                for (let val = yMax; val <= yMin; val += 5) {
+                    const y = yScale(val);
+                     // Now draw a grid line for all values, including zero
+                    axes.innerHTML += `<line x1="${margin.left - 5}" y1="${y}" x2="${margin.left + plotWidth}" y2="${y}" stroke="#e5e7eb" stroke-dasharray="2"/>`;
+                    axes.innerHTML += `<text x="${margin.left - 8}" y="${y + 3}" text-anchor="end" class="text-xs fill-gray-500">${val}</text>`;
+                }
+                
+                // X-axis Ticks (at the bottom)
+                for (let i = 0; i <= 10; i++) {
+                    const x = margin.left + (i / 10) * plotWidth;
+                    axes.innerHTML += `<text x="${x}" y="${margin.top + plotHeight + 15}" text-anchor="middle" class="text-xs fill-gray-500">${i * 10}</text>`;
+                }
+                chartSvg.appendChild(axes);
+
+                // Data lines group (this part is unchanged)
+                const dataGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                dataGroup.innerHTML = `
+                    <polyline id="chart-line-1" points="" fill="none" stroke="#f87171" stroke-width="2.5"/>
+                    <polyline id="chart-line-2" points="" fill="none" stroke="#fb923c" stroke-width="2.5"/>
+                    <polyline id="chart-line-3" points="" fill="none" stroke="#a78bfa" stroke-width="2.5"/>
+                    <polyline id="chart-line-pipe" points="" fill="none" stroke="#4ade80" stroke-width="2.5"/>
+                `;
+                chartSvg.appendChild(dataGroup);
+            }
+
+            // Initial setup
+            drawChart();
+            fullGraphData = calculateFullGraphData();
+            const chartLine1 = document.getElementById('chart-line-1');
+            const chartLine2 = document.getElementById('chart-line-2');
+            const chartLine3 = document.getElementById('chart-line-3');
+            const chartLinePipe = document.getElementById('chart-line-pipe');
 
             simSlider.addEventListener('input', (event) => {
                 const load = parseInt(event.target.value);
@@ -1028,6 +1136,12 @@
                 simBarMagnet1.style.opacity = barOpacity;
                 simBarMagnet2.style.opacity = barOpacity;
                 simBarMagnet3.style.opacity = barOpacity;
+
+                // Update chart
+                chartLine1.setAttribute('points', fullGraphData.m1.slice(0, load + 1).map(p => p.join(',')).join(' '));
+                chartLine2.setAttribute('points', fullGraphData.m2.slice(0, load + 1).map(p => p.join(',')).join(' '));
+                chartLine3.setAttribute('points', fullGraphData.m3.slice(0, load + 1).map(p => p.join(',')).join(' '));
+                chartLinePipe.setAttribute('points', fullGraphData.pipe.slice(0, load + 1).map(p => p.join(',')).join(' '));
             });
             simSlider.dispatchEvent(new Event('input'));
 
@@ -1246,4 +1360,3 @@
     </script>
 </body>
 </html>
-
