@@ -351,7 +351,7 @@
                     <!-- Left and Center Columns for Visuals -->
                     <div class="md:col-span-2 flex flex-col gap-4">
                         <!-- Top: Main Simulation -->
-                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 350px;">
+                        <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden" style="height: 450px;">
                             <div class="w-full flex flex-row text-center text-sm font-medium text-gray-700 absolute bottom-0 z-10" style="background-color: rgba(255, 255, 255, 0.7); padding: 2px 0; border-top: 1px solid rgba(0,0,0,0.1);">
                                 <div class="w-full">Uniform Clay Soil</div>
                             </div>
@@ -1031,16 +1031,15 @@
                 axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">Load (%)</text>`;
                 axes.innerHTML += `<text x="10" y="${margin.top + plotHeight / 2}" transform="rotate(-90, 15, ${margin.top + plotHeight/2})" text-anchor="middle" class="text-xs fill-gray-600">Settlement (mm)</text>`;
 
-                // Y-axis Ticks and Gridlines
-                for (let val = yMax; val <= yMin; val += 5) {
+                // Y-axis Ticks (Corrected Logic)
+                for (let val = yMin; val >= yMax; val -= 5) {
                     const y = yScale(val);
-                     // Now draw a grid line for all values, including zero
                     axes.innerHTML += `<line x1="${margin.left - 5}" y1="${y}" x2="${margin.left + plotWidth}" y2="${y}" stroke="#e5e7eb" stroke-dasharray="2"/>`;
                     axes.innerHTML += `<text x="${margin.left - 8}" y="${y + 3}" text-anchor="end" class="text-xs fill-gray-500">${val}</text>`;
                 }
-                
-                // X-axis Ticks (at the bottom)
-                for (let i = 0; i <= 10; i++) {
+
+                // X-axis Ticks
+                 for (let i = 0; i <= 10; i++) {
                     const x = margin.left + (i / 10) * plotWidth;
                     axes.innerHTML += `<text x="${x}" y="${margin.top + plotHeight + 15}" text-anchor="middle" class="text-xs fill-gray-500">${i * 10}</text>`;
                 }
