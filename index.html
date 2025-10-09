@@ -444,8 +444,11 @@
              <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Data Issue: Casing Movement</h1>
-                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows what happens if the casing is pushed down by surface load.</p>
-                     <img src="datagraph_casing.png" alt="Data graph showing casing movement" class="mt-6 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows what happens if the casing is pushed down by surface load, resulting in an erroneous positive reading for the datum.</p>
+                     <div class="mt-6 w-full border-2 border-gray-200 rounded-lg p-2 sm:p-4 bg-white">
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800 text-center mb-2">Erroneous Reading vs. Casing Movement</h3>
+                        <svg id="casing-chart-svg" viewBox="0 0 500 250" class="w-full"></svg>
+                    </div>
                 </div>
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-72 sm:h-96 gap-4">
                    <svg id="casing-issue-svg" viewBox="0 0 400 400" class="h-full">
@@ -472,8 +475,11 @@
              <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Data Issue: Probe Deformation</h1>
-                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows how backfill can deform the probe chain, causing erroneous readings.</p>
-                     <img src="datagraph_probe.png" alt="Data graph showing probe deformation" class="mt-6 rounded-lg shadow-md border border-gray-200 w-full max-w-md mx-auto md:mx-0">
+                     <p class="mt-4 text-base sm:text-lg md:text-xl">This animation shows how backfill can deform the probe chain, causing sudden, erroneous jumps in the readings.</p>
+                     <div class="mt-6 w-full border-2 border-gray-200 rounded-lg p-2 sm:p-4 bg-white">
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800 text-center mb-2">Erroneous Reading vs. Probe Deformation</h3>
+                        <svg id="probe-chart-svg" viewBox="0 0 500 250" class="w-full"></svg>
+                    </div>
                 </div>
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center h-72 sm:h-96 gap-4">
                    <svg id="probe-issue-svg" viewBox="0 0 400 400" class="h-full">
@@ -995,70 +1001,54 @@
                 const margin = { top: 20, right: 20, bottom: 40, left: 50 };
                 const plotWidth = chartWidth - margin.left - margin.right;
                 const plotHeight = chartHeight - margin.top - margin.bottom;
-
-                // Y-axis from +5mm to -40mm
                 const yMin = 5;
                 const yMax = -40;
-
-                // **THE CORRECTED Y-Scale function**
                 const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yMax) / (yMin - yMax));
-
                 let data = { m1: [], m2: [], m3: [], pipe: [] };
-                const steepness = 5; // Controls how quickly the settlement curve flattens
+                const steepness = 5; 
 
                 for (let i = 0; i <= 100; i++) {
                     const loadFactor = i / 100;
-                    
-                    // Use an exponential curve for more realistic settlement
                     const settlementCurveFactor = 1 - Math.exp(-steepness * loadFactor);
                     const settlement = maxSettlement * settlementCurveFactor;
-                    
-                    const penetration = maxPenetration * loadFactor; // Casing penetration remains linear
-                    
+                    const penetration = maxPenetration * loadFactor; 
                     const s1_abs = settlement * 0.95;
                     const s2_abs = settlement * 0.65;
                     const s3_abs = settlement * 0.35;
-                    
                     const reading1 = penetration - s1_abs;
                     const reading2 = penetration - s2_abs;
                     const reading3 = penetration - s3_abs;
-
                     const x = margin.left + (i / 100) * plotWidth;
 
-                    data.m1.push([x, yScale(reading1)]);
-                    data.m2.push([x, yScale(reading2)]);
-                    data.m3.push([x, yScale(reading3)]);
-                    data.pipe.push([x, yScale(penetration)]);
+                    data.m1.push({x: x, y: yScale(reading1), val: reading1});
+                    data.m2.push({x: x, y: yScale(reading2), val: reading2});
+                    data.m3.push({x: x, y: yScale(reading3), val: reading3});
+                    data.pipe.push({x: x, y: yScale(penetration), val: penetration});
                 }
                 return data;
             }
 
-            function drawChart() {
-                chartSvg.innerHTML = ''; // Clear previous chart
+            function drawChart(svgElement, yRange) {
+                svgElement.innerHTML = ''; // Clear previous chart
                 const chartWidth = 500;
                 const chartHeight = 250;
                 const margin = { top: 20, right: 20, bottom: 40, left: 50 };
                 const plotWidth = chartWidth - margin.left - margin.right;
                 const plotHeight = chartHeight - margin.top - margin.bottom;
-                const yMin = 5;
-                const yMax = -40;
+                const { yMin, yMax, step } = yRange;
 
                 // Define the correct Y-Scale function right here
                 const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yMax) / (yMin - yMax));
 
                 // Draw Axes
                 const axes = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                // Y-axis line
                 axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
-                // X-axis line (at the BOTTOM of the chart)
                 axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${margin.left + plotWidth}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
-                
-                // Axis Labels
-                axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">Load (%)</text>`;
-                axes.innerHTML += `<text x="10" y="${margin.top + plotHeight / 2}" transform="rotate(-90, 15, ${margin.top + plotHeight/2})" text-anchor="middle" class="text-xs fill-gray-600">Settlement (mm)</text>`;
+                axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">Load/Movement (%)</text>`;
+                axes.innerHTML += `<text x="10" y="${margin.top + plotHeight / 2}" transform="rotate(-90, 15, ${margin.top + plotHeight/2})" text-anchor="middle" class="text-xs fill-gray-600">Reading (mm)</text>`;
 
-                // Y-axis Ticks (Corrected Logic)
-                for (let val = yMin; val >= yMax; val -= 5) {
+                // Y-axis Ticks
+                for (let val = yMin; val >= yMax; val -= step) {
                     const y = yScale(val);
                     axes.innerHTML += `<line x1="${margin.left - 5}" y1="${y}" x2="${margin.left + plotWidth}" y2="${y}" stroke="#e5e7eb" stroke-dasharray="2"/>`;
                     axes.innerHTML += `<text x="${margin.left - 8}" y="${y + 3}" text-anchor="end" class="text-xs fill-gray-500">${val}</text>`;
@@ -1069,30 +1059,26 @@
                     const x = margin.left + (i / 10) * plotWidth;
                     axes.innerHTML += `<text x="${x}" y="${margin.top + plotHeight + 15}" text-anchor="middle" class="text-xs fill-gray-500">${i * 10}</text>`;
                 }
-                chartSvg.appendChild(axes);
+                svgElement.appendChild(axes);
 
-                // Data lines group (this part is unchanged)
+                // Data lines group
                 const dataGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 dataGroup.innerHTML = `
-                    <polyline id="chart-line-1" points="" fill="none" stroke="#f87171" stroke-width="2.5"/>
-                    <polyline id="chart-line-2" points="" fill="none" stroke="#fb923c" stroke-width="2.5"/>
-                    <polyline id="chart-line-3" points="" fill="none" stroke="#a78bfa" stroke-width="2.5"/>
-                    <polyline id="chart-line-pipe" points="" fill="none" stroke="#4ade80" stroke-width="2.5"/>
+                    <polyline class="chart-line-1" points="" fill="none" stroke="#f87171" stroke-width="2.5"/>
+                    <polyline class="chart-line-2" points="" fill="none" stroke="#fb923c" stroke-width="2.5"/>
+                    <polyline class="chart-line-3" points="" fill="none" stroke="#a78bfa" stroke-width="2.5"/>
+                    <polyline class="chart-line-pipe" points="" fill="none" stroke="#4ade80" stroke-width="2.5"/>
                 `;
-                chartSvg.appendChild(dataGroup);
+                svgElement.appendChild(dataGroup);
             }
 
-            // Initial setup
-            drawChart();
+            // --- MAIN SIMULATION CHART ---
+            drawChart(chartSvg, { yMin: 5, yMax: -40, step: 5 });
             fullGraphData = calculateFullGraphData();
-            const chartLine1 = document.getElementById('chart-line-1');
-            const chartLine2 = document.getElementById('chart-line-2');
-            const chartLine3 = document.getElementById('chart-line-3');
-            const chartLinePipe = document.getElementById('chart-line-pipe');
-
+            
             simSlider.addEventListener('input', (event) => {
                 const load = parseInt(event.target.value);
-                const loadFactor = load / 100;
+                 const loadFactor = load / 100;
                 simLoadValue.textContent = `${load} %`;
                 const surfacePoints = [];
                 const surfaceYCoords = [];
@@ -1163,30 +1149,65 @@
                 simBarMagnet3.style.opacity = barOpacity;
 
                 // Update chart
-                chartLine1.setAttribute('points', fullGraphData.m1.slice(0, load + 1).map(p => p.join(',')).join(' '));
-                chartLine2.setAttribute('points', fullGraphData.m2.slice(0, load + 1).map(p => p.join(',')).join(' '));
-                chartLine3.setAttribute('points', fullGraphData.m3.slice(0, load + 1).map(p => p.join(',')).join(' '));
-                chartLinePipe.setAttribute('points', fullGraphData.pipe.slice(0, load + 1).map(p => p.join(',')).join(' '));
+                chartSvg.querySelector('.chart-line-1').setAttribute('points', fullGraphData.m1.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
+                chartSvg.querySelector('.chart-line-2').setAttribute('points', fullGraphData.m2.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
+                chartSvg.querySelector('.chart-line-3').setAttribute('points', fullGraphData.m3.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
+                chartSvg.querySelector('.chart-line-pipe').setAttribute('points', fullGraphData.pipe.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
             });
-            simSlider.dispatchEvent(new Event('input'));
 
             // --- Casing Issue Slide Logic ---
             const casingIssueSlider = document.getElementById('casing-issue-slider');
             const casingIssueCasing = document.getElementById('casing-issue-casing');
             const casingIssueProbe = document.getElementById('casing-issue-probe');
+            const casingChartSvg = document.getElementById('casing-chart-svg');
+
+            drawChart(casingChartSvg, { yMin: 20, yMax: -40, step: 10 });
+
             casingIssueSlider.addEventListener('input', e => {
-                const move = (parseInt(e.target.value) / 100) * 15;
-                casingIssueCasing.style.transform = `translateY(${move}px)`;
-                casingIssueProbe.style.transform = `translateY(${move}px)`;
+                const value = parseInt(e.target.value);
+                const jumpThreshold = 50;
+                const jumpValue = 15; // The size of the sudden step in mm
+
+                // Visual animation: step change
+                const errorMove = (value < jumpThreshold) ? 0 : jumpValue;
+                casingIssueCasing.style.transform = `translateY(${errorMove}px)`;
+                casingIssueProbe.style.transform = `translateY(${errorMove}px)`;
+                
+                // Update Casing Issue Chart
+                const chartWidth = 500;
+                const chartHeight = 250;
+                const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+                const plotHeight = chartHeight - margin.top - margin.bottom;
+                const yRange = { yMin: 20, yMax: -40 };
+                const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yRange.yMax) / (yRange.yMin - yRange.yMax));
+
+                // Recalculate points with a step
+                const points1 = fullGraphData.m1.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue : 0))}`);
+                const points2 = fullGraphData.m2.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue : 0))}`);
+                const points3 = fullGraphData.m3.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue : 0))}`);
+                const pointsPipe = fullGraphData.pipe.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue : 0))}`);
+
+                casingChartSvg.querySelector('.chart-line-1').setAttribute('points', points1.join(' '));
+                casingChartSvg.querySelector('.chart-line-2').setAttribute('points', points2.join(' '));
+                casingChartSvg.querySelector('.chart-line-3').setAttribute('points', points3.join(' '));
+                casingChartSvg.querySelector('.chart-line-pipe').setAttribute('points', pointsPipe.join(' '));
             });
+            
 
             // --- Probe Issue Slide Logic ---
             const probeIssueSlider = document.getElementById('probe-issue-slider');
             const probeIssueCobra = document.getElementById('probe-issue-cobra');
             const probeIssueSensor = document.getElementById('probe-issue-sensor');
+            const probeChartSvg = document.getElementById('probe-chart-svg');
+
+            drawChart(probeChartSvg, { yMin: 5, yMax: -40, step: 5 });
+
             probeIssueSlider.addEventListener('input', e => {
                 const value = parseInt(e.target.value);
-                const deformationFactor = value / 100;
+                const jumpThreshold = 50;
+                
+                // Visual animation: step change
+                const deformationFactor = (value < jumpThreshold) ? 0 : value / 100;
                 const amplitude = 15 * deformationFactor;
                 let pathData = 'M 200 50 C ';
                 const control_y1 = 50 + (350 / 4);
@@ -1195,9 +1216,34 @@
                 pathData += `${200 - x_offset} ${control_y1}, ${200 + x_offset} ${control_y2}, 200 400`;
                 probeIssueCobra.setAttribute('d', pathData);
                 
-                const sag = value > 0 ? (value / 100) * 5 : 0;
-                 document.getElementById('probe-issue-probe').style.transform = `translateY(${sag}px)`;
+                const sag = (value < jumpThreshold) ? 0 : (value / 100) * 5;
+                document.getElementById('probe-issue-probe').style.transform = `translateY(${sag}px)`;
+
+                // Update Probe Issue Chart with variable steps
+                const chartWidth = 500;
+                const chartHeight = 250;
+                const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+                const plotHeight = chartHeight - margin.top - margin.bottom;
+                const yRange = { yMin: 5, yMax: -40 };
+                const yScale = (val) => margin.top + plotHeight - (plotHeight * (val - yRange.yMax) / (yRange.yMin - yRange.yMax));
+
+                const jumpValue1 = 5;  // Max jump ~5mm
+                const jumpValue2 = 3;  // Mid jump
+                const jumpValue3 = 1;  // Smallest jump
+                const jumpValuePipe = 0.5; // Very small jump on datum
+
+                const points1 = fullGraphData.m1.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue1 : 0))}`);
+                const points2 = fullGraphData.m2.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue2 : 0))}`);
+                const points3 = fullGraphData.m3.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValue3 : 0))}`);
+                const pointsPipe = fullGraphData.pipe.slice(0, value + 1).map((p, i) => `${p.x},${yScale(p.val + (i >= jumpThreshold ? jumpValuePipe: 0))}`);
+
+
+                probeChartSvg.querySelector('.chart-line-1').setAttribute('points', points1.join(' '));
+                probeChartSvg.querySelector('.chart-line-2').setAttribute('points', points2.join(' '));
+                probeChartSvg.querySelector('.chart-line-3').setAttribute('points', points3.join(' '));
+                probeChartSvg.querySelector('.chart-line-pipe').setAttribute('points', pointsPipe.join(' '));
             });
+            
             
             // --- ROD EXTENSOMETER COMPONENTS SLIDE LOGIC ---
             const rodComponentButtons = document.querySelectorAll('#slide-10 .rod-component-button');
@@ -1380,11 +1426,13 @@
                 rodActual1.textContent = `-${settlement1.toFixed(1)}`;
                 rodActual2.textContent = `-${settlement2.toFixed(1)}`;
             });
+            
+            // Trigger initial state for all sliders
+            simSlider.dispatchEvent(new Event('input'));
+            casingIssueSlider.dispatchEvent(new Event('input'));
+            probeIssueSlider.dispatchEvent(new Event('input'));
             rodSettlementSlider.dispatchEvent(new Event('input'));
         });
     </script>
 </body>
 </html>
-", can you make the font size smaller in the tables of slide 6 and 11, and make it bold? Also, make the header color of the table darker gray
-
-
