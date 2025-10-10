@@ -63,9 +63,9 @@
         }
         @media (min-width: 768px) {
             .nav-button {
-                 bottom: 2rem; /* Back to original on md screens */
-                 padding: 0.75rem 1.5rem;
-                 font-size: 1rem;
+                bottom: 2rem; /* Back to original on md screens */
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
             }
         }
         .nav-button:hover {
@@ -110,15 +110,18 @@
         .data-table th {
             padding: 0.5rem;
             font-weight: 600;
-            color: #374151;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-size: 0.75rem;
+            background-color: #d1d5db; /* Darker gray for the header */
+            color: #1f2937; /* Darker gray for the header text */
         }
         .data-table td {
             padding: 0.5rem;
             color: #4b5563;
             border-top: 1px solid #e5e7eb;
+            font-size: 0.875rem; /* Smaller font size */
+            font-weight: 600; /* Bolder font weight */
         }
         @media (min-width: 768px) {
              .data-table th, .data-table td {
@@ -156,12 +159,16 @@
         .highlighted-component {
             filter: drop-shadow(0px 0px 10px #fde047);
         }
+        .arrow-body {
+            /* This value will be overridden by JS, but '0 0' is a better default. */
+            transform-origin: 0 0; 
+            transition: transform 0.1s linear;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
 
     <main>
-        <!-- Navigation Info Box -->
         <div id="nav-info" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-lg shadow-2xl p-6 sm:p-8 max-w-md w-full text-left">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Navigation Guide</h2>
@@ -183,7 +190,6 @@
             </div>
         </div>
 
-        <!-- Slide 1: Title -->
         <div id="slide-1" class="slide active">
             <div class="p-4">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-800">Interactive Soil Settlement Simulation</h1>
@@ -191,7 +197,6 @@
             </div>
         </div>
 
-        <!-- Slide 2: Introduction -->
         <div id="slide-2" class="slide">
              <div class="p-4">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Simulation Setup</h1>
@@ -205,7 +210,6 @@
             </div>
         </div>
 
-        <!-- Slide 3: How the Probe Works -->
         <div id="slide-3" class="slide">
             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 p-4">
                 <div class="w-full md:w-1/2 text-left">
@@ -224,12 +228,9 @@
                 </div>
                 <div class="w-full md:w-1/2 flex items-center justify-center">
                     <svg id="probe-svg" viewBox="0 0 400 700" class="w-full h-full max-w-xs sm:max-w-sm">
-                        <!-- Probe Body -->
                         <rect x="150" y="50" width="30" height="600" fill="#a0aec0" rx="5"/>
-                        <!-- Sensor Area -->
                         <rect x="155" y="150" width="20" height="400" fill="#f56565" rx="3"/>
                         
-                        <!-- Markings -->
                         <g class="text-gray-700 font-semibold">
                             <text x="190" y="155">0 mm</text><line x1="180" y1="150" x2="185" y2="150" stroke="currentColor"/>
                             <text x="190" y="255">100 mm</text><line x1="180" y1="250" x2="185" y2="250" stroke="currentColor"/>
@@ -238,13 +239,11 @@
                             <text x="190" y="555">400 mm</text><line x1="180" y1="550" x2="185" y2="550" stroke="currentColor"/>
                         </g>
 
-                        <!-- Draggable Magnet -->
                         <g id="draggable-magnet" transform="translate(0, 150)">
                             <circle cx="120" cy="150" r="15" fill="#4299e1" stroke="white" stroke-width="2"/>
                             <text x="120" y="155" text-anchor="middle" fill="white" font-weight="bold">M</text>
                         </g>
                         
-                        <!-- Readout Dial -->
                         <g transform="translate(320, 350)">
                             <circle cx="0" cy="0" r="70" fill="white" stroke="#e2e8f0" stroke-width="4"/>
                             <text x="0" y="-20" text-anchor="middle" class="font-semibold">Reading</text>
@@ -255,10 +254,8 @@
             </div>
         </div>
         
-        <!-- Slide 4: Component Movement Analysis -->
         <div id="slide-4" class="slide">
             <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
-                <!-- Left Column: Controls & Description -->
                 <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Component Movement</h1>
                     <div class="mt-4 flex flex-wrap gap-2">
@@ -268,14 +265,12 @@
                         <button data-component="movement-datum" class="component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Datum Magnet</button>
                     </div>
                     <div id="component-image-container" class="mt-4 min-h-[100px] sm:min-h-[150px] flex items-center justify-center">
-                         <!-- Image will be loaded here by JS -->
                     </div>
                     <div id="component-description" class="mt-4 text-sm sm:text-base p-4 bg-gray-50 rounded-lg flex-grow">
                         <p class="text-gray-500">Select a component to see its description and use the slider to simulate movement.</p>
                     </div>
                 </div>
 
-                <!-- Right Column: Model & Slider -->
                 <div class="w-full lg:w-2/3 flex flex-col items-center justify-center h-full gap-4">
                     <svg id="movement-svg" viewBox="0 0 400 500" class="flex-grow w-full max-w-md">
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
@@ -286,9 +281,9 @@
                         
                         <g id="movement-magnets" class="installation-diagram-element">
                              <g transform="translate(200, 315)">
-                                 <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
-                                 <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
-                                 <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
+                                <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/>
+                                <path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/>
+                                <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
                             </g>
                         </g>
                         
@@ -306,7 +301,6 @@
                             <path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/>
                         </g>
                         
-                        <!-- Masking Rectangle -->
                         <rect x="0" y="0" width="400" height="50" fill="#f3f4f6"/>
 
                     </svg>
@@ -321,27 +315,26 @@
             </div>
         </div>
         
-        <!-- Slide 5: Installation Process -->
         <div id="slide-5" class="slide">
              <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
                 <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Installation Process</h1>
                     <div class="mt-6 text-base sm:text-lg text-left space-y-4 relative h-48 sm:h-64">
                         <div id="step-desc-1" class="installation-step-description active">
-                             <h2 class="font-bold text-xl sm:text-2xl">Step 1: Drill Borehole</h2>
-                             <p>A borehole is drilled into the ground to the required depth.</p>
+                            <h2 class="font-bold text-xl sm:text-2xl">Step 1: Drill Borehole</h2>
+                            <p>A borehole is drilled into the ground to the required depth.</p>
                         </div>
                          <div id="step-desc-2" class="installation-step-description">
-                             <h2 class="font-bold text-xl sm:text-2xl">Step 2: Install & Grout Casing</h2>
-                             <p>An access casing is lowered and grouted into the borehole.</p>
+                            <h2 class="font-bold text-xl sm:text-2xl">Step 2: Install & Grout Casing</h2>
+                            <p>An access casing is lowered and grouted into the borehole.</p>
                         </div>
                          <div id="step-desc-3" class="installation-step-description">
-                             <h2 class="font-bold text-xl sm:text-2xl">Step 3: Install Magnets</h2>
-                             <p>Spider magnets are deployed at target depths inside the casing.</p>
+                            <h2 class="font-bold text-xl sm:text-2xl">Step 3: Install Magnets</h2>
+                            <p>Spider magnets are deployed at target depths inside the casing.</p>
                         </div>
                          <div id="step-desc-4" class="installation-step-description">
-                             <h2 class="font-bold text-xl sm:text-2xl">Step 4: Install Probe & Commission</h2>
-                             <p>The automated probe is installed and connected to a data logger.</p>
+                            <h2 class="font-bold text-xl sm:text-2xl">Step 4: Install Probe & Commission</h2>
+                            <p>The automated probe is installed and connected to a data logger.</p>
                         </div>
                     </div>
                      <div class="mt-auto flex gap-4">
@@ -350,38 +343,30 @@
                     </div>
                 </div>
                 <div id="installation-image-container" class="w-full lg:w-1/3 flex items-center justify-center h-full my-4 lg:my-0">
-                    <!-- Image for installation step appears here -->
                 </div>
                 <div class="w-full lg:w-1/3 flex items-center justify-center h-full">
                    <svg id="installation-svg" viewBox="0 0 400 400" class="h-full max-h-[400px] w-auto">
-                        <!-- Ground -->
                         <rect x="0" y="50" width="400" height="350" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
 
-                        <!-- Borehole -->
                         <rect id="borehole" x="150" y="50" width="100" height="350" fill="#6b4624"/>
 
-                        <!-- Grout -->
                         <rect id="grout-left" class="installation-diagram-element" x="150" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
                         <rect id="grout-right" class="installation-diagram-element" x="220" y="50" width="30" height="350" fill="#e5e7eb" opacity="0"/>
                         
-                        <!-- Casing -->
                         <rect id="install-casing" class="installation-diagram-element" x="180" y="50" width="40" height="350" fill="#2563eb" stroke="#1e3a8a" style="transform: translateY(-400px)" />
-                      
-                         <!-- Probe String -->
-                        <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
+                        
+                         <g id="install-probe" class="installation-diagram-element" style="transform: translateY(-400px)">
                             <line x1="200" y1="50" x2="200" y2="400" stroke="#facc15" stroke-width="4" />
                             <rect x="190" y="370" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
                             <rect x="190" y="250" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
                         </g>
                         
-                        <!-- Deployed Magnets -->
                         <g id="deployed-magnets" class="installation-diagram-element" opacity="0">
                             <g transform="translate(200, 385)"> <rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
                             <g transform="translate(200, 265)"><rect x="-25" y="-5" width="50" height="10" fill="#065f46" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
                         </g>
                         
-                        <!-- Data Logger -->
                         <g id="data-logger" class="installation-diagram-element" opacity="0">
                             <rect x="257.5" y="15" width="5" height="30" fill="#78716c"/>
                             <rect x="230" y="5" width="60" height="20" fill="#4b5563" rx="3"/>
@@ -392,13 +377,10 @@
             </div>
         </div>
         
-        <!-- Slide 6: The Interactive Simulation -->
         <div id="slide-6" class="slide">
              <div class="w-full max-w-7xl bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                    <!-- Left and Center Columns for Visuals -->
                     <div class="lg:col-span-2 flex flex-col gap-4">
-                        <!-- Top: Main Simulation -->
                         <div class="relative w-full border-2 border-gray-200 rounded-lg overflow-hidden h-[300px] sm:h-[450px]">
                             <div class="w-full flex flex-row text-center text-xs sm:text-sm font-medium text-gray-700 absolute bottom-0 z-10 bg-white/70 py-1 border-t border-black/10">
                                 <div class="w-full">Uniform Clay Soil</div>
@@ -418,14 +400,12 @@
                                 <g id="datum-magnet" class="magnet-group"><circle cx="400" cy="420" r="12" fill="#ef4444" stroke="white" stroke-width="2" /><text x="400" y="424" class="magnet-label" text-anchor="middle">D</text></g>
                             </svg>
                         </div>
-                        <!-- Bottom: Chart -->
                         <div class="w-full border-2 border-gray-200 rounded-lg p-2 sm:p-4 bg-white">
                             <h3 class="text-base sm:text-lg font-bold text-gray-800 text-center mb-2">Settlement vs. Load</h3>
                             <svg id="chart-svg" viewBox="0 0 500 250" class="w-full"></svg>
                         </div>
                     </div>
 
-                    <!-- Right Column for Controls and Data -->
                     <div class="lg:col-span-1 flex flex-col gap-4 sm:gap-6">
                         <div class="w-full flex flex-col items-center justify-center space-y-2">
                             <label for="load-slider" class="font-bold text-base sm:text-lg text-gray-700">Embankment Load</label>
@@ -461,7 +441,6 @@
             </div>
         </div>
         
-        <!-- Slide 7: Casing Movement Issue -->
         <div id="slide-7" class="slide">
              <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
@@ -486,13 +465,22 @@
                             <rect y="300" x="190" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
                         </g>
                         <g transform="translate(200, 385)"><rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                        <g id="casing-force-arrows">
+                            <g class="force-arrow" transform="translate(20, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(60, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(100, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(140, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(260, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(300, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(340, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(380, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                        </g>
                    </svg>
                    <input id="casing-issue-slider" type="range" min="0" max="100" value="0" class="w-3/4">
                 </div>
             </div>
         </div>
         
-        <!-- Slide 8: Probe Chain Issue -->
         <div id="slide-8" class="slide">
              <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 p-4">
                 <div class="w-full md:w-1/2 text-left">
@@ -515,16 +503,24 @@
                             <rect id="probe-issue-sensor" y="300" x="190" width="20" height="30" fill="silver" stroke="#4a5568" rx="2"/>
                         </g>
                         <g transform="translate(200, 385)"><rect x="-25" y="-5" width="50" height="10" fill="#ef4444" stroke="#4a5568"/><path d="M -25 0 L -50 -25" stroke="#4a5568" stroke-width="2"/><path d="M 25 0 L 50 -25" stroke="#4a5568" stroke-width="2"/></g>
+                        <g id="probe-force-arrows">
+                            <g class="force-arrow" transform="translate(20, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(60, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(100, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(140, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(260, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(300, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(340, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                            <g class="force-arrow" transform="translate(380, 50)"><g class="arrow-body" transform="scale(0)"><line y1="0" y2="-20" stroke="#ED1C24" stroke-width="4" stroke-linecap="round"/><polygon points="-8,-10 8,-10 0,0" fill="#ED1C24"/></g></g>
+                        </g>
                    </svg>
                    <input id="probe-issue-slider" type="range" min="0" max="100" value="0" class="w-3/4">
                 </div>
             </div>
         </div>
         
-        <!-- Slide 9: What is a Rod Extensometer -->
         <div id="slide-9" class="slide">
             <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-8 md:gap-12 p-4">
-                <!-- Left Column: Text Description -->
                 <div class="text-left">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">The Rod Extensometer</h1>
                     <p class="mt-6 text-base sm:text-lg md:text-xl text-gray-700">A rod extensometer is a geotechnical instrument used to precisely measure displacement or settlement between one or more anchor points in a borehole and a stable reference head at the surface.</p>
@@ -536,7 +532,6 @@
                         <li>We measure the change in the rod's position relative to a stable <strong>reference head</strong> to calculate the exact amount of settlement or heave.</li>
                     </ul>
                 </div>
-                <!-- Right Column: Image Placeholder -->
                 <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-inner p-4 sm:p-8">
                      <img src="rod_extensometer_image.png" alt="A real-world photo of a rod extensometer head with measuring rods visible." class="rounded-lg shadow-xl border border-gray-300 object-cover w-full h-full max-h-[50vh]">
                      <p class="mt-4 font-semibold text-gray-600">Real-world Rod Extensometer Head</p>
@@ -544,10 +539,8 @@
             </div>
         </div>
 
-        <!-- Slide 10: Rod Extensometer Components (Redesigned) -->
         <div id="slide-10" class="slide">
             <div class="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-4 p-4 h-full">
-                <!-- Left Column: Controls & Description -->
                 <div class="w-full lg:w-1/3 text-left flex flex-col h-full">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Rod Extensometer Components</h1>
                     <div class="mt-4 flex flex-wrap gap-2">
@@ -556,29 +549,22 @@
                         <button data-component="rod-ext-rod-sleeve" class="rod-component-button component-button px-3 py-1 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow text-xs sm:text-sm">Rods & Sleeves</button>
                     </div>
                     <div id="rod-component-image-container" class="mt-4 min-h-[100px] sm:min-h-[150px] flex items-center justify-center">
-                         <!-- Image will be loaded here by JS -->
-                    </div>
+                         </div>
                     <div id="rod-component-description" class="mt-4 text-sm sm:text-base p-4 bg-gray-50 rounded-lg flex-grow">
                         <p class="text-gray-500">Select a component to learn about its function.</p>
                     </div>
                 </div>
 
-                <!-- Right Column: Model -->
                 <div class="w-full lg:w-2/3 flex flex-col items-center justify-center h-full gap-4">
                     <svg id="rod-ext-svg" viewBox="0 0 400 500" class="flex-grow w-full max-w-md">
-                        <!-- Ground -->
                         <rect x="0" y="50" width="400" height="450" fill="#a67b51"/>
                         <rect x="0" y="45" width="400" height="5" fill="#4d7c0f"/>
-                        <!-- Borehole / Grout -->
                         <rect x="150" y="50" width="100" height="450" fill="#808080"/>
                         
-                        <!-- Components -->
                         <g id="rod-ext-rod-sleeve" class="rod-ext-component">
-                            <!-- Sleeves -->
                             <rect x="172" y="50" width="6" height="200" fill="#e5e7eb" opacity="0.5"/>
                             <rect x="197" y="50" width="6" height="300" fill="#e5e7eb" opacity="0.5"/>
                             <rect x="222" y="50" width="6" height="400" fill="#e5e7eb" opacity="0.5"/>
-                            <!-- Rods -->
                             <line x1="175" y1="50" x2="175" y2="250" stroke="#3b82f6" stroke-width="2.5"/>
                             <line x1="200" y1="50" x2="200" y2="350" stroke="#3b82f6" stroke-width="2.5"/>
                             <line x1="225" y1="50" x2="225" y2="450" stroke="#22c55e" stroke-width="2.5"/>
@@ -597,10 +583,8 @@
             </div>
         </div>
 
-        <!-- Slide 11: Rod Extensometer Simulation (Rebuilt) -->
         <div id="slide-11" class="slide">
             <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-4 lg:gap-8 p-4">
-                <!-- Left Column: Physical Settlement View -->
                 <div class="w-full flex flex-col items-center justify-center gap-4">
                     <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Physical Settlement View</h2>
                     <svg id="rod-sim-svg" viewBox="0 0 400 250" class="w-full max-w-lg border-2 border-gray-200 rounded-lg bg-white">
@@ -610,12 +594,9 @@
                                 <stop offset="100%" stop-color="#5a3d20" />
                             </linearGradient>
                         </defs>
-                        <!-- Deformable Soil Body -->
                         <path id="rod-soil-body" d="M 0 250 L 0 50 L 400 50 L 400 250 Z" fill="url(#rodSoilGradient)" />
-                        <!-- Growing Embankment -->
                         <polygon id="rod-embankment" points="150,50 250,50 275,50 125,50" fill="#a16207" stroke="#444" stroke-width="1.5" />
 
-                        <!-- Rod Extensometer Components -->
                         <g id="rod-sim-instrument-group">
                             <g id="rod-sim-group-1">
                                 <line x1="175" y1="45" x2="175" y2="125" stroke="#3b82f6" stroke-width="1.5"/>
@@ -641,14 +622,11 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Instrument Measurement View -->
                 <div class="w-full flex flex-col items-center justify-center gap-4 lg:gap-8">
                     <div class="flex flex-col items-center justify-center gap-4">
                         <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Instrument Measurement View (at Head)</h2>
                         <svg id="rod-head-svg" viewBox="0 0 300 150" class="w-full max-w-xs border-2 border-gray-200 rounded-lg bg-white p-2">
-                             <!-- Static Head Frame -->
-                            <rect x="5" y="5" width="290" height="20" fill="#d1d5db" stroke="#4a5568" rx="3"/>
-                            <!-- Displacement Sensors -->
+                             <rect x="5" y="5" width="290" height="20" fill="#d1d5db" stroke="#4a5568" rx="3"/>
                             <g transform="translate(75, 25)">
                                 <rect x="-10" y="0" width="20" height="50" fill="#718096" rx="2"/>
                                 <rect id="rod-sensor-plunger-1" x="-5" y="0" width="10" height="40" fill="#3b82f6"/>
@@ -680,7 +658,6 @@
         </div>
     </main>
 
-    <!-- Navigation -->
     <button id="prev" class="nav-button">Previous</button>
     <button id="next" class="nav-button">Next</button>
 
@@ -813,10 +790,6 @@
             const groutLeft = document.getElementById('grout-left');
             const groutRight = document.getElementById('grout-right');
             const installProbe = document.getElementById('install-probe');
-            const leg1Left = document.getElementById('leg-1-left');
-            const leg1Right = document.getElementById('leg-1-right');
-            const leg2Left = document.getElementById('leg-2-left');
-            const leg2Right = document.getElementById('leg-2-right');
             const deployedMagnets = document.getElementById('deployed-magnets');
             const dataLogger = document.getElementById('data-logger');
             const installationImageContainer = document.getElementById('installation-image-container');
@@ -830,32 +803,32 @@
 
 
            function showInstallStep(step) {
-            document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step-desc-${step}`).classList.add('active');
-            
-            installationImageContainer.innerHTML = `<img src="${installImages[step]}" alt="Installation Step ${step}" class="mx-auto my-2 rounded-lg shadow-md max-h-48">`;
+                document.querySelectorAll('.installation-step-description').forEach(s => s.classList.remove('active'));
+                document.getElementById(`step-desc-${step}`).classList.add('active');
+                
+                installationImageContainer.innerHTML = `<img src="${installImages[step]}" alt="Installation Step ${step}" class="mx-auto my-2 rounded-lg shadow-md max-h-48">`;
 
-            installPrev.disabled = step === 1;
-            installNext.disabled = step === totalInstallSteps;
-            installPrev.style.opacity = step === 1 ? 0.5 : 1;
-            installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
+                installPrev.disabled = step === 1;
+                installNext.disabled = step === totalInstallSteps;
+                installPrev.style.opacity = step === 1 ? 0.5 : 1;
+                installNext.style.opacity = step === totalInstallSteps ? 0.5 : 1;
 
-            // Step 1: Nothing happens visually, as the drill is removed.
+                // Step 1: Nothing happens visually, as the drill is removed.
 
-            // Step 2: Control Casing position AND opacity
-            installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
-            installCasing.style.opacity = (step >= 2) ? '1' : '0';
-            groutLeft.style.opacity = (step >= 2) ? '1' : '0';
-            groutRight.style.opacity = (step >= 2) ? '1' : '0';
+                // Step 2: Control Casing position AND opacity
+                installCasing.style.transform = (step >= 2) ? 'translateY(0px)' : 'translateY(-400px)';
+                installCasing.style.opacity = (step >= 2) ? '1' : '0';
+                groutLeft.style.opacity = (step >= 2) ? '1' : '0';
+                groutRight.style.opacity = (step >= 2) ? '1' : '0';
 
-            // Step 3: Show the deployed magnets (they will just fade in)
-            deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
+                // Step 3: Show the deployed magnets (they will just fade in)
+                deployedMagnets.style.opacity = (step >= 3) ? '1' : '0';
 
-            // Step 4: Control Probe position AND opacity
-            installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
-            installProbe.style.opacity = (step === 4) ? '1' : '0';
-            dataLogger.style.opacity = (step === 4) ? '1' : '0';
-        }
+                // Step 4: Control Probe position AND opacity
+                installProbe.style.transform = (step === 4) ? 'translateY(0px)' : 'translateY(-400px)';
+                installProbe.style.opacity = (step === 4) ? '1' : '0';
+                dataLogger.style.opacity = (step === 4) ? '1' : '0';
+            }
 
             installPrev.addEventListener('click', () => {
                 if(installStep > 1) {
@@ -979,19 +952,17 @@
                 });
             });
 
-            movementSlider.addEventListener('input', (e) => {
-                const value = parseInt(e.target.value);
+            // --- COMPONENT MOVEMENT LOGIC (OPTIMIZED WITH requestAnimationFrame) ---
+            let movementSliderValue = 0;
+            let isMovementUpdatePending = false;
+
+            function updateMovementAnimation() {
+                if (!isMovementUpdatePending) return;
+
+                const value = movementSliderValue;
                 const settlementFactor = value / 100;
                 const maxMove = 40;
                 const moveDistance = maxMove * settlementFactor;
-                
-                movementMagnets.style.transform = '';
-                movementCasing.style.transform = '';
-                movementProbe.style.transform = '';
-                cobraRod.setAttribute('d', 'M 200 50 L 200 500');
-                probeSensor1.setAttribute('transform', '');
-                probeSensor2.setAttribute('transform', '');
-
                 
                 switch (activeComponentId) {
                     case 'movement-casing':
@@ -1014,6 +985,22 @@
                     case 'movement-magnets':
                         movementMagnets.style.transform = `translateY(${moveDistance}px)`;
                         break;
+                    default:
+                        // If no component is active, ensure everything is reset.
+                        movementMagnets.style.transform = '';
+                        movementCasing.style.transform = '';
+                        movementProbe.style.transform = '';
+                        cobraRod.setAttribute('d', 'M 200 50 L 200 500');
+                        break;
+                }
+                isMovementUpdatePending = false;
+            }
+
+            movementSlider.addEventListener('input', (e) => {
+                movementSliderValue = parseInt(e.target.value);
+                if (!isMovementUpdatePending) {
+                    isMovementUpdatePending = true;
+                    requestAnimationFrame(updateMovementAnimation);
                 }
             });
 
@@ -1085,7 +1072,7 @@
                 return data;
             }
 
-            function drawChart(svgElement, yRange) {
+            function drawChart(svgElement, yRange, xLabel = "Load (%)") {
                 svgElement.innerHTML = ''; // Clear previous chart
                 const chartWidth = 500;
                 const chartHeight = 250;
@@ -1101,7 +1088,7 @@
                 const axes = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
                 axes.innerHTML += `<line x1="${margin.left}" y1="${margin.top + plotHeight}" x2="${margin.left + plotWidth}" y2="${margin.top + plotHeight}" stroke="#9ca3af" />`;
-                axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">Load/Movement (%)</text>`;
+                axes.innerHTML += `<text x="${margin.left + plotWidth / 2}" y="${chartHeight - 5}" text-anchor="middle" class="text-xs fill-gray-600">${xLabel}</text>`;
                 axes.innerHTML += `<text x="10" y="${margin.top + plotHeight / 2}" transform="rotate(-90, 15, ${margin.top + plotHeight/2})" text-anchor="middle" class="text-xs fill-gray-600">Reading (mm)</text>`;
 
                 // Y-axis Ticks
@@ -1133,9 +1120,13 @@
             drawChart(chartSvg, { yMin: 5, yMax: -40, step: 5 });
             fullGraphData = calculateFullGraphData();
             
-            simSlider.addEventListener('input', (event) => {
-                const load = parseInt(event.target.value);
-                 const loadFactor = load / 100;
+            let simSliderValue = 0;
+            let isSimUpdatePending = false;
+
+            function updateSimAnimation() {
+                if(!isSimUpdatePending) return;
+                const load = simSliderValue;
+                const loadFactor = load / 100;
                 simLoadValue.textContent = `${load} %`;
                 const surfacePoints = [];
                 const surfaceYCoords = [];
@@ -1204,12 +1195,19 @@
                 simBarMagnet1.style.opacity = barOpacity;
                 simBarMagnet2.style.opacity = barOpacity;
                 simBarMagnet3.style.opacity = barOpacity;
-
-                // Update chart
                 chartSvg.querySelector('.chart-line-1').setAttribute('points', fullGraphData.m1.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
                 chartSvg.querySelector('.chart-line-2').setAttribute('points', fullGraphData.m2.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
                 chartSvg.querySelector('.chart-line-3').setAttribute('points', fullGraphData.m3.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
                 chartSvg.querySelector('.chart-line-pipe').setAttribute('points', fullGraphData.pipe.slice(0, load + 1).map(p => `${p.x},${p.y}`).join(' '));
+                isSimUpdatePending = false;
+            }
+
+            simSlider.addEventListener('input', (event) => {
+                simSliderValue = parseInt(event.target.value);
+                if (!isSimUpdatePending) {
+                    isSimUpdatePending = true;
+                    requestAnimationFrame(updateSimAnimation);
+                }
             });
 
             // --- Casing Issue Slide Logic ---
@@ -1217,11 +1215,16 @@
             const casingIssueCasing = document.getElementById('casing-issue-casing');
             const casingIssueProbe = document.getElementById('casing-issue-probe');
             const casingChartSvg = document.getElementById('casing-chart-svg');
+            const casingForceArrows = document.querySelectorAll('#casing-force-arrows .force-arrow');
 
-            drawChart(casingChartSvg, { yMin: 20, yMax: -40, step: 10 });
+            drawChart(casingChartSvg, { yMin: 20, yMax: -40, step: 10 }, "Casing Movement (%)");
+            
+            let casingSliderValue = 0;
+            let isCasingUpdatePending = false;
 
-            casingIssueSlider.addEventListener('input', e => {
-                const value = parseInt(e.target.value);
+            function updateCasingAnimation() {
+                if(!isCasingUpdatePending) return;
+                const value = casingSliderValue;
                 const jumpThreshold = 50;
                 const jumpValue = 15; // The size of the sudden step in mm
 
@@ -1229,6 +1232,15 @@
                 const errorMove = (value < jumpThreshold) ? 0 : jumpValue;
                 casingIssueCasing.style.transform = `translateY(${errorMove}px)`;
                 casingIssueProbe.style.transform = `translateY(${errorMove}px)`;
+
+                // Animate force arrows
+                const scaleFactor = (value / 100) * 1.5; // Scale from 0 to 1.5
+                casingForceArrows.forEach(arrow => {
+                    const arrowBody = arrow.querySelector('.arrow-body');
+                    // **** FIX IS HERE ****
+                    arrowBody.style.transformOrigin = '0 0'; 
+                    arrowBody.style.transform = `scale(${scaleFactor})`;
+                });
                 
                 // Update Casing Issue Chart
                 const chartWidth = 500;
@@ -1248,6 +1260,15 @@
                 casingChartSvg.querySelector('.chart-line-2').setAttribute('points', points2.join(' '));
                 casingChartSvg.querySelector('.chart-line-3').setAttribute('points', points3.join(' '));
                 casingChartSvg.querySelector('.chart-line-pipe').setAttribute('points', pointsPipe.join(' '));
+                isCasingUpdatePending = false;
+            }
+
+            casingIssueSlider.addEventListener('input', e => {
+                casingSliderValue = parseInt(e.target.value);
+                if (!isCasingUpdatePending) {
+                    isCasingUpdatePending = true;
+                    requestAnimationFrame(updateCasingAnimation);
+                }
             });
             
 
@@ -1256,11 +1277,17 @@
             const probeIssueCobra = document.getElementById('probe-issue-cobra');
             const probeIssueSensor = document.getElementById('probe-issue-sensor');
             const probeChartSvg = document.getElementById('probe-chart-svg');
+            const probeForceArrows = document.querySelectorAll('#probe-force-arrows .force-arrow');
 
-            drawChart(probeChartSvg, { yMin: 5, yMax: -40, step: 5 });
+            drawChart(probeChartSvg, { yMin: 5, yMax: -40, step: 5 }, "Probe Deformation (%)");
 
-            probeIssueSlider.addEventListener('input', e => {
-                const value = parseInt(e.target.value);
+            let probeSliderValue = 0;
+            let isProbeUpdatePending = false;
+
+            function updateProbeAnimation() {
+                if(!isProbeUpdatePending) return;
+
+                const value = probeSliderValue;
                 const jumpThreshold = 50;
                 
                 // Visual animation: step change
@@ -1275,6 +1302,15 @@
                 
                 const sag = (value < jumpThreshold) ? 0 : (value / 100) * 5;
                 document.getElementById('probe-issue-probe').style.transform = `translateY(${sag}px)`;
+
+                // Animate force arrows
+                const scaleFactorProbe = (value / 100) * 1.5; // Scale from 0 to 1.5
+                probeForceArrows.forEach(arrow => {
+                    const arrowBody = arrow.querySelector('.arrow-body');
+                    // **** FIX IS HERE ****
+                    arrowBody.style.transformOrigin = '0 0';
+                    arrowBody.style.transform = `scale(${scaleFactorProbe})`;
+                });
 
                 // Update Probe Issue Chart with variable steps
                 const chartWidth = 500;
@@ -1299,6 +1335,16 @@
                 probeChartSvg.querySelector('.chart-line-2').setAttribute('points', points2.join(' '));
                 probeChartSvg.querySelector('.chart-line-3').setAttribute('points', points3.join(' '));
                 probeChartSvg.querySelector('.chart-line-pipe').setAttribute('points', pointsPipe.join(' '));
+
+                isProbeUpdatePending = false;
+            }
+
+            probeIssueSlider.addEventListener('input', e => {
+                probeSliderValue = parseInt(e.target.value);
+                if (!isProbeUpdatePending) {
+                    isProbeUpdatePending = true;
+                    requestAnimationFrame(updateProbeAnimation);
+                }
             });
             
             
@@ -1406,8 +1452,13 @@
                 maxPlungerTravel: 30 // Max visual travel of sensor plunger
             };
 
-            rodSettlementSlider.addEventListener('input', e => {
-                const loadFactor = parseInt(e.target.value) / 100;
+            let rodSliderValue = 0;
+            let isRodUpdatePending = false;
+
+            function updateRodAnimation() {
+                if(!isRodUpdatePending) return;
+
+                const loadFactor = rodSliderValue / 100;
                 
                 // 1. Calculate and draw the deformed soil surface
                 const surfacePoints = [];
@@ -1482,9 +1533,20 @@
                 rodReading3.textContent = `+${(-reading3).toFixed(1)}`;
                 rodActual1.textContent = `-${settlement1.toFixed(1)}`;
                 rodActual2.textContent = `-${settlement2.toFixed(1)}`;
+
+                isRodUpdatePending = false;
+            }
+
+            rodSettlementSlider.addEventListener('input', e => {
+                rodSliderValue = parseInt(e.target.value);
+                if (!isRodUpdatePending) {
+                    isRodUpdatePending = true;
+                    requestAnimationFrame(updateRodAnimation);
+                }
             });
             
             // Trigger initial state for all sliders
+            showInstallStep(installStep);
             simSlider.dispatchEvent(new Event('input'));
             casingIssueSlider.dispatchEvent(new Event('input'));
             probeIssueSlider.dispatchEvent(new Event('input'));
@@ -1493,4 +1555,3 @@
     </script>
 </body>
 </html>
-
